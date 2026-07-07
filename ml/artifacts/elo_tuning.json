@@ -1,0 +1,53 @@
+{
+  "grid": [
+    {
+      "home_advantage": 60.0,
+      "k_scale": 0.75,
+      "val_log_loss": 0.86104
+    },
+    {
+      "home_advantage": 60.0,
+      "k_scale": 1.0,
+      "val_log_loss": 0.86215
+    },
+    {
+      "home_advantage": 60.0,
+      "k_scale": 1.25,
+      "val_log_loss": 0.86423
+    },
+    {
+      "home_advantage": 80.0,
+      "k_scale": 0.75,
+      "val_log_loss": 0.86065
+    },
+    {
+      "home_advantage": 80.0,
+      "k_scale": 1.0,
+      "val_log_loss": 0.86164
+    },
+    {
+      "home_advantage": 80.0,
+      "k_scale": 1.25,
+      "val_log_loss": 0.86363
+    },
+    {
+      "home_advantage": 100.0,
+      "k_scale": 0.75,
+      "val_log_loss": 0.86102
+    },
+    {
+      "home_advantage": 100.0,
+      "k_scale": 1.0,
+      "val_log_loss": 0.86177
+    },
+    {
+      "home_advantage": 100.0,
+      "k_scale": 1.25,
+      "val_log_loss": 0.8636
+    }
+  ],
+  "selected": {
+    "home_advantage": 80.0,
+    "k_scale": 0.75
+  }
+}

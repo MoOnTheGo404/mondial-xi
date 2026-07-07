@@ -1,0 +1,110 @@
+{
+  "frequency_baseline": {
+    "validation": {
+      "log_loss": 1.04594,
+      "brier": 0.63009,
+      "rps": 0.22756,
+      "accuracy": 0.48618,
+      "ece": 0.00232,
+      "n": 3581
+    },
+    "test": {
+      "log_loss": 1.0543,
+      "brier": 0.63613,
+      "rps": 0.22935,
+      "accuracy": 0.47249,
+      "ece": 0.01137,
+      "n": 3689
+    }
+  },
+  "elo_logistic": {
+    "validation": {
+      "log_loss": 0.86065,
+      "brier": 0.50495,
+      "rps": 0.16785,
+      "accuracy": 0.60737,
+      "ece": 0.01507,
+      "n": 3581
+    },
+    "test": {
+      "log_loss": 0.86692,
+      "brier": 0.50994,
+      "rps": 0.16895,
+      "accuracy": 0.60314,
+      "ece": 0.01995,
+      "n": 3689
+    }
+  },
+  "poisson": {
+    "validation": {
+      "log_loss": 0.86143,
+      "brier": 0.5056,
+      "rps": 0.16852,
+      "accuracy": 0.60709,
+      "ece": 0.01687,
+      "n": 3581
+    },
+    "test": {
+      "log_loss": 0.86761,
+      "brier": 0.51011,
+      "rps": 0.16931,
+      "accuracy": 0.60504,
+      "ece": 0.0205,
+      "n": 3689
+    }
+  },
+  "dixon_coles": {
+    "validation": {
+      "log_loss": 0.86061,
+      "brier": 0.50524,
+      "rps": 0.16846,
+      "accuracy": 0.60709,
+      "ece": 0.01284,
+      "n": 3581
+    },
+    "test": {
+      "log_loss": 0.86627,
+      "brier": 0.50942,
+      "rps": 0.1692,
+      "accuracy": 0.60504,
+      "ece": 0.01669,
+      "n": 3689
+    }
+  },
+  "gbm_uncalibrated": {
+    "validation": {
+      "log_loss": 0.8712,
+      "brier": 0.5106,
+      "rps": 0.16971,
+      "accuracy": 0.60039,
+      "ece": 0.01888,
+      "n": 3581
+    },
+    "test": {
+      "log_loss": 0.87336,
+      "brier": 0.51269,
+      "rps": 0.16917,
+      "accuracy": 0.60477,
+      "ece": 0.02553,
+      "n": 3689
+    }
+  },
+  "gbm_calibrated": {
+    "validation": {
+      "log_loss": 0.8555,
+      "brier": 0.50354,
+      "rps": 0.16748,
+      "accuracy": 0.60905,
+      "ece": 0.01517,
+      "n": 3581
+    },
+    "test": {
+      "log_loss": 0.87015,
+      "brier": 0.51056,
+      "rps": 0.16871,
+      "accuracy": 0.60775,
+      "ece": 0.01368,
+      "n": 3689
+    }
+  }
+}

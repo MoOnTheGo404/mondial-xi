@@ -1,0 +1,29 @@
+{
+  "model_version": "2026.07.07-1",
+  "git_commit": "19d628a",
+  "champion": "gbm_calibrated",
+  "candidates": [
+    "frequency_baseline",
+    "elo_logistic",
+    "poisson",
+    "dixon_coles",
+    "gbm_uncalibrated",
+    "gbm_calibrated"
+  ],
+  "data": {
+    "source": "martj42/international_results (CC0)",
+    "completed_matches": 49495,
+    "date_range": [
+      "1872-11-30",
+      "2026-07-05"
+    ]
+  },
+  "features": "pre-match only; single forward pass; leakage tests in tests/unit/ml",
+  "calibration": "per-class isotonic fitted on validation window only",
+  "intended_use": "editorial forecasting & simulation; not betting advice",
+  "limitations": [
+    "team-level model; no lineup/injury inputs (no licensed historical source)",
+    "friendlies carry lower Elo weight but add label noise",
+    "small-sample teams rely on rating priors"
+  ]
+}
