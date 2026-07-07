@@ -1,0 +1,33 @@
+{
+  "source_name": "martj42/international_results",
+  "dataset": "results",
+  "description": "Senior men's international football results, 1872\u2013present",
+  "url": "https://raw.githubusercontent.com/martj42/international_results/master/results.csv",
+  "retrieved_at": "2026-07-07T04:04:52.821310+00:00",
+  "license": {
+    "name": "CC0 1.0 Universal (public domain)",
+    "url": "https://github.com/martj42/international_results/blob/master/LICENSE",
+    "redistribution_allowed": true
+  },
+  "sha256": "05187d58a3b610b8e5985c2956974b5cec0a8ca878e6e6f7d77d1b75fc265cf7",
+  "row_count": 49503,
+  "columns": [
+    "date",
+    "home_team",
+    "away_team",
+    "home_score",
+    "away_score",
+    "tournament",
+    "city",
+    "country",
+    "neutral"
+  ],
+  "date_min": "1872-11-30",
+  "date_max": "2026-07-11",
+  "known_limitations": [
+    "Community-maintained; occasional corrections upstream",
+    "Senior men's full internationals only (per upstream inclusion criteria)",
+    "No lineups, cards, or in-match statistics",
+    "Scores for knockout matches are after extra time; shootouts recorded separately"
+  ]
+}

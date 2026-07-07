@@ -1,0 +1,31 @@
+date,home_score,away_score,tournament,city,country,neutral,home_id,away_id,tier,match_id,home_team_name,away_team_name,shootout_winner_id
+1967-08-22,1,1,Merdeka Tournament,Kuala Lumpur,Malaysia,true,india,taiwan,other,19670822-india-taiwan,India,Taiwan,taiwan
+1971-11-14,1,1,King's Cup,Bangkok,Thailand,true,south-korea,vietnam-republic,other,19711114-south-korea-vietnam-republic,South Korea,Vietnam Republic,south-korea
+1972-05-07,0,0,AFC Asian Cup,Bangkok,Thailand,true,south-korea,iraq,continental,19720507-south-korea-iraq,South Korea,Iraq,iraq
+1972-05-17,1,1,AFC Asian Cup,Bangkok,Thailand,false,thailand,south-korea,continental,19720517-thailand-south-korea,Thailand,South Korea,south-korea
+1972-05-19,2,2,AFC Asian Cup,Bangkok,Thailand,false,thailand,cambodia,continental,19720519-thailand-cambodia,Thailand,Cambodia,thailand
+1973-04-21,1,0,African Cup of Nations qualification,Dakar,Senegal,false,senegal,ghana,qualifier,19730421-senegal-ghana,Senegal,Ghana,ghana
+1973-06-14,1,1,African Cup of Nations qualification,Conakry,Guinea,false,guinea,mali,qualifier,19730614-guinea-mali,Guinea,Mali,guinea
+1973-06-14,1,1,African Cup of Nations qualification,Port Louis,Mauritius,false,mauritius,tanzania,qualifier,19730614-mauritius-tanzania,Mauritius,Tanzania,mauritius
+1973-07-26,1,1,Merdeka Tournament,Kuala Lumpur,Malaysia,true,cambodia,singapore,other,19730726-cambodia-singapore,Cambodia,Singapore,singapore
+1973-07-26,0,0,Merdeka Tournament,Kuala Lumpur,Malaysia,false,malaysia,kuwait,other,19730726-malaysia-kuwait,Malaysia,Kuwait,malaysia
+1973-07-27,2,2,Merdeka Tournament,Kuala Lumpur,Malaysia,true,bangladesh,thailand,other,19730727-bangladesh-thailand,Bangladesh,Thailand,thailand
+1973-07-28,0,0,Merdeka Tournament,Kuala Lumpur,Malaysia,true,myanmar,south-korea,other,19730728-myanmar-south-korea,Myanmar,South Korea,myanmar
+1973-08-09,1,1,Merdeka Tournament,Kuala Lumpur,Malaysia,true,india,vietnam-republic,other,19730809-india-vietnam-republic,India,Vietnam Republic,vietnam-republic
+1973-08-23,0,0,Palestine Cup,Benghazi,Libya,true,algeria,syria,other,19730823-algeria-syria,Algeria,Syria,syria
+1973-08-25,0,0,Palestine Cup,Tripoli,Libya,true,algeria,iraq,other,19730825-algeria-iraq,Algeria,Iraq,algeria
+1973-09-06,1,1,Southeast Asian Peninsular Games,Singapore,Singapore,false,singapore,vietnam-republic,other,19730906-singapore-vietnam-republic,Singapore,Vietnam Republic,vietnam-republic
+1974-03-28,1,1,Gulf Cup,Kuwait City,Kuwait,true,qatar,united-arab-emirates,other,19740328-qatar-united-arab-emirates,Qatar,United Arab Emirates,qatar
+1974-07-24,2,2,Merdeka Tournament,Ipoh,Malaysia,true,hong-kong,indonesia,other,19740724-hong-kong-indonesia,Hong Kong,Indonesia,indonesia
+1974-08-01,0,0,Merdeka Tournament,Ipoh,Malaysia,true,india,indonesia,other,19740801-india-indonesia,India,Indonesia,indonesia
+1974-10-09,1,1,Kuneitra Cup,Damascus,Syria,false,syria,morocco,other,19741009-syria-morocco,Syria,Morocco,morocco
+1974-11-22,1,0,African Cup of Nations qualification,Tripoli,Libya,false,libya,tunisia,qualifier,19741122-libya-tunisia,Libya,Tunisia,tunisia
+1974-12-18,0,0,King's Cup,Bangkok,Thailand,true,south-korea,malaysia,other,19741218-south-korea-malaysia,South Korea,Malaysia,south-korea
+1975-07-13,2,0,African Cup of Nations qualification,Casablanca,Morocco,false,morocco,ghana,qualifier,19750713-morocco-ghana,Morocco,Ghana,morocco
+1975-11-09,2,2,CECAFA Cup,Lusaka,Zambia,true,kenya,malawi,other,19751109-kenya-malawi,Kenya,Malawi,kenya
+1975-12-09,1,1,Southeast Asian Peninsular Games,Thailand,Thailand,false,thailand,malaysia,other,19751209-thailand-malaysia,Thailand,Malaysia,thailand
+2001-04-11,31,0,FIFA World Cup qualification,Coffs Harbour,Australia,false,australia,american-samoa,qualifier,20010411-australia-american-samoa,Australia,American Samoa,
+1971-09-13,30,0,South Pacific Games,Papeete,Tahiti,false,tahiti,cook-islands,other,19710913-tahiti-cook-islands,Tahiti,Cook Islands,
+1979-08-30,24,0,South Pacific Games,Nausori,Fiji,false,fiji,kiribati,other,19790830-fiji-kiribati,Fiji,Kiribati,
+2001-04-09,22,0,FIFA World Cup qualification,Coffs Harbour,Australia,false,australia,tonga,qualifier,20010409-australia-tonga,Australia,Tonga,
+2013-06-24,22,0,"International Tournament of Peoples, Cultures and Tribes",Marseille,France,false,provence,tibet,other,20130624-provence-tibet,Provence,Tibet,

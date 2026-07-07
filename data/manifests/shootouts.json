@@ -1,0 +1,29 @@
+{
+  "source_name": "martj42/international_results",
+  "dataset": "shootouts",
+  "description": "Penalty shootout outcomes for drawn matches",
+  "url": "https://raw.githubusercontent.com/martj42/international_results/master/shootouts.csv",
+  "retrieved_at": "2026-07-07T04:04:52.871587+00:00",
+  "license": {
+    "name": "CC0 1.0 Universal (public domain)",
+    "url": "https://github.com/martj42/international_results/blob/master/LICENSE",
+    "redistribution_allowed": true
+  },
+  "sha256": "b5a076007fd9b3737857885c26c411184b62bce434d315211a7e9828932e3c8e",
+  "row_count": 681,
+  "columns": [
+    "date",
+    "home_team",
+    "away_team",
+    "winner",
+    "first_shooter"
+  ],
+  "date_min": "1967-08-22",
+  "date_max": "2026-07-03",
+  "known_limitations": [
+    "Community-maintained; occasional corrections upstream",
+    "Senior men's full internationals only (per upstream inclusion criteria)",
+    "No lineups, cards, or in-match statistics",
+    "Scores for knockout matches are after extra time; shootouts recorded separately"
+  ]
+}

@@ -1,0 +1,337 @@
+team_id,name,flag_code,confederation,is_historical
+abkhazia,Abkhazia,,OTHER,false
+afghanistan,Afghanistan,af,AFC,false
+aland-islands,Åland Islands,ax,OTHER,false
+albania,Albania,al,UEFA,false
+alderney,Alderney,,OTHER,false
+algeria,Algeria,dz,CAF,false
+ambazonia,Ambazonia,,OTHER,false
+american-samoa,American Samoa,as,OFC,false
+andalusia,Andalusia,,OTHER,false
+andorra,Andorra,ad,UEFA,false
+angola,Angola,ao,CAF,false
+anguilla,Anguilla,ai,CONCACAF,false
+antigua-and-barbuda,Antigua and Barbuda,ag,CONCACAF,false
+arameans-suryoye,Arameans Suryoye,,OTHER,false
+argentina,Argentina,ar,CONMEBOL,false
+armenia,Armenia,am,UEFA,false
+artsakh,Artsakh,,OTHER,false
+aruba,Aruba,aw,CONCACAF,false
+asturias,Asturias,,OTHER,false
+australia,Australia,au,AFC,false
+austria,Austria,at,UEFA,false
+aymara,Aymara,,OTHER,false
+azerbaijan,Azerbaijan,az,UEFA,false
+bahamas,Bahamas,bs,CONCACAF,false
+bahrain,Bahrain,bh,AFC,false
+bangladesh,Bangladesh,bd,AFC,false
+barawa,Barawa,,OTHER,false
+barbados,Barbados,bb,CONCACAF,false
+basque-country,Basque Country,,OTHER,false
+belarus,Belarus,by,UEFA,false
+belgium,Belgium,be,UEFA,false
+belize,Belize,bz,CONCACAF,false
+benin,Benin,bj,CAF,false
+bermuda,Bermuda,bm,CONCACAF,false
+bhutan,Bhutan,bt,AFC,false
+biafra,Biafra,,OTHER,false
+bolivia,Bolivia,bo,CONMEBOL,false
+bonaire,Bonaire,bq,CONCACAF,false
+bosnia-and-herzegovina,Bosnia and Herzegovina,ba,UEFA,false
+botswana,Botswana,bw,CAF,false
+brazil,Brazil,br,CONMEBOL,false
+british-virgin-islands,British Virgin Islands,vg,CONCACAF,false
+brittany,Brittany,,OTHER,false
+brunei,Brunei,bn,AFC,false
+bulgaria,Bulgaria,bg,UEFA,false
+burkina-faso,Burkina Faso,bf,CAF,false
+burundi,Burundi,bi,CAF,false
+cambodia,Cambodia,kh,AFC,false
+cameroon,Cameroon,cm,CAF,false
+canada,Canada,ca,CONCACAF,false
+canary-islands,Canary Islands,,OTHER,false
+cape-verde,Cape Verde,cv,CAF,false
+cascadia,Cascadia,,OTHER,false
+catalonia,Catalonia,,OTHER,false
+cayman-islands,Cayman Islands,ky,CONCACAF,false
+central-african-republic,Central African Republic,cf,CAF,false
+central-spain,Central Spain,,OTHER,false
+chad,Chad,td,CAF,false
+chagos-islands,Chagos Islands,,OTHER,false
+chameria,Chameria,,OTHER,false
+chechnya,Chechnya,,OTHER,false
+chile,Chile,cl,CONMEBOL,false
+china,China,cn,AFC,false
+cilento,Cilento,,OTHER,false
+colombia,Colombia,co,CONMEBOL,false
+comoros,Comoros,km,CAF,false
+congo,Congo,cg,CAF,false
+cook-islands,Cook Islands,ck,OFC,false
+corsica,Corsica,,OTHER,false
+costa-rica,Costa Rica,cr,CONCACAF,false
+county-of-nice,County of Nice,,OTHER,false
+crimea,Crimea,,OTHER,false
+croatia,Croatia,hr,UEFA,false
+cuba,Cuba,cu,CONCACAF,false
+curacao,Curaçao,cw,CONCACAF,false
+cyprus,Cyprus,cy,UEFA,false
+czech-republic,Czech Republic,cz,UEFA,false
+czechoslovakia,Czechoslovakia,,UEFA,true
+darfur,Darfur,,OTHER,false
+delvidek,Délvidék,,OTHER,false
+denmark,Denmark,dk,UEFA,false
+djibouti,Djibouti,dj,CAF,false
+dominica,Dominica,dm,CONCACAF,false
+dominican-republic,Dominican Republic,do,CONCACAF,false
+donetsk-pr,Donetsk PR,,OTHER,false
+dr-congo,DR Congo,cd,CAF,false
+east-turkestan,East Turkestan,,OTHER,false
+ecuador,Ecuador,ec,CONMEBOL,false
+egypt,Egypt,eg,CAF,false
+el-salvador,El Salvador,sv,CONCACAF,false
+elba-island,Elba Island,,OTHER,false
+ellan-vannin,Ellan Vannin,,OTHER,false
+england,England,gb-eng,UEFA,false
+equatorial-guinea,Equatorial Guinea,gq,CAF,false
+eritrea,Eritrea,er,CAF,false
+estonia,Estonia,ee,UEFA,false
+eswatini,Eswatini,sz,CAF,false
+ethiopia,Ethiopia,et,CAF,false
+falkland-islands,Falkland Islands,fk,OTHER,false
+faroe-islands,Faroe Islands,fo,UEFA,false
+felvidek,Felvidék,,OTHER,false
+fiji,Fiji,fj,OFC,false
+finland,Finland,fi,UEFA,false
+france,France,fr,UEFA,false
+franconia,Franconia,,OTHER,false
+french-guiana,French Guiana,gf,CONCACAF,false
+frya,Frøya,,OTHER,false
+gabon,Gabon,ga,CAF,false
+gagauzia,Găgăuzia,,OTHER,false
+galicia,Galicia,,OTHER,false
+gambia,Gambia,gm,CAF,false
+georgia,Georgia,ge,UEFA,false
+german-dr,German DR,,OTHER,false
+germany,Germany,de,UEFA,false
+ghana,Ghana,gh,CAF,false
+gibraltar,Gibraltar,gi,UEFA,false
+gotland,Gotland,,OTHER,false
+gozo,Gozo,,OTHER,false
+greece,Greece,gr,UEFA,false
+greenland,Greenland,gl,OTHER,false
+grenada,Grenada,gd,CONCACAF,false
+guadeloupe,Guadeloupe,gp,CONCACAF,false
+guam,Guam,gu,AFC,false
+guatemala,Guatemala,gt,CONCACAF,false
+guernsey,Guernsey,gg,OTHER,false
+guinea,Guinea,gn,CAF,false
+guinea-bissau,Guinea-Bissau,gw,CAF,false
+guyana,Guyana,gy,CONCACAF,false
+haiti,Haiti,ht,CONCACAF,false
+hitra,Hitra,,OTHER,false
+hmong,Hmong,,OTHER,false
+honduras,Honduras,hn,CONCACAF,false
+hong-kong,Hong Kong,hk,AFC,false
+hungary,Hungary,hu,UEFA,false
+iceland,Iceland,is,UEFA,false
+india,India,in,AFC,false
+indonesia,Indonesia,id,AFC,false
+iran,Iran,ir,AFC,false
+iraq,Iraq,iq,AFC,false
+iraqi-kurdistan,Iraqi Kurdistan,,OTHER,false
+isle-of-man,Isle of Man,im,OTHER,false
+isle-of-wight,Isle of Wight,,OTHER,false
+israel,Israel,il,UEFA,false
+italy,Italy,it,UEFA,false
+ivory-coast,Ivory Coast,ci,CAF,false
+jamaica,Jamaica,jm,CONCACAF,false
+japan,Japan,jp,AFC,false
+jersey,Jersey,je,OTHER,false
+jordan,Jordan,jo,AFC,false
+kabylia,Kabylia,,OTHER,false
+karpatalja,Kárpátalja,,OTHER,false
+kazakhstan,Kazakhstan,kz,UEFA,false
+kenya,Kenya,ke,CAF,false
+kernow,Kernow,,OTHER,false
+kiribati,Kiribati,ki,OFC,false
+kosovo,Kosovo,xk,UEFA,false
+kurdistan,Kurdistan,,OTHER,false
+kuwait,Kuwait,kw,AFC,false
+kyrgyzstan,Kyrgyzstan,kg,AFC,false
+laos,Laos,la,AFC,false
+latvia,Latvia,lv,UEFA,false
+lebanon,Lebanon,lb,AFC,false
+lesotho,Lesotho,ls,CAF,false
+liberia,Liberia,lr,CAF,false
+libya,Libya,ly,CAF,false
+liechtenstein,Liechtenstein,li,UEFA,false
+lithuania,Lithuania,lt,UEFA,false
+luhansk-pr,Luhansk PR,,OTHER,false
+luxembourg,Luxembourg,lu,UEFA,false
+macau,Macau,mo,AFC,false
+madagascar,Madagascar,mg,CAF,false
+madrid,Madrid,,OTHER,false
+malawi,Malawi,mw,CAF,false
+malaysia,Malaysia,my,AFC,false
+maldives,Maldives,mv,AFC,false
+mali,Mali,ml,CAF,false
+malta,Malta,mt,UEFA,false
+manchukuo,Manchukuo,,OTHER,false
+mapuche,Mapuche,,OTHER,false
+marshall-islands,Marshall Islands,mh,OFC,false
+martinique,Martinique,mq,CONCACAF,false
+matabeleland,Matabeleland,,OTHER,false
+maule-sur,Maule Sur,,OTHER,false
+mauritania,Mauritania,mr,CAF,false
+mauritius,Mauritius,mu,CAF,false
+mayotte,Mayotte,yt,CAF,false
+menorca,Menorca,,OTHER,false
+mexico,Mexico,mx,CONCACAF,false
+micronesia,Micronesia,,OTHER,false
+moldova,Moldova,md,UEFA,false
+monaco,Monaco,mc,OTHER,false
+mongolia,Mongolia,mn,AFC,false
+montenegro,Montenegro,me,UEFA,false
+montserrat,Montserrat,ms,CONCACAF,false
+morocco,Morocco,ma,CAF,false
+mozambique,Mozambique,mz,CAF,false
+myanmar,Myanmar,mm,AFC,false
+namibia,Namibia,na,CAF,false
+nepal,Nepal,np,AFC,false
+netherlands,Netherlands,nl,UEFA,false
+new-caledonia,New Caledonia,nc,OFC,false
+new-zealand,New Zealand,nz,OFC,false
+nicaragua,Nicaragua,ni,CONCACAF,false
+niger,Niger,ne,CAF,false
+nigeria,Nigeria,ng,CAF,false
+niue,Niue,nu,OFC,false
+north-korea,North Korea,kp,AFC,false
+north-macedonia,North Macedonia,mk,UEFA,false
+north-vietnam,North Vietnam,,OTHER,false
+northern-cyprus,Northern Cyprus,,OTHER,false
+northern-ireland,Northern Ireland,gb-nir,UEFA,false
+northern-mariana-islands,Northern Mariana Islands,mp,AFC,false
+norway,Norway,no,UEFA,false
+occitania,Occitania,,OTHER,false
+oman,Oman,om,AFC,false
+orkney,Orkney,,OTHER,false
+padania,Padania,,OTHER,false
+pakistan,Pakistan,pk,AFC,false
+palau,Palau,,OTHER,false
+palestine,Palestine,ps,AFC,false
+panama,Panama,pa,CONCACAF,false
+panjab,Panjab,,OTHER,false
+papua-new-guinea,Papua New Guinea,pg,OFC,false
+paraguay,Paraguay,py,CONMEBOL,false
+parishes-of-jersey,Parishes of Jersey,,OTHER,false
+peru,Peru,pe,CONMEBOL,false
+philippines,Philippines,ph,AFC,false
+poland,Poland,pl,UEFA,false
+portugal,Portugal,pt,UEFA,false
+provence,Provence,,OTHER,false
+puerto-rico,Puerto Rico,pr,CONCACAF,false
+qatar,Qatar,qa,AFC,false
+quebec,Quebec,,OTHER,false
+raetia,Raetia,,OTHER,false
+republic-of-ireland,Republic of Ireland,ie,UEFA,false
+republic-of-st-pauli,Republic of St. Pauli,,OTHER,false
+reunion,Réunion,re,CAF,false
+rhodes,Rhodes,,OTHER,false
+romani-people,Romani people,,OTHER,false
+romania,Romania,ro,UEFA,false
+russia,Russia,ru,UEFA,false
+rwanda,Rwanda,rw,CAF,false
+ryukyu,Ryūkyū,,OTHER,false
+saare-county,Saare County,,OTHER,false
+saarland,Saarland,,UEFA,true
+saint-barthelemy,Saint Barthélemy,bl,OTHER,false
+saint-helena,Saint Helena,sh,OTHER,false
+saint-kitts-and-nevis,Saint Kitts and Nevis,kn,CONCACAF,false
+saint-lucia,Saint Lucia,lc,CONCACAF,false
+saint-martin,Saint Martin,mf,CONCACAF,false
+saint-pierre-and-miquelon,Saint Pierre and Miquelon,,OTHER,false
+saint-vincent-and-the-grenadines,Saint Vincent and the Grenadines,vc,CONCACAF,false
+samoa,Samoa,ws,OFC,false
+san-marino,San Marino,sm,UEFA,false
+sao-tome-and-principe,São Tomé and Príncipe,st,CAF,false
+sapmi,Sápmi,,OTHER,false
+sark,Sark,,OTHER,false
+saudi-arabia,Saudi Arabia,sa,AFC,false
+saugeais,Saugeais,,OTHER,false
+scotland,Scotland,gb-sct,UEFA,false
+sealand,Sealand,,OTHER,false
+seborga,Seborga,,OTHER,false
+senegal,Senegal,sn,CAF,false
+serbia,Serbia,rs,UEFA,false
+seychelles,Seychelles,sc,CAF,false
+shetland,Shetland,,OTHER,false
+sierra-leone,Sierra Leone,sl,CAF,false
+silesia,Silesia,,OTHER,false
+singapore,Singapore,sg,AFC,false
+sint-maarten,Sint Maarten,sx,CONCACAF,false
+slovakia,Slovakia,sk,UEFA,false
+slovenia,Slovenia,si,UEFA,false
+solomon-islands,Solomon Islands,sb,OFC,false
+somalia,Somalia,so,CAF,false
+somaliland,Somaliland,,OTHER,false
+south-africa,South Africa,za,CAF,false
+south-korea,South Korea,kr,AFC,false
+south-ossetia,South Ossetia,,OTHER,false
+south-sudan,South Sudan,ss,CAF,false
+south-yemen,South Yemen,,OTHER,false
+spain,Spain,es,UEFA,false
+sri-lanka,Sri Lanka,lk,AFC,false
+sudan,Sudan,sd,CAF,false
+suriname,Suriname,sr,CONCACAF,false
+surrey,Surrey,,OTHER,false
+sweden,Sweden,se,UEFA,false
+switzerland,Switzerland,ch,UEFA,false
+syria,Syria,sy,AFC,false
+szekely-land,Székely Land,,OTHER,false
+tahiti,Tahiti,pf,OFC,false
+taiwan,Taiwan,tw,AFC,false
+tajikistan,Tajikistan,tj,AFC,false
+tamil-eelam,Tamil Eelam,,OTHER,false
+tanzania,Tanzania,tz,CAF,false
+thailand,Thailand,th,AFC,false
+tibet,Tibet,,OTHER,false
+ticino,Ticino,,OTHER,false
+timor-leste,Timor-Leste,tl,AFC,false
+togo,Togo,tg,CAF,false
+tonga,Tonga,to,OFC,false
+trinidad-and-tobago,Trinidad and Tobago,tt,CONCACAF,false
+tunisia,Tunisia,tn,CAF,false
+turkey,Turkey,tr,UEFA,false
+turkmenistan,Turkmenistan,tm,AFC,false
+turks-and-caicos-islands,Turks and Caicos Islands,tc,CONCACAF,false
+tuvalu,Tuvalu,tv,OFC,false
+two-sicilies,Two Sicilies,,OTHER,false
+uganda,Uganda,ug,CAF,false
+ukraine,Ukraine,ua,UEFA,false
+united-arab-emirates,United Arab Emirates,ae,AFC,false
+united-koreans-in-japan,United Koreans in Japan,,OTHER,false
+united-states,United States,us,CONCACAF,false
+united-states-virgin-islands,United States Virgin Islands,vi,CONCACAF,false
+uruguay,Uruguay,uy,CONMEBOL,false
+uzbekistan,Uzbekistan,uz,AFC,false
+vanuatu,Vanuatu,vu,OFC,false
+vatican-city,Vatican City,va,OTHER,false
+venezuela,Venezuela,ve,CONMEBOL,false
+vietnam,Vietnam,vn,AFC,false
+vietnam-republic,Vietnam Republic,,OTHER,false
+wales,Wales,gb-wls,UEFA,false
+wallis-islands-and-futuna,Wallis Islands and Futuna,,OTHER,false
+west-papua,West Papua,,OTHER,false
+western-armenia,Western Armenia,,OTHER,false
+western-australia,Western Australia,,OTHER,false
+western-isles,Western Isles,,OTHER,false
+western-sahara,Western Sahara,,OTHER,false
+yemen,Yemen,ye,AFC,false
+yemen-dpr,Yemen DPR,,OTHER,false
+ynys-mon,Ynys Môn,,OTHER,false
+yorkshire,Yorkshire,,OTHER,false
+yoruba-nation,Yoruba Nation,,OTHER,false
+yugoslavia,Yugoslavia,,UEFA,true
+zambia,Zambia,zm,CAF,false
+zanzibar,Zanzibar,,OTHER,false
+zimbabwe,Zimbabwe,zw,CAF,false
