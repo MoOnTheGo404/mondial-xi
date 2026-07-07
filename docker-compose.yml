@@ -1,0 +1,33 @@
+# Kickoff Atlas — local container stack.
+# Prerequisite on the build machine: `make data && make train` (the API image
+# copies processed data + trained artifacts; models are never trained at startup).
+services:
+  api:
+    build:
+      context: .
+      dockerfile: infrastructure/api.Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      KICKOFF_DATABASE_URL: sqlite:////app/data/kickoff.db
+      KICKOFF_CORS_ORIGINS: '["http://localhost:3000"]'
+      KICKOFF_WEATHER_ENABLED: "true"
+      # FOOTBALL_DATA_API_KEY: set via .env for optional live enrichment
+    volumes:
+      - snapshots:/app/data
+    restart: unless-stopped
+
+  web:
+    build:
+      context: .
+      dockerfile: infrastructure/web.Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      API_INTERNAL_URL: http://api:8000
+    depends_on:
+      - api
+    restart: unless-stopped
+
+volumes:
+  snapshots:

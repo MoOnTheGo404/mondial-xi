@@ -1,0 +1,110 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+
+jobs:
+  python:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+        with:
+          python-version: "3.12"
+      - name: Sync dependencies
+        run: uv sync --all-packages
+      - name: Ruff
+        run: uv run ruff check ml apps/api scripts tests
+      - name: mypy
+        run: uv run mypy ml/kickoff_ml apps/api/kickoff_api
+      - name: Unit tests (no artifacts required)
+        run: uv run pytest tests/unit -q
+      - name: Build data + artifacts (CC0 download, ~10 MB)
+        run: |
+          uv run python -m kickoff_ml.ingestion.download
+          uv run python -m kickoff_ml.ingestion.build
+          uv run python -m kickoff_ml.models.players
+          uv run python scripts/make_test_fixtures.py
+          uv run python -m kickoff_ml.evaluation.run
+      - name: Integration tests (real artifacts)
+        run: uv run pytest tests/integration -q
+
+  frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: ESLint
+        run: pnpm --filter @kickoff/web lint
+      - name: Typecheck (all packages)
+        run: pnpm -r typecheck
+      - name: Vitest
+        run: pnpm --filter @kickoff/web test
+      - name: Production build
+        run: pnpm --filter @kickoff/web build
+
+  docker:
+    runs-on: ubuntu-latest
+    needs: [python]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+        with:
+          python-version: "3.12"
+      - name: Build data + artifacts for image
+        run: |
+          uv sync --all-packages
+          uv run python -m kickoff_ml.ingestion.download
+          uv run python -m kickoff_ml.ingestion.build
+          uv run python -m kickoff_ml.models.players
+          uv run python -m kickoff_ml.evaluation.run
+      - name: Build API image
+        run: docker build -f infrastructure/api.Dockerfile -t kickoff-api .
+      - name: Build web image
+        run: docker build -f infrastructure/web.Dockerfile -t kickoff-web .
+      - name: Smoke-test API container
+        run: |
+          docker run -d --name api -p 8000:8000 kickoff-api
+          for i in $(seq 1 30); do
+            curl -sf http://localhost:8000/api/v1/health && exit 0 || sleep 2
+          done
+          docker logs api
+          exit 1
+
+  e2e:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+        with:
+          python-version: "3.12"
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - name: Bootstrap
+        run: |
+          uv sync --all-packages
+          pnpm install --frozen-lockfile
+      - name: Data + artifacts
+        run: |
+          uv run python -m kickoff_ml.ingestion.download
+          uv run python -m kickoff_ml.ingestion.build
+          uv run python -m kickoff_ml.models.players
+          uv run python -m kickoff_ml.evaluation.run
+      - name: Install Playwright
+        run: pnpm --filter @kickoff/web exec playwright install --with-deps chromium
+      - name: E2E (Playwright starts API + web itself)
+        run: pnpm --filter @kickoff/web exec playwright test e2e/journeys.spec.ts

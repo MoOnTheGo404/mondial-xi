@@ -34,6 +34,38 @@ const ROUND_LABEL: Record<string, string> = {
   F: "Final",
 };
 
+/** CSV cell sanitizer: quotes + neutralizes leading =+-@ (formula injection). */
+function csvCell(v: string | number): string {
+  let s = String(v);
+  if (/^[=+\-@]/.test(s)) s = `'${s}`;
+  return /[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
+}
+
+function downloadCsv(sim: SimulationResult) {
+  const rounds = ["R32", "R16", "QF", "SF", "F", "champion"];
+  const header = ["team", "team_id", ...rounds, "n_sims", "seed", "mode", "model_version"];
+  const lines = [header.join(",")];
+  for (const t of sim.teams) {
+    lines.push(
+      [
+        csvCell(t.team.name),
+        csvCell(t.team_id),
+        ...rounds.map((r) => csvCell(t.reach[r] ?? 0)),
+        sim.n_sims,
+        sim.seed,
+        csvCell(sim.mode),
+        csvCell(sim.model_version),
+      ].join(","),
+    );
+  }
+  const blob = new Blob([lines.join("\n")], { type: "text/csv" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = `kickoff-atlas-sim-${sim.seed}-${sim.n_sims}.csv`;
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+
 export default function SimulatorPage() {
   const [nSims, setNSims] = useState(10_000);
   const [seed, setSeed] = useState(42);
@@ -134,6 +166,15 @@ export default function SimulatorPage() {
             className="rounded border border-amber-500/50 px-3 py-2 font-mono text-xs uppercase text-amber-300"
           >
             Clear {locks.length} lock{locks.length > 1 ? "s" : ""}
+          </button>
+        )}
+        {sim.data && (
+          <button
+            type="button"
+            onClick={() => downloadCsv(sim.data)}
+            className="rounded border border-ink-600 px-3 py-2 font-mono text-xs uppercase text-ink-200 hover:border-home"
+          >
+            Export CSV
           </button>
         )}
         <span className="ml-auto font-mono text-xs text-ink-400" role="status">
@@ -254,6 +295,7 @@ export default function SimulatorPage() {
                               <button
                                 type="button"
                                 aria-pressed={Boolean(locked)}
+                                aria-label={`Lock ${team.name} to win this ${ROUND_LABEL[rnd.round]} tie`}
                                 title={`Lock ${team.name} to win this ${ROUND_LABEL[rnd.round]} tie`}
                                 onClick={() =>
                                   toggleLock(
