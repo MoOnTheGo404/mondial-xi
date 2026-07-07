@@ -4,7 +4,6 @@ These require `make data && make evaluate` to have produced artifacts;
 they are skipped (not failed) on a fresh checkout without artifacts.
 """
 
-import numpy as np
 import pytest
 
 from kickoff_ml.config import ARTIFACTS_DIR

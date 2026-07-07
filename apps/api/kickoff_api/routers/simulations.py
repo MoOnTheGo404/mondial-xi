@@ -2,9 +2,8 @@ from __future__ import annotations
 
 import time
 
-from pydantic import BaseModel, Field
-
 from fastapi import APIRouter, HTTPException
+from pydantic import BaseModel, Field
 
 from kickoff_api.helpers import require_ready, team_payload
 from kickoff_api.settings import settings

@@ -41,7 +41,7 @@ class FootballDataProvider:
         return bool(self.api_key)
 
     def _get(self, path: str) -> dict | None:
-        if not self.available:
+        if self.api_key is None:
             return None
         now = time.time()
         cached = self._cache.get(path)

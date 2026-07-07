@@ -23,7 +23,7 @@ def test_outcome_probs_sum_to_one(core8):
 
 
 def test_dixon_coles_rho_shifts_low_scores(core8):
-    model, feats = _fitted(core8)
+    model, _feats = _fitted(core8)
     base = model.score_matrix(1.2, 1.0)
     model.rho = -0.08
     dc = model.score_matrix(1.2, 1.0)

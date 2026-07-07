@@ -14,7 +14,7 @@ Honesty contract (see docs/player-model.md):
 from __future__ import annotations
 
 import json
-from datetime import date, timedelta
+from datetime import date
 
 import polars as pl
 

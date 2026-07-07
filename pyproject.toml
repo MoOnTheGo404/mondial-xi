@@ -24,7 +24,9 @@ src = ["ml", "apps/api"]
 
 [tool.ruff.lint]
 select = ["E", "F", "W", "I", "UP", "B", "SIM", "RUF"]
-ignore = ["E501"]
+# RUF001-003: en dashes in prose ("Dixon–Coles", date ranges) are intentional.
+# RUF007: zip(a[:-1], a[1:]) reads fine for bin edges.
+ignore = ["E501", "RUF001", "RUF002", "RUF003", "RUF007"]
 
 [tool.mypy]
 python_version = "3.12"

@@ -45,7 +45,7 @@ async def lifespan(app: FastAPI):
             created = snapshot_upcoming(STATE)
             scored = score_snapshots(STATE)
             log.info("snapshot jobs done", created=created, scored=scored)
-        except Exception as exc:  # noqa: BLE001 — jobs must not block serving
+        except Exception as exc:
             log.error("snapshot job failed", error=str(exc))
     yield
 
@@ -71,8 +71,8 @@ app.add_middleware(
     allow_headers=["Content-Type"],
 )
 
-app.add_exception_handler(StarletteHTTPException, http_exception_handler)
-app.add_exception_handler(RequestValidationError, validation_exception_handler)
+app.add_exception_handler(StarletteHTTPException, http_exception_handler)  # type: ignore[arg-type]
+app.add_exception_handler(RequestValidationError, validation_exception_handler)  # type: ignore[arg-type]
 app.add_exception_handler(Exception, unhandled_exception_handler)
 
 PREFIX = "/api/v1"

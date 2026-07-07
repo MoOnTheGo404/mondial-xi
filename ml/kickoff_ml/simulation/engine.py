@@ -109,7 +109,7 @@ def rank_group(scores: tuple[tuple[int, int], ...], elo_order: tuple[int, ...]) 
         for other in tied:
             if other == team:
                 continue
-            i, j, hg, ag = results[frozenset((team, other))]
+            i, _j, hg, ag = results[frozenset((team, other))]
             mine, theirs = (hg, ag) if i == team else (ag, hg)
             p += 3 if mine > theirs else (1 if mine == theirs else 0)
             d += mine - theirs
@@ -235,20 +235,23 @@ class TournamentSimulator:
                 f = next(
                     (x for x in fx if {x.home, x.away} == {a, b}), None
                 )
-                if f is not None and f.home_goals is not None:
-                    hg, ag = (f.home_goals, f.away_goals) if f.home == a else (f.away_goals, f.home_goals)
-                    arr[slot, :, 0] = hg
-                    arr[slot, :, 1] = ag
+                if f is not None and f.home_goals is not None and f.away_goals is not None:
+                    fixed_a, fixed_b = (
+                        (f.home_goals, f.away_goals) if f.home == a
+                        else (f.away_goals, f.home_goals)
+                    )
+                    arr[slot, :, 0] = fixed_a
+                    arr[slot, :, 1] = fixed_b
                 else:
                     neutral = f.neutral if f is not None else True
-                    h, w = (a, b)
+                    venue_home, venue_away = (a, b)
                     if f is not None and f.home == b:
-                        h, w = (b, a)
-                    hg, ag = self._sample_scores(rng, h, w, neutral, n_sims)
-                    if h == a:
-                        arr[slot, :, 0], arr[slot, :, 1] = hg, ag
+                        venue_home, venue_away = (b, a)
+                    hg_arr, ag_arr = self._sample_scores(rng, venue_home, venue_away, neutral, n_sims)
+                    if venue_home == a:
+                        arr[slot, :, 0], arr[slot, :, 1] = hg_arr, ag_arr
                     else:
-                        arr[slot, :, 0], arr[slot, :, 1] = ag, hg
+                        arr[slot, :, 0], arr[slot, :, 1] = ag_arr, hg_arr
             group_scores[g] = arr
 
         # rank every group in every sim (memoized exact ranking)
@@ -325,20 +328,20 @@ class TournamentSimulator:
             return thirds[alloc[match_no]][s]
 
         if r32_pairs is not None:
-            for mi, (h, a) in enumerate(r32_pairs):
-                home_slots[mi, :] = self.tidx[h]
-                away_slots[mi, :] = self.tidx[a]
+            for mi, (pair_home, pair_away) in enumerate(r32_pairs):
+                home_slots[mi, :] = self.tidx[pair_home]
+                away_slots[mi, :] = self.tidx[pair_away]
         else:
             letters_arr = np.array(letters)
             for s in range(n_sims):
                 q = frozenset(letters_arr[qualified_mask[s]].tolist())
                 if q not in alloc_cache:
-                    alloc = allocate_thirds(sorted(q), self.cfg.r32_template)
-                    alloc_cache[q] = alloc or {}
+                    solved = allocate_thirds(sorted(q), self.cfg.r32_template)
+                    alloc_cache[q] = solved or {}
                 alloc = alloc_cache[q]
-                for mi, t in enumerate(self.cfg.r32_template):
-                    home_slots[mi, s] = slot_team(t["home"], s, alloc, t["match"])
-                    away_slots[mi, s] = slot_team(t["away"], s, alloc, t["match"])
+                for mi, tpl in enumerate(self.cfg.r32_template):
+                    home_slots[mi, s] = slot_team(tpl["home"], s, alloc, tpl["match"])
+                    away_slots[mi, s] = slot_team(tpl["away"], s, alloc, tpl["match"])
 
         # ---- 4) knockout rounds ----------------------------------------------
         def play_round(
@@ -384,27 +387,27 @@ class TournamentSimulator:
 
         # first round from template slots, then fold chain from config
         w = play_round(round_names[0], home_slots, away_slots, 1)
-        m2i = {t["match"]: i for i, t in enumerate(self.cfg.r32_template)}
+        m2i = {tpl["match"]: i for i, tpl in enumerate(self.cfg.r32_template)}
         for ri, fold in enumerate(self.cfg.folds[: n_rounds - 1], start=1):
             if ri == 1:
-                h = np.stack([w[m2i[a]] for a, _ in fold])
-                a_ = np.stack([w[m2i[b]] for _, b in fold])
+                fold_h = np.stack([w[m2i[fa]] for fa, _ in fold])
+                fold_a = np.stack([w[m2i[fb]] for _, fb in fold])
             else:
-                h = np.stack([w[a] for a, _ in fold])
-                a_ = np.stack([w[b] for _, b in fold])
-            w = play_round(round_names[ri], h, a_, ri + 1)
+                fold_h = np.stack([w[fa] for fa, _ in fold])
+                fold_a = np.stack([w[fb] for _, fb in fold])
+            w = play_round(round_names[ri], fold_h, fold_a, ri + 1)
         np.add.at(reach[:, n_rounds + 1], w[0], 1)
 
         # ---- 5) aggregate ------------------------------------------------------
         table = []
-        for t, k in self.tidx.items():
+        for team_id, k in self.tidx.items():
             reach_dict = {
                 name: reach[k, i + 1] / n_sims for i, name in enumerate(round_names)
             }
             reach_dict["champion"] = reach[k, n_rounds + 1] / n_sims
             table.append(
                 {
-                    "team_id": t,
+                    "team_id": team_id,
                     "reach": reach_dict,
                     "group_rank_dist": (group_rank_dist[k] / n_sims).round(4).tolist(),
                 }

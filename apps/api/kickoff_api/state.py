@@ -12,13 +12,12 @@ from functools import cached_property
 import polars as pl
 import structlog
 
+from kickoff_api.settings import settings
 from kickoff_ml.config import ARTIFACTS_DIR, MANIFEST_DIR, PROCESSED_DIR, ROOT
 from kickoff_ml.models.service import PredictionEngine
-from kickoff_ml.providers.local import LocalDatasetProvider
 from kickoff_ml.providers.football_data import FootballDataProvider
+from kickoff_ml.providers.local import LocalDatasetProvider
 from kickoff_ml.providers.weather import OpenMeteoProvider
-
-from kickoff_api.settings import settings
 
 log = structlog.get_logger()
 

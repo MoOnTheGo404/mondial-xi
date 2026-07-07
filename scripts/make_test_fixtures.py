@@ -50,4 +50,8 @@ gs.filter(
 teams = pl.read_parquet(PROCESSED_DIR / "teams.parquet")
 teams.write_csv(FIXTURES_DIR / "teams.csv")
 
-print("fixtures:", {p.name: sum(1 for _ in open(p)) - 1 for p in FIXTURES_DIR.glob("*.csv")})
+counts = {}
+for p in FIXTURES_DIR.glob("*.csv"):
+    with p.open() as fh:
+        counts[p.name] = sum(1 for _ in fh) - 1
+print("fixtures:", counts)

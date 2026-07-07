@@ -48,12 +48,12 @@ def team_detail(team_id: str) -> dict:
             pl.col("home_score") > pl.col("away_score") if is_home
             else pl.col("away_score") > pl.col("home_score")
         ).height
-        l = sub.filter(
+        losses = sub.filter(
             pl.col("home_score") < pl.col("away_score") if is_home
             else pl.col("away_score") < pl.col("home_score")
         ).height
-        d = sub.height - w - l
-        return {"played": sub.height, "wins": w, "draws": d, "losses": l}
+        d = sub.height - w - losses
+        return {"played": sub.height, "wins": w, "draws": d, "losses": losses}
 
     home_r = rec(home.filter(~pl.col("neutral")), True)
     away_r = rec(away.filter(~pl.col("neutral")), False)

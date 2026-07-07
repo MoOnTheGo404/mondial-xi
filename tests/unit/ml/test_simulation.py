@@ -1,3 +1,5 @@
+import typing
+
 import numpy as np
 import pytest
 
@@ -56,7 +58,7 @@ class TestRankGroup:
 
 
 class TestThirdsAllocation:
-    TEMPLATE = [
+    TEMPLATE: typing.ClassVar = [
         {"match": 74, "home": "W_E", "away": "T3_ABCDF"},
         {"match": 77, "home": "W_I", "away": "T3_CDFGH"},
         {"match": 79, "home": "W_A", "away": "T3_CEFHI"},
@@ -137,7 +139,7 @@ def _fixtures(cfg):
 class TestSimulator:
     def _model(self, cfg):
         ratings = {}
-        for g, ms in cfg.groups.items():
+        for ms in cfg.groups.values():
             for k, t in enumerate(ms):
                 ratings[t] = 2000 - 100 * k
         return FakeModel(ratings)

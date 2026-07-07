@@ -1,8 +1,7 @@
 from __future__ import annotations
 
-from pydantic import BaseModel, Field, field_validator
-
 from fastapi import APIRouter, HTTPException, Query
+from pydantic import BaseModel, Field, field_validator
 
 from kickoff_api.helpers import require_ready, team_payload
 from kickoff_api.state import STATE

@@ -95,5 +95,5 @@ def all_metrics(y: np.ndarray, p: np.ndarray) -> dict:
         "rps": round(rps(y, p), 5),
         "accuracy": round(accuracy(y, p), 5),
         "ece": round(expected_calibration_error(y, p), 5),
-        "n": int(len(y)),
+        "n": len(y),
     }
