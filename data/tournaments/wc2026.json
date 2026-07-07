@@ -1,0 +1,73 @@
+{
+  "tournament_id": "wc2026",
+  "name": "FIFA World Cup 2026",
+  "config_version": "1.0.0",
+  "verified_on": "2026-07-06",
+  "sources": [
+    "https://en.wikipedia.org/wiki/2026_FIFA_World_Cup",
+    "https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_knockout_stage",
+    "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/groups-how-teams-qualify-tie-breakers",
+    "https://www.mlssoccer.com/news/2026-fifa-world-cup-tiebreakers-how-can-teams-advance",
+    "docs/research/wc2026.md"
+  ],
+  "format": {
+    "teams": 48,
+    "groups": 12,
+    "group_size": 4,
+    "advance_per_group": 2,
+    "best_thirds": 8,
+    "knockout_rounds": ["R32", "R16", "QF", "SF", "F"],
+    "extra_time": true,
+    "penalties": true,
+    "third_place_match": true
+  },
+  "points": {"win": 3, "draw": 1, "loss": 0},
+  "group_tiebreakers": [
+    "points", "h2h_points", "h2h_goal_diff", "h2h_goals",
+    "goal_diff", "goals", "conduct", "fifa_ranking"
+  ],
+  "tiebreaker_notes": "2026 change: head-to-head before overall goal difference; FIFA ranking replaces drawing of lots. Conduct (fair play) data is not available in the open dataset, so the engine skips criterion 7 and proxies criterion 8 with the Elo rating (documented approximation).",
+  "third_ranking": ["points", "goal_diff", "goals", "conduct", "fifa_ranking"],
+  "groups": {
+    "A": ["mexico", "south-africa", "south-korea", "czech-republic"],
+    "B": ["canada", "bosnia-and-herzegovina", "qatar", "switzerland"],
+    "C": ["brazil", "morocco", "haiti", "scotland"],
+    "D": ["united-states", "paraguay", "australia", "turkey"],
+    "E": ["germany", "curacao", "ivory-coast", "ecuador"],
+    "F": ["netherlands", "japan", "sweden", "tunisia"],
+    "G": ["belgium", "egypt", "iran", "new-zealand"],
+    "H": ["spain", "cape-verde", "saudi-arabia", "uruguay"],
+    "I": ["france", "senegal", "iraq", "norway"],
+    "J": ["argentina", "algeria", "austria", "jordan"],
+    "K": ["portugal", "dr-congo", "uzbekistan", "colombia"],
+    "L": ["england", "croatia", "ghana", "panama"]
+  },
+  "r32_template": [
+    {"match": 73, "home": "RU_A", "away": "RU_B"},
+    {"match": 74, "home": "W_E", "away": "T3_ABCDF"},
+    {"match": 75, "home": "W_F", "away": "RU_C"},
+    {"match": 76, "home": "W_C", "away": "RU_F"},
+    {"match": 77, "home": "W_I", "away": "T3_CDFGH"},
+    {"match": 78, "home": "RU_E", "away": "RU_I"},
+    {"match": 79, "home": "W_A", "away": "T3_CEFHI"},
+    {"match": 80, "home": "W_L", "away": "T3_EHIJK"},
+    {"match": 81, "home": "W_D", "away": "T3_BEFIJ"},
+    {"match": 82, "home": "W_G", "away": "T3_AEHIJ"},
+    {"match": 83, "home": "RU_K", "away": "RU_L"},
+    {"match": 84, "home": "W_H", "away": "RU_J"},
+    {"match": 85, "home": "W_B", "away": "T3_EFGIJ"},
+    {"match": 86, "home": "W_J", "away": "RU_H"},
+    {"match": 87, "home": "W_K", "away": "T3_DEIJL"},
+    {"match": 88, "home": "RU_D", "away": "RU_G"}
+  ],
+  "r16_fold": [[73, 75], [74, 77], [76, 78], [79, 80], [81, 82], [83, 84], [85, 87], [86, 88]],
+  "qf_fold": [[0, 1], [2, 3], [4, 5], [6, 7]],
+  "sf_fold": [[0, 1], [2, 3]],
+  "thirds_allocation_note": "FIFA Annex C (495 combinations) was not publicly retrievable; when re-simulating the group stage the engine assigns qualified thirds to slots by constraint satisfaction over each slot's allowed source groups. The real tournament's actual allocation is taken from played results. Documented approximation.",
+  "venues_high_altitude": {
+    "Mexico City": 2240,
+    "Zapopan": 1566,
+    "Guadalupe": 540
+  },
+  "final_venue": "MetLife Stadium, New York/New Jersey (2026-07-19)"
+}
