@@ -50,6 +50,16 @@
 - The historical dataset never ships to the browser: pages request paginated
   or pre-aggregated slices (Elo history is thinned server-side to ≤400 pts).
 
+## Measured performance (Apple Silicon dev machine, 2026-07-07)
+
+- Full 49,495-match walk-forward feature build: **0.39 s**
+- Single prediction (engine, warm): **~49 ms median** (cold 59 ms)
+- 10,000-run WC-2026 simulation from real state: **0.37 s** engine /
+  ~0.4 s through the API (`elapsed_ms` is returned on every response)
+- Full-tournament what-if replay, 10,000 runs: **~2.3 s**
+- `make evaluate` end-to-end (Elo grid + 6 models + artifacts): **~2 min**
+- Next.js production build: 14 routes, all static except dynamic detail pages
+
 ## Decisions & tradeoffs (abridged — see DECISIONS.md)
 - **uv + pnpm + Makefile facade** for a one-command bootstrap.
 - **SQLite default, PostgreSQL-compatible** via SQLAlchemy URL.

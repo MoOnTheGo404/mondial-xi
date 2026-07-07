@@ -21,6 +21,7 @@ dev = [
 line-length = 100
 target-version = "py312"
 src = ["ml", "apps/api"]
+extend-exclude = ["apps/api/alembic"]  # generated boilerplate
 
 [tool.ruff.lint]
 select = ["E", "F", "W", "I", "UP", "B", "SIM", "RUF"]

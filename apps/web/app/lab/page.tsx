@@ -3,7 +3,7 @@
 import { Suspense, useEffect, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
-import { apiGet, apiPost } from "@kickoff/shared";
+import { apiGet, apiPost, parsePrediction } from "@kickoff/shared";
 import type { Prediction, Team } from "@kickoff/shared";
 import { Badge, Card, EmptyState, SectionTitle } from "@kickoff/ui";
 import { ErrorBox } from "@/components/fixtures";
@@ -93,7 +93,8 @@ function LabInner() {
   const debouncedBody = useDebounced(body, 350);
   const pred = useQuery({
     queryKey: ["lab-prediction", debouncedBody],
-    queryFn: () => apiPost<Prediction>("/predictions/match", debouncedBody),
+    queryFn: async () =>
+      parsePrediction(await apiPost<Prediction>("/predictions/match", debouncedBody)),
     enabled: Boolean(debouncedBody),
     placeholderData: (prev) => prev,
   });

@@ -100,16 +100,16 @@ export default function PerformancePage() {
         <div className="flex flex-col gap-1 sm:flex-row" role="img" aria-label={`Chronological split: fit ${metrics.protocol.fit_window.join(" to ")}, validation ${metrics.protocol.validation_window.join(" to ")}, test ${metrics.protocol.test_window.join(" to ")}`}>
           {(
             [
-              ["FIT", metrics.protocol.fit_window, metrics.counts.train, "bg-ink-700"],
-              ["VALIDATION", metrics.protocol.validation_window, metrics.counts.validation, "bg-away/60"],
-              ["UNTOUCHED TEST", metrics.protocol.test_window, metrics.counts.test, "bg-home/70"],
+              ["FIT", metrics.protocol.fit_window, metrics.counts.train, "bg-ink-700", "text-ink-100", "text-ink-300"],
+              ["VALIDATION", metrics.protocol.validation_window, metrics.counts.validation, "bg-away/60", "text-ink-950", "text-ink-950/80"],
+              ["UNTOUCHED TEST", metrics.protocol.test_window, metrics.counts.test, "bg-home/70", "text-ink-950", "text-ink-950/80"],
             ] as const
-          ).map(([label, window, n, cls]) => (
+          ).map(([label, window, n, cls, titleCls, subCls]) => (
             <div key={label} className={`flex-1 rounded p-3 ${cls}`}>
-              <p className="font-display text-xs font-bold uppercase tracking-wider text-ink-950 mix-blend-luminosity sm:text-sm" style={{ color: "#0d1410" }}>
+              <p className={`font-display text-xs font-bold uppercase tracking-wider sm:text-sm ${titleCls}`}>
                 {label}
               </p>
-              <p className="font-mono text-[11px] text-ink-950/80">
+              <p className={`font-mono text-[11px] ${subCls}`}>
                 {window[0]} → {window[1]} · {n.toLocaleString()} matches
               </p>
             </div>
