@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-07-07T04:11:11.793531+00:00",
+  "generated_at": "2026-07-07T23:57:50.025960+00:00",
   "model_version": "2026.07.07-1",
-  "data_cutoff": "2026-07-05",
+  "data_cutoff": "2026-07-07",
   "protocol": {
     "fit_window": [
       "1980-01-01",
@@ -13,19 +13,19 @@
     ],
     "test_window": [
       "2023-01-01",
-      "2026-07-05"
+      "2026-07-07"
     ],
     "split_type": "chronological",
     "champion_selected_on": "validation log loss"
   },
   "champion": "gbm_calibrated",
   "champion_test": {
-    "log_loss": 0.87015,
-    "brier": 0.51056,
-    "rps": 0.16871,
-    "accuracy": 0.60775,
-    "ece": 0.01368,
-    "n": 3689
+    "log_loss": 0.87013,
+    "brier": 0.51053,
+    "rps": 0.16867,
+    "accuracy": 0.60791,
+    "ece": 0.01346,
+    "n": 3693
   },
   "champion_validation": {
     "log_loss": 0.8555,
@@ -38,27 +38,27 @@
   "confidence_buckets": [
     {
       "bucket": "0.33\u20130.45",
-      "count": 745,
-      "mean_confidence": 0.39996595852285205,
-      "top_pick_accuracy": 0.42013422818791946
+      "count": 746,
+      "mean_confidence": 0.4000289755957053,
+      "top_pick_accuracy": 0.42091152815013405
     },
     {
       "bucket": "0.45\u20130.55",
-      "count": 775,
-      "mean_confidence": 0.4966320265315002,
-      "top_pick_accuracy": 0.4838709677419355
+      "count": 776,
+      "mean_confidence": 0.4966269519000873,
+      "top_pick_accuracy": 0.4832474226804124
     },
     {
       "bucket": "0.55\u20130.65",
-      "count": 685,
-      "mean_confidence": 0.5956979057570884,
-      "top_pick_accuracy": 0.583941605839416
+      "count": 686,
+      "mean_confidence": 0.5957006062165379,
+      "top_pick_accuracy": 0.5845481049562682
     },
     {
       "bucket": "0.65\u20130.80",
-      "count": 898,
-      "mean_confidence": 0.7239949186881492,
-      "top_pick_accuracy": 0.7060133630289532
+      "count": 899,
+      "mean_confidence": 0.7239856250733404,
+      "top_pick_accuracy": 0.7063403781979978
     },
     {
       "bucket": "0.80\u20131.00",
@@ -97,23 +97,23 @@
     },
     {
       "year": 2026,
-      "log_loss": 0.8749,
-      "brier": 0.51157,
-      "rps": 0.16582,
-      "accuracy": 0.5995,
-      "ece": 0.0373,
-      "n": 402
+      "log_loss": 0.87471,
+      "brier": 0.51124,
+      "rps": 0.16552,
+      "accuracy": 0.60099,
+      "ece": 0.03649,
+      "n": 406
     }
   ],
   "by_tier": [
     {
-      "tier": "world_cup",
-      "log_loss": 0.8493,
-      "brier": 0.50105,
-      "rps": 0.15509,
-      "accuracy": 0.61957,
-      "ece": 0.06447,
-      "n": 92
+      "tier": "continental",
+      "log_loss": 0.90994,
+      "brier": 0.53468,
+      "rps": 0.17928,
+      "accuracy": 0.59574,
+      "ece": 0.01875,
+      "n": 752
     },
     {
       "tier": "qualifier",
@@ -125,13 +125,13 @@
       "n": 1491
     },
     {
-      "tier": "other",
-      "log_loss": 0.90501,
-      "brier": 0.52962,
-      "rps": 0.18618,
-      "accuracy": 0.59165,
-      "ece": 0.05072,
-      "n": 431
+      "tier": "world_cup",
+      "log_loss": 0.84957,
+      "brier": 0.50012,
+      "rps": 0.15426,
+      "accuracy": 0.625,
+      "ece": 0.06831,
+      "n": 96
     },
     {
       "tier": "friendly",
@@ -143,13 +143,13 @@
       "n": 923
     },
     {
-      "tier": "continental",
-      "log_loss": 0.90994,
-      "brier": 0.53468,
-      "rps": 0.17928,
-      "accuracy": 0.59574,
-      "ece": 0.01875,
-      "n": 752
+      "tier": "other",
+      "log_loss": 0.90501,
+      "brier": 0.52962,
+      "rps": 0.18618,
+      "accuracy": 0.59165,
+      "ece": 0.05072,
+      "n": 431
     }
   ],
   "by_confederation": [
@@ -173,21 +173,21 @@
     },
     {
       "confederation": "CONCACAF",
-      "log_loss": 0.8857,
-      "brier": 0.51965,
-      "rps": 0.17478,
-      "accuracy": 0.59604,
-      "ece": 0.04115,
-      "n": 656
+      "log_loss": 0.88558,
+      "brier": 0.5196,
+      "rps": 0.17486,
+      "accuracy": 0.59665,
+      "ece": 0.04024,
+      "n": 657
     },
     {
       "confederation": "CONMEBOL",
-      "log_loss": 0.80296,
-      "brier": 0.4658,
-      "rps": 0.15233,
-      "accuracy": 0.64975,
-      "ece": 0.08002,
-      "n": 197
+      "log_loss": 0.80059,
+      "brier": 0.46416,
+      "rps": 0.15177,
+      "accuracy": 0.65152,
+      "ece": 0.08105,
+      "n": 198
     },
     {
       "confederation": "OFC",
@@ -209,37 +209,37 @@
     },
     {
       "confederation": "UEFA",
-      "log_loss": 0.82929,
-      "brier": 0.48052,
-      "rps": 0.15678,
-      "accuracy": 0.63469,
-      "ece": 0.02194,
-      "n": 1032
+      "log_loss": 0.82989,
+      "brier": 0.48084,
+      "rps": 0.15674,
+      "accuracy": 0.63443,
+      "ece": 0.02276,
+      "n": 1034
     }
   ],
   "favorites_vs_close": [
     {
       "segment": "clear_favorite",
-      "log_loss": 0.69179,
-      "brier": 0.38865,
-      "rps": 0.1246,
-      "accuracy": 0.74675,
-      "ece": 0.01199,
-      "n": 1848
+      "log_loss": 0.6915,
+      "brier": 0.38843,
+      "rps": 0.12453,
+      "accuracy": 0.74703,
+      "ece": 0.01161,
+      "n": 1850
     },
     {
       "segment": "close_match",
-      "log_loss": 1.04919,
-      "brier": 0.63295,
-      "rps": 0.21299,
-      "accuracy": 0.46822,
-      "ece": 0.01538,
-      "n": 1841
+      "log_loss": 1.04945,
+      "brier": 0.63309,
+      "rps": 0.21298,
+      "accuracy": 0.46826,
+      "ece": 0.01533,
+      "n": 1843
     }
   ],
   "counts": {
     "train": 30133,
     "validation": 3581,
-    "test": 3689
+    "test": 3693
   }
 }

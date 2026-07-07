@@ -56,5 +56,8 @@ class LocalDatasetProvider:
             ],
             license_note="CC0 1.0 (public domain) — redistribution allowed",
             last_sync=self._manifest.get("retrieved_at"),
-            detail=f"dataset cutoff {self._manifest.get('date_max', 'unknown')}",
+            detail=(
+                f"snapshot includes scheduled fixtures to {self._manifest.get('date_max', 'unknown')}; "
+                "completed-results cutoff is reported by the model as data_cutoff"
+            ),
         )

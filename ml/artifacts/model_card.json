@@ -1,6 +1,6 @@
 {
   "model_version": "2026.07.07-1",
-  "git_commit": "19d628a",
+  "git_commit": "71b6a56",
   "champion": "gbm_calibrated",
   "candidates": [
     "frequency_baseline",
@@ -12,10 +12,10 @@
   ],
   "data": {
     "source": "martj42/international_results (CC0)",
-    "completed_matches": 49495,
+    "completed_matches": 49499,
     "date_range": [
       "1872-11-30",
-      "2026-07-05"
+      "2026-07-07"
     ]
   },
   "features": "pre-match only; single forward pass; leakage tests in tests/unit/ml",

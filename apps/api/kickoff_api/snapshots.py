@@ -1,8 +1,10 @@
 """Prediction snapshot service — the auditable track record.
 
 Rules enforced here (see docs/methodology.md#track-record):
-- Snapshots are only created for fixtures that are genuinely in the future
-  relative to the data cutoff (never retroactively).
+- Snapshots are only created for fixtures whose kickoff DATE is strictly
+  after today's UTC date. The open dataset has no kickoff times, so
+  same-day fixtures cannot be proven un-started and are skipped — this
+  guarantees every snapshot predates kickoff (never retroactive).
 - A snapshot row is immutable; a changed forecast before kickoff inserts a
   NEW row (distinct content hash + version label).
 - Scoring after the match fills result columns only; the original payload
@@ -31,10 +33,22 @@ def _content_hash(payload: dict) -> str:
 
 
 def snapshot_upcoming(state, version_label: str = "dataset_snapshot") -> int:
-    """Create snapshots for every upcoming fixture (idempotent by content)."""
+    """Create snapshots for strictly-future fixtures (idempotent by content).
+
+    Guard: kickoff date must be AFTER today's UTC date. Without kickoff
+    times in the source data this is the only way to guarantee the
+    "recorded before kickoff" property of the track record.
+    """
+    today = datetime.now(UTC).date().isoformat()
     created = 0
     with get_session() as session:
         for fx in state.local_provider.upcoming_fixtures():
+            if fx.date <= today:
+                log.info(
+                    "skipping same-day/past fixture (cannot prove pre-kickoff)",
+                    fixture=fx.fixture_id, date=fx.date,
+                )
+                continue
             pred = state.engine.predict(
                 fx.home_id, fx.away_id, neutral=fx.neutral, importance=4
             )

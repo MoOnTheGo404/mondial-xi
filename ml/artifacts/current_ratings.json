@@ -1,5 +1,5 @@
 {
-  "as_of": "2026-07-05",
+  "as_of": "2026-07-07",
   "elo_config": {
     "home_advantage": 80.0,
     "k_scale": 0.75
@@ -22,8 +22,8 @@
       "matches": 707
     },
     "united-states": {
-      "elo": 1869.5,
-      "matches": 794
+      "elo": 1829.7,
+      "matches": 795
     },
     "canada": {
       "elo": 1827.2,
@@ -34,8 +34,8 @@
       "matches": 973
     },
     "argentina": {
-      "elo": 2172.3,
-      "matches": 1073
+      "elo": 2177.7,
+      "matches": 1074
     },
     "austria": {
       "elo": 1848.9,
@@ -50,16 +50,16 @@
       "matches": 520
     },
     "belgium": {
-      "elo": 1945.5,
-      "matches": 857
+      "elo": 1985.3,
+      "matches": 858
     },
     "france": {
       "elo": 2145.5,
       "matches": 940
     },
     "switzerland": {
-      "elo": 1957.3,
-      "matches": 888
+      "elo": 1962.9,
+      "matches": 889
     },
     "guernsey": {
       "elo": 1737.4,
@@ -166,12 +166,12 @@
       "matches": 483
     },
     "egypt": {
-      "elo": 1826.1,
-      "matches": 760
+      "elo": 1820.7,
+      "matches": 761
     },
     "spain": {
-      "elo": 2169.5,
-      "matches": 787
+      "elo": 2184.2,
+      "matches": 788
     },
     "estonia": {
       "elo": 1411.3,
@@ -202,8 +202,8 @@
       "matches": 892
     },
     "portugal": {
-      "elo": 2043.2,
-      "matches": 699
+      "elo": 2028.5,
+      "matches": 700
     },
     "brittany": {
       "elo": 1505.6,
@@ -346,8 +346,8 @@
       "matches": 230
     },
     "colombia": {
-      "elo": 2045.4,
-      "matches": 642
+      "elo": 2039.8,
+      "matches": 643
     },
     "panama": {
       "elo": 1768.5,

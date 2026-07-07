@@ -1837,3 +1837,7 @@ date,home_team,away_team,team,scorer,minute,own_goal,penalty,home_id,away_id,tea
 2026-07-05,Mexico,England,England,Jude Bellingham,36.0,false,false,mexico,england,england,jude-bellingham,20260705-mexico-england,england/jude-bellingham
 2026-07-05,Mexico,England,England,Jude Bellingham,38.0,false,false,mexico,england,england,jude-bellingham,20260705-mexico-england,england/jude-bellingham
 2026-07-05,Mexico,England,England,Harry Kane,60.0,false,true,mexico,england,england,harry-kane,20260705-mexico-england,england/harry-kane
+2026-07-06,Portugal,Spain,Spain,Mikel Merino,90.0,false,false,portugal,spain,spain,mikel-merino,20260706-portugal-spain,spain/mikel-merino
+2026-07-07,Argentina,Egypt,Argentina,Cristian Romero,79.0,false,false,argentina,egypt,argentina,cristian-romero,20260707-argentina-egypt,argentina/cristian-romero
+2026-07-07,Argentina,Egypt,Argentina,Lionel Messi,83.0,false,false,argentina,egypt,argentina,lionel-messi,20260707-argentina-egypt,argentina/lionel-messi
+2026-07-07,Argentina,Egypt,Argentina,Enzo Fernández,90.0,false,false,argentina,egypt,argentina,enzo-fernandez,20260707-argentina-egypt,argentina/enzo-fernandez
