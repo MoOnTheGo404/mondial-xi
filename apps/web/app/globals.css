@@ -1,0 +1,69 @@
+@import "tailwindcss";
+@import "flag-icons/css/flag-icons.min.css";
+
+/* Kickoff Atlas design tokens — editorial night-pitch palette.
+   Color semantics: home/team-A = lime signal, away/team-B = azure,
+   draw = neutral slate. Lime/azure remain distinguishable under
+   deuteranopia/protanopia (yellow-vs-blue axis). */
+@theme {
+  --color-ink-950: #070b09;
+  --color-ink-900: #0d1410;
+  --color-ink-800: #17211b;
+  --color-ink-700: #253229;
+  --color-ink-600: #37483d;
+  --color-ink-500: #55685c;
+  --color-ink-400: #7f9186;
+  --color-ink-300: #a6b5ac;
+  --color-ink-200: #c9d4cd;
+  --color-ink-100: #e4eae6;
+  --color-ink-50: #f5f8f6;
+
+  --color-home: #a3e635; /* lime-400 */
+  --color-away: #38bdf8; /* sky-400 */
+
+  --font-display: var(--font-archivo), system-ui, sans-serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, monospace;
+  --font-sans: var(--font-archivo), system-ui, sans-serif;
+}
+
+html {
+  background: var(--color-ink-950);
+  color-scheme: dark;
+}
+
+body {
+  background:
+    radial-gradient(1200px 500px at 85% -10%, rgba(163, 230, 53, 0.05), transparent),
+    var(--color-ink-950);
+  color: var(--color-ink-100);
+  font-family: var(--font-sans);
+}
+
+.font-display {
+  font-family: var(--font-display);
+}
+
+/* visible focus for keyboard users */
+:focus-visible {
+  outline: 2px solid var(--color-home);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* tabular numerals for data everywhere */
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+::selection {
+  background: rgba(163, 230, 53, 0.25);
+}

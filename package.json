@@ -1,0 +1,16 @@
+{
+  "name": "kickoff-atlas",
+  "private": true,
+  "scripts": {
+    "dev": "pnpm --filter @kickoff/web dev",
+    "build": "pnpm --filter @kickoff/web build",
+    "lint": "pnpm -r lint",
+    "typecheck": "pnpm -r typecheck",
+    "test": "pnpm -r test",
+    "format": "prettier --write \"apps/web/**/*.{ts,tsx,css}\" \"packages/**/*.{ts,tsx}\""
+  },
+  "devDependencies": {
+    "prettier": "^3.4.2"
+  },
+  "packageManager": "pnpm@11.10.0"
+}
