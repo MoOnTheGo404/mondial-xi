@@ -29,10 +29,8 @@ export default function PlayersPage() {
           Player Explorer
         </h1>
         <p className="mt-1 max-w-2xl text-sm text-ink-300">
-          Profiles reconstructed from international <em>goalscorer records</em> (CC0).
-          Impact scores are attack-side estimates with heavy shrinkage —{" "}
-          <strong>not overall player quality</strong>. Caps, positions and defensive
-          players require a licensed provider and are shown as unavailable.
+          Career goals &amp; caps from Wikidata (CC0); scenario weights from goal
+          involvements. Attack-side estimates — <strong>not overall quality</strong>.
         </p>
       </div>
 

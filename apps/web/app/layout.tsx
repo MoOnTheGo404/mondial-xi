@@ -44,16 +44,10 @@ export default function RootLayout({
           <main id="main" className="mx-auto w-full max-w-7xl px-4 pb-20 pt-6 sm:px-6">
             {children}
           </main>
-          <footer className="border-t border-ink-800 py-8">
-            <div className="mx-auto max-w-7xl space-y-1 px-4 font-mono text-[11px] leading-relaxed text-ink-400 sm:px-6">
-              <p>
-                Data: martj42/international_results (CC0) · flags: flag-icons (MIT) ·
-                weather: Open-Meteo.com (CC BY 4.0).
-              </p>
-              <p>
-                Forecasts are probabilistic estimates for editorial and educational use —
-                not betting advice. Every forecast shows its model version and data cutoff.
-              </p>
+          <footer className="border-t border-ink-800 py-6">
+            <div className="mx-auto flex max-w-7xl flex-wrap justify-between gap-x-6 gap-y-1 px-4 font-mono text-[11px] text-ink-500 sm:px-6">
+              <span>Open data · martj42 (CC0), Wikidata (CC0), flag-icons (MIT), Open-Meteo (CC BY 4.0)</span>
+              <span>Probabilistic estimates for study, not betting advice.</span>
             </div>
           </footer>
         </Providers>
