@@ -30,6 +30,12 @@ interface Outlook {
   data_cutoff: string;
   assumptions: string[];
   quotas_after_hosts: Record<string, number>;
+  aging_model: {
+    residual_std_elo: number;
+    teams_with_age_signal: number;
+    most_aged_teams: { team_id: string; elo_delta: number }[];
+    youngest_teams: { team_id: string; elo_delta: number }[];
+  };
   teams: OutlookTeam[];
 }
 
@@ -205,6 +211,61 @@ export default function Outlook2030Page() {
                   </Card>
                 );
               })}
+            </div>
+          </section>
+
+          {/* aging model */}
+          <section className="mt-8">
+            <SectionTitle sub="four years is a long time — old cores fade, new stars are unknowable">
+              Squad aging &amp; 4-year uncertainty
+            </SectionTitle>
+            <div className="grid gap-4 md:grid-cols-3">
+              <Card className="p-4">
+                <p className="font-mono text-[11px] uppercase tracking-wide text-ink-400">
+                  aging cores (rating drag)
+                </p>
+                <ul className="mt-2 space-y-1 text-sm">
+                  {d.aging_model.most_aged_teams.map((t) => (
+                    <li key={t.team_id} className="flex justify-between">
+                      <span className="capitalize">{t.team_id.replace(/-/g, " ")}</span>
+                      <span className="font-mono tabular-nums text-red-400">
+                        {t.elo_delta.toFixed(0)}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </Card>
+              <Card className="p-4">
+                <p className="font-mono text-[11px] uppercase tracking-wide text-ink-400">
+                  young cores (rating lift)
+                </p>
+                <ul className="mt-2 space-y-1 text-sm">
+                  {d.aging_model.youngest_teams.map((t) => (
+                    <li key={t.team_id} className="flex justify-between">
+                      <span className="capitalize">{t.team_id.replace(/-/g, " ")}</span>
+                      <span className="font-mono tabular-nums text-home">
+                        +{t.elo_delta.toFixed(0)}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </Card>
+              <Card className="p-4">
+                <p className="font-mono text-[11px] uppercase tracking-wide text-ink-400">
+                  how it works
+                </p>
+                <p className="mt-2 text-sm text-ink-300">
+                  Each team&apos;s rating is nudged by the age of its current scorers
+                  (Wikidata birthdates × a measured scoring-survival curve), centered so
+                  the average team is unchanged — aging stars are replaced by players we
+                  can&apos;t name yet. That unknown enters as{" "}
+                  <strong className="text-ink-100">
+                    ±{d.aging_model.residual_std_elo.toFixed(0)} Elo
+                  </strong>{" "}
+                  of measured 4-year noise per team, resampled every simulation, which
+                  flattens the odds honestly rather than faking precision.
+                </p>
+              </Card>
             </div>
           </section>
 

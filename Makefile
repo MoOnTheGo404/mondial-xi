@@ -32,6 +32,7 @@ train: evaluate ## alias — training and evaluation are one chronological pipel
 
 evaluate: ## tune Elo, fit candidates, chronological evaluation, write artifacts
 	uv run python -m kickoff_ml.evaluation.run
+	uv run python scripts/calibrate_aging.py
 
 snapshots: ## snapshot upcoming fixtures + score completed ones (also runs at API startup)
 	uv run python scripts/run_snapshots.py

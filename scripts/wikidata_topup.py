@@ -10,7 +10,7 @@ import httpx
 
 from kickoff_ml.config import RAW_DIR
 from kickoff_ml.entities.teams import slugify
-from kickoff_ml.ingestion.wikidata_players import UA, _sparql, plausible
+from kickoff_ml.ingestion.wikidata_players import _sparql, plausible
 
 raw_path = RAW_DIR / "wikidata_players.json"
 data = json.loads(raw_path.read_text())

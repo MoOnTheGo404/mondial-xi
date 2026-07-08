@@ -22,7 +22,9 @@
     "Qualification simulated with a GENERIC seeded-groups model (real 2030 formats mostly unannounced); it approximates strength-ordered qualification with realistic upset rates, not any confederation's actual path",
     "Inter-confederation playoff: 6 candidates (best non-qualifier of CAF, AFC, CONCACAF, OFC, plus two from CONMEBOL as host-confederation analog) in the 2026 two-round bracket for 2 slots",
     "Final draw assumed to follow the 2026 template: 4 pots of 12 by strength (Elo proxies the FIFA ranking), all six hosts in Pot 1, max 1 team per confederation per group except UEFA max 2",
-    "Ratings are TODAY'S Elo — no aging, transfers or generational change is modeled; this is a current-strength outlook, not a 2030 prediction"
+    "Squad aging IS modeled: each team's rating is nudged by the age structure of its current scorers (birthdates from Wikidata) via a measured scoring-survival curve — a team leaning on players who will be 33+ in 2030 declines relative to one with a young core. The effect is centered on the field mean, since aging stars are replaced on average by new players who cannot be named today.",
+    "Unknowable future breakouts/declines enter as measured 4-year rating uncertainty (~63 Elo, resampled per simulation), not as a point estimate — this widens and flattens the 2030 odds rather than pretending to know who emerges",
+    "No individual 2030 debutants are invented; ratings otherwise start from today's Elo"
   ],
   "quotas_after_hosts": {
     "UEFA": 14,

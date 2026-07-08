@@ -20,15 +20,49 @@ import numpy as np
 import polars as pl
 
 from kickoff_ml.config import ROOT
+from kickoff_ml.simulation import aging
 from kickoff_ml.simulation.engine import TournamentConfig, TournamentSimulator
 from kickoff_ml.simulation.qualifiers import playoff, simulate_confederation
-from kickoff_ml.simulation.wc2026_state import BundleMatchModel
+from kickoff_ml.simulation.wc2026_state import ET_MEAN_SCALE
 
 ROUNDS = ["R32", "R16", "QF", "SF", "F", "champion"]
 
 
 def config_2030() -> dict:
     return json.loads((ROOT / "data" / "tournaments" / "wc2030.json").read_text())
+
+
+class AgedMatchModel:
+    """Wraps the bundle model with per-team 2030 rating deltas (deterministic
+    aging + this realization's 4-year uncertainty noise). The Dixon–Coles
+    goal model consumes only `elo_diff_eff`, so a delta shifts that term by
+    (delta_home − delta_away); `rating()` returns base+delta for seeding."""
+
+    def __init__(self, engine, delta: dict[str, float], importance: int) -> None:
+        self.engine = engine
+        self.delta = delta
+        self.importance = importance
+        self.dc = engine.models["dixon_coles"]
+
+    def _mus(self, home: str, away: str, neutral: bool) -> tuple[float, float]:
+        feats = self.engine._features(home, away, neutral, self.importance)
+        shift = self.delta.get(home, 0.0) - self.delta.get(away, 0.0)
+        feats = feats.with_columns(
+            (feats["elo_diff_eff"] + shift).alias("elo_diff_eff")
+        )
+        mu_h, mu_a = self.dc.expected_goals(feats)
+        return float(mu_h[0]), float(mu_a[0])
+
+    def score_matrix_for(self, home: str, away: str, neutral: bool):
+        mu_h, mu_a = self._mus(home, away, neutral)
+        return self.dc.score_matrix(mu_h, mu_a)
+
+    def et_matrix_for(self, home: str, away: str, neutral: bool):
+        mu_h, mu_a = self._mus(home, away, neutral)
+        return self.dc.score_matrix(mu_h * ET_MEAN_SCALE, mu_a * ET_MEAN_SCALE)
+
+    def rating(self, team_id: str) -> float:
+        return self.engine.rating(team_id) + self.delta.get(team_id, 0.0)
 
 
 def _pot_draw(
@@ -81,8 +115,6 @@ def simulate_wc2030(
     blocks: int = 16,
 ) -> dict:
     cfg = config_2030()
-    model = BundleMatchModel(engine, importance=2)  # qualifier importance
-    finals_model = BundleMatchModel(engine, importance=4)
     rng = np.random.default_rng(seed)
 
     hosts: list[str] = cfg["verified_facts"]["hosts_auto_qualified"]
@@ -99,6 +131,13 @@ def simulate_wc2030(
         ]
         pools[conf] = sorted(pool, key=engine.rating, reverse=True)
 
+    # --- 2030 aging model: deterministic relative-aging deltas + measured
+    #     4-year uncertainty (resampled per realization) -------------------
+    all_teams = hosts + [t for p in pools.values() for t in p]
+    aging_delta = aging.relative_aging_elo(all_teams)
+    noise_sigma = aging.residual_std()
+    aging_summary = aging.summary(all_teams)
+
     finals_cfg_raw = json.loads(
         (ROOT / "data" / "tournaments" / "wc2026.json").read_text()
     )
@@ -108,15 +147,24 @@ def simulate_wc2030(
     reach_counts: dict[str, dict[str, float]] = {}
     sims_per_block = max(n_sims // blocks, 50)
     total_sims = 0
-    cache: dict = {}
 
     for b in range(blocks):
-        # 1) one qualification realization (n=1 vectorized draw per confed)
+        # this realization's 2030 ratings: base + aging + fresh 4-year noise
+        delta = {
+            t: aging_delta.get(t, 0.0) + float(rng.normal(0.0, noise_sigma))
+            for t in all_teams
+        }
+        model = AgedMatchModel(engine, delta, importance=2)      # qualifiers
+        finals_model = AgedMatchModel(engine, delta, importance=4)
+        cache: dict = {}  # matrices depend on this block's deltas
+
+        # 1) one qualification realization (pools re-seeded by aged rating)
         qualified: list[str] = list(hosts)
         playoff_pool: list[str] = []
         candidate_lists: dict[str, list[str]] = {}
         for conf, quota in quotas.items():
-            q, cand = simulate_confederation(model, pools[conf], quota, rng, 1, cache)
+            pool = sorted(pools[conf], key=model.rating, reverse=True)
+            q, cand = simulate_confederation(model, pool, quota, rng, 1, cache)
             qualified.extend(q[0])
             candidate_lists[conf] = cand[0]
         for conf in cfg["playoff_candidates"]:
@@ -128,8 +176,8 @@ def simulate_wc2030(
         for t in qualified:
             qualify_counts[t] = qualify_counts.get(t, 0) + 1
 
-        # 2) pot draw + 3) finals for this realization
-        groups = _pot_draw(qualified, confed_map, engine, rng)
+        # 2) pot draw (seeded by aged rating) + 3) finals for this realization
+        groups = _pot_draw(qualified, confed_map, model, rng)
         if groups is None:
             continue
         block_cfg = TournamentConfig(
@@ -184,6 +232,7 @@ def simulate_wc2030(
         "assumptions": cfg["assumptions"],
         "verified_facts": cfg["verified_facts"],
         "quotas_after_hosts": quotas,
+        "aging_model": aging_summary,
         "teams": table,
         "finals_template": finals_cfg_raw["tournament_id"],
     }
