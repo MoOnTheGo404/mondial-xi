@@ -86,10 +86,10 @@ export default function PlayersPage() {
                 </span>
                 <span className="text-right">
                   <span className="block font-display text-lg font-bold tabular-nums text-home">
-                    {p.goals}
+                    {p.career_goals ?? p.goals}
                   </span>
                   <span className="font-mono text-[10px] uppercase text-ink-500">
-                    recorded
+                    {p.career_goals != null ? "career (wikidata)" : "recorded"}
                   </span>
                 </span>
               </Card>

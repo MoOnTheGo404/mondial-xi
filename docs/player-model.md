@@ -2,11 +2,23 @@
 
 ## What exists in legally usable data
 
-The only player-level signal in the CC0 core is the **goalscorer log**
-(47,875 events; ~34% of scoring matches, biased toward major tournaments).
-There are no lineups, minutes, positions, defensive actions, or club data
-with publication rights on a free tier. The design follows from that
-constraint honestly.
+Two CC0 sources:
+1. the **goalscorer log** in the results dataset (~48k events; partial
+   coverage, biased toward major tournaments) — recent, event-level;
+2. **Wikidata career totals**: national-team caps (P54/P1350) and goals
+   (P1351) plus date of birth — lifetime, player-level, community-maintained.
+
+Enrichment matches Wikidata rows to registry players by (team, name slug),
+disambiguates same-name players by date of birth, rejects rows failing
+sanity checks (goals > 1.5x caps, caps > 230, career below our recorded
+floor), and stamps every value with source + retrieval date. Ambiguous
+cases stay unenriched rather than guessed.
+
+There are still no lineups, minutes, positions, defensive actions — and
+**no international assists anywhere with publication rights** (Wikidata
+lacks them; Opta/FBref and API-Football forbid republication). The
+contribution model is assists-ready: involvements = goals + 0.5 x assists,
+with assists null until a licensed feed exists — never invented.
 
 ## Attack-impact estimate
 
@@ -34,14 +46,20 @@ impact_recent(p) = impact(p) × max(0, 1 − days_since_last_goal / 730)
 ## How it enters forecasts
 
 Only through **labeled scenarios** (Match Lab / Compare / API `scenario`),
-via each player's `goal_share_recent`: their share of the team's recorded
-goals over the trailing 4 years, shrunk with an 8-pseudo-goal prior. Shares
-are **coverage-robust** — numerator and denominator come from the same
-covered matches, so the ~30–70% scorer-detail coverage cancels out (unlike
-absolute rates, which it would bias low). Removing players scales expected
-goals by `(1 − Σ shares)` (no-replacement bound, stated in every
-explanation; capped at −90%), floored at 0.15 xG; doubtful players
-contribute `(1−p_avail)×share`. The Dixon–Coles matrix is recomputed and the
+via each player's `scenario_share`, a blend of two estimates:
+
+- **recent share** — involvement share of the team's recorded goals over the
+  trailing 4 years (coverage-robust: numerator and denominator come from the
+  same covered matches), 8-pseudo-goal prior;
+- **career share** — Wikidata career goals-per-cap divided by the team's
+  TRUE goals-per-match (from scorelines, not the partial log) — both true
+  quantities, so no coverage bias;
+
+blended as `λ·recent + (1−λ)·career·recency` with `λ = g_recent/(g_recent+3)`
+(more recent evidence → trust recent form), capped at 0.5 per player.
+Removing players scales expected goals by `(1 − Σ shares)` (no-replacement
+bound, stated in every explanation; capped at −90%), floored at 0.15 xG;
+doubtful players contribute `(1−p_avail)×share`. The Dixon–Coles matrix is recomputed and the
 champion probabilities tilted by the DC ratio; the unadjusted team-only
 forecast is always returned alongside. Removing a team's whole known
 attacking core therefore collapses its attack — e.g. Argentina with all 12

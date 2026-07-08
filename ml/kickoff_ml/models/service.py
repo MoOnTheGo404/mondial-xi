@@ -84,13 +84,13 @@ class PredictionEngine:
     def _attack_share_loss(
         self, absences: list[str], doubtful: list[tuple[str, float]]
     ) -> tuple[float, list[dict]]:
-        """Fraction of the team's recent recorded attacking output removed.
+        """Fraction of the team's recent goal involvements removed.
 
-        Each player's `goal_share_recent` (coverage-robust, EB-shrunk share of
-        the team's recorded goals over the trailing window) is summed; doubtful
-        players contribute (1 - p_available) x share (marginalization).
-        Assumption, stated in every explanation: lost output is NOT replaced
-        like-for-like — this is the transparent no-replacement bound.
+        Each player's `scenario_share` (recent recorded involvement share
+        blended with a Wikidata-career-rate share; assists-ready at weight
+        0.5) is summed; doubtful players contribute (1 - p_available) x share
+        (marginalization). Assumption, stated in every explanation: lost
+        output is NOT replaced like-for-like — the no-replacement bound.
         """
         if self.players.is_empty():
             return 0.0, []
@@ -101,7 +101,8 @@ class PredictionEngine:
             row = self.players.filter(pl.col("player_id") == pid)
             if row.is_empty():
                 return 0.0, pid
-            return float(row["goal_share_recent"][0]), str(row["name"][0])
+            col = "scenario_share" if "scenario_share" in row.columns else "goal_share_recent"
+            return float(row[col][0]), str(row["name"][0])
 
         for pid in absences:
             share, name = share_of(pid)
@@ -269,9 +270,10 @@ class PredictionEngine:
                     out.append({
                         "factor": "player_absence",
                         "text": f"{d['name']} marked {d['status']} (user scenario): removes "
-                                f"~{abs(100 * d['share_effect']):.0f}% of the team's recent "
-                                "recorded attacking output (shrunk share; assumes no "
-                                "like-for-like replacement).",
+                                f"~{abs(100 * d['share_effect']):.0f}% of the team's recent goal "
+                                "involvements (career-stabilized share; assists join at weight "
+                                "0.5 once a licensed source exists; assumes no like-for-like "
+                                "replacement).",
                         "direction": "away" if side == "home" else "home",
                         "magnitude": abs(d["share_effect"]),
                     })

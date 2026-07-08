@@ -1,0 +1,24 @@
+{
+  "source_name": "Wikidata (SPARQL)",
+  "url": "https://query.wikidata.org/sparql",
+  "license": {
+    "name": "CC0 1.0 (Wikidata structured data)",
+    "url": "https://www.wikidata.org/wiki/Wikidata:Licensing",
+    "redistribution_allowed": true
+  },
+  "retrieved_at": "2026-07-08T14:55:39.431811+00:00",
+  "teams_matched": 252,
+  "player_rows": 36516,
+  "implausible_rows_dropped": 302,
+  "fields": [
+    "career caps (P1350)",
+    "career goals (P1351)",
+    "date of birth (P569)"
+  ],
+  "known_limitations": [
+    "Community-maintained; per-player freshness varies (values may lag recent matches)",
+    "Only players with caps/goals qualifiers on their P54 statement appear",
+    "No international assists exist in Wikidata \u2014 field intentionally absent",
+    "Name-based matching; ambiguous same-name players are not enriched"
+  ]
+}

@@ -68,5 +68,13 @@ def providers() -> dict:
                 "capability": "player_photos",
                 "reason": "Licensing not verifiable; initials avatars used instead",
             },
+            {
+                "capability": "international_assists",
+                "reason": (
+                    "No legally usable source (Wikidata lacks them; Opta/FBref and "
+                    "API-Football forbid republication). Contribution model is "
+                    "assists-ready at weight 0.5; field stays null until licensed."
+                ),
+            },
         ],
     }

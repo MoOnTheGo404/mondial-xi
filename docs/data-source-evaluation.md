@@ -10,6 +10,7 @@ Evaluated 2026-07-06.
 |---|---|---|---|---|---|
 | **martj42/international_results** (GitHub) | Core historical + current results | **CC0-1.0** (verified) | 49,503 senior men's internationals 1872 → 2026-07-05, incl. full WC-2026 to date; goalscorers (47,875), shootouts (680), former names | Free | ✅ Allowed |
 | **Self-computed Elo** | Ratings | Our own derivative of CC0 data | All teams/dates | Free | ✅ |
+| **Wikidata (SPARQL)** | Career international caps & goals per player | **CC0 1.0** (structured data) | Senior men's national teams; per-player freshness varies | Free (throttled, UA header) | ✅ |
 | **flag-icons** (lipis) | Country flags | MIT (verified; incl. gb-eng/sct/wls/nir, xk) | All ISO + GB subdivisions | Free | ✅ |
 | **Open-Meteo** | Match-day weather (display/scenario only) | Free non-commercial, **CC-BY 4.0 attribution required**, no key | Forecast + archive (1940→, ~5-day lag) | Free | Attribution |
 | **football-data.org** (optional adapter) | Live fixtures/standings enrichment | Free tier w/ email credential; WC included; **attribution mandatory**; data unusable after cancellation; lineups/squads paid (€29/mo) | 12 comps free | Free tier | ⚠️ Display w/ attribution; no bulk redistribution |
@@ -40,6 +41,8 @@ Evaluated 2026-07-06.
 | Confirmed lineups, squads | — | ❌ (paid tier at football-data.org) | ⚠️ €29/mo | — |
 | Injury feeds | — | — | ⚠️ providers with publication restrictions | ❌ no legally publishable free source |
 | Player photos, federation badges | — | — | — | ❌ (licensing) — initials avatars used |
+| Career international caps/goals | ✅ Wikidata (CC0), sanity-filtered, dob-disambiguated | — | — | — |
+| International assists | — | — | ⚠ providers forbid republication | ❌ no legal source — contribution model assists-ready (weight 0.5), field null |
 | Weather (display + scenarios) | ✅ Open-Meteo, attribution | — | — | not a trained feature (no historical backfill at fair-use scale) |
 
 **Consequence for modeling:** injury/lineup historical data has no legally usable

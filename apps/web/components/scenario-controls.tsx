@@ -72,7 +72,7 @@ export function SquadPanel({
   if (isLoading) return <div className="h-40 animate-pulse rounded bg-ink-900" />;
   const players = (data?.players ?? [])
     .filter((p) => p.recently_active)
-    .sort((a, b) => b.goal_share_recent - a.goal_share_recent)
+    .sort((a, b) => b.scenario_share - a.scenario_share)
     .slice(0, 12);
 
   return (
@@ -100,7 +100,7 @@ export function SquadPanel({
                 className="font-mono text-[10px] text-ink-400"
                 title="Shrunk share of the team's recent recorded goals (scenario weight)"
               >
-                {(100 * p.goal_share_recent).toFixed(0)}% of goals
+                {(100 * p.scenario_share).toFixed(0)}% of goals
               </span>
               <div
                 role="group"

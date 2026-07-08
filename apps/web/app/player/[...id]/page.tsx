@@ -67,8 +67,9 @@ export default function PlayerPage({
             <Flag team={p.team} size={20} /> {p.team.name}
           </Link>
           <p className="mt-2 font-mono text-xs text-ink-500">
-            No licensed player photo — initials avatar used. Position, age and caps are
-            unavailable without a licensed provider.
+            No licensed player photo — initials avatar used. Career caps/goals and
+            birth date come from Wikidata (CC0) where matched; position requires a
+            licensed provider.
           </p>
           <p className="mt-1 font-mono text-xs text-amber-400/90">
             Scorer detail exists for {p.coverage_pct}% of {p.team.name}&apos;s matches in
@@ -82,10 +83,33 @@ export default function PlayerPage({
           )}
         </div>
         <dl className="grid grid-cols-2 gap-x-8 gap-y-3 sm:grid-cols-4">
-          <Stat label="recorded goals" value={p.goals} />
-          <Stat label="penalties" value={p.penalties} />
-          <Stat label="matches scored in" value={p.matches_scored_in} />
-          <Stat label="active span" value={`${p.first_goal.slice(0, 4)}–${p.last_goal.slice(0, 4)}`} />
+          <Stat
+            label="career int'l goals"
+            value={p.career_goals ?? "—"}
+            hint={
+              p.career_goals != null
+                ? `Wikidata (CC0), retrieved ${p.career_retrieved ?? "n/a"} — community-maintained, may lag recent matches`
+                : "No unambiguous Wikidata match for this player"
+            }
+          />
+          <Stat
+            label="career caps"
+            value={p.career_caps ?? "—"}
+            hint={p.career_caps != null ? "Wikidata (CC0)" : undefined}
+          />
+          <Stat
+            label="recorded goals"
+            value={p.goals}
+            hint="Floor from the CC0 goalscorer log (partial coverage)"
+          />
+          <Stat
+            label={p.dob ? "born" : "active span"}
+            value={
+              p.dob
+                ? p.dob
+                : `${p.first_goal.slice(0, 4)}–${p.last_goal.slice(0, 4)}`
+            }
+          />
         </dl>
       </section>
 
@@ -112,9 +136,14 @@ export default function PlayerPage({
                 hint="1 = estimate dominated by data; 0 = dominated by the zero prior"
               />
               <Stat
-                label="recent goal share"
-                value={`${(100 * p.goal_share_recent).toFixed(0)}%`}
-                hint={`${p.recent_goals} of ${p.team_recent_goals} recorded team goals in the trailing 4 years (shrunk) — the weight used by scenario tools`}
+                label="scenario weight"
+                value={`${(100 * p.scenario_share).toFixed(0)}%`}
+                hint={`Share of the team's recent goal involvements: ${p.recent_goals} of ${p.team_recent_goals} recorded recent goals, blended with the Wikidata career rate${p.career_goals_per_cap != null ? ` (${p.career_goals_per_cap.toFixed(2)} goals/cap)` : " (no career match)"} — the weight used by scenario tools`}
+              />
+              <Stat
+                label="int'l assists"
+                value="n/a"
+                hint="No legally usable international-assist source exists; the contribution model includes them at weight 0.5 once a licensed provider is configured"
               />
               <Stat label="defensive impact" value="n/a" hint="No licensed defensive data" />
               <Stat

@@ -192,7 +192,8 @@ export default function TeamPage({ params }: { params: Promise<{ id: string }> }
                   >
                     <span>{p.name}</span>
                     <span className="font-mono text-xs text-ink-400">
-                      {p.goals}g rec. · {(100 * p.goal_share_recent).toFixed(0)}% share
+                      {p.career_goals != null ? `${p.career_goals}g` : `${p.goals}g rec.`} ·{" "}
+                      {(100 * p.scenario_share).toFixed(0)}% share
                     </span>
                   </Link>
                 </li>

@@ -45,7 +45,7 @@ def list_players(
         df = df.filter(pl.col("team_id") == team_id)
     if recent_only:
         df = df.filter(pl.col("recently_active"))
-    df = df.sort("goal_share_recent", descending=True)
+    df = df.sort("scenario_share", descending=True)
     total = df.height
     return {
         "total": total,

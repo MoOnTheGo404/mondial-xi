@@ -99,8 +99,17 @@ export interface Player {
   attack_impact: number;
   attack_impact_recent: number;
   recent_goals: number;
+  recent_assists: number | null;
   team_recent_goals: number;
   goal_share_recent: number;
+  scenario_share: number;
+  career_caps: number | null;
+  career_goals: number | null;
+  career_goals_per_cap: number | null;
+  career_source: string | null;
+  career_retrieved: string | null;
+  career_ambiguous: boolean;
+  dob: string | null;
   coverage_pct: number;
   possible_name_collision: boolean;
   recently_active: boolean;

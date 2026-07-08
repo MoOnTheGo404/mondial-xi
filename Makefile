@@ -19,6 +19,10 @@ data: ## download (CC0) + validate + build processed datasets + player registry
 	uv run python -m kickoff_ml.models.players
 	uv run python scripts/make_test_fixtures.py
 
+data-enrich: ## optional: career caps/goals from Wikidata (CC0, ~4 min, throttled)
+	uv run python -m kickoff_ml.ingestion.wikidata_players
+	uv run python -m kickoff_ml.models.players
+
 data-status: ## show dataset provenance + quality report
 	@cat data/manifests/results.json | python3 -m json.tool | head -30
 	@echo "---"
