@@ -25,8 +25,13 @@ chronological evaluation, honest provenance, and a full product UI.
   remaining rounds simulated 10,000× in ~0.4 s with the verified 2026 rules
   (head-to-head-first tiebreakers, best-thirds, round of 32). Lock upsets,
   set seeds, or replay the whole tournament as a what-if.
+- **World Cup 2030 Outlook**: qualification → final draw → tournament
+  simulated end-to-end from today's ratings, with every unannounced FIFA
+  detail listed as an explicit assumption (verified: all six 2030 hosts
+  auto-qualify).
 - **Team & player explorers**: Elo history since 1872, venue splits, form,
-  goalscorer-derived player profiles with shrunken attack-impact estimates.
+  goalscorer-derived player profiles labeled as *recorded* (partial-coverage)
+  counts with per-player coverage figures and share-based scenario weights.
 - **Auditable track record**: prospective forecasts stored as immutable
   content-hashed snapshots before kickoff, scored after; backtests are always
   labeled separately.
