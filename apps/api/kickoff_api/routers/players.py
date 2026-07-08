@@ -45,7 +45,7 @@ def list_players(
         df = df.filter(pl.col("team_id") == team_id)
     if recent_only:
         df = df.filter(pl.col("recently_active"))
-    df = df.sort("attack_impact_recent", descending=True)
+    df = df.sort("goal_share_recent", descending=True)
     total = df.height
     return {
         "total": total,
@@ -67,7 +67,7 @@ def player_detail(player_id: str) -> dict:
 
     gs = pl.read_parquet(PROCESSED_DIR / "goalscorers.parquet")
     goals = gs.filter(pl.col("player_id") == player_id).sort("date", descending=True)
-    p["recent_goals"] = [
+    p["goal_log"] = [
         {
             "date": str(g["date"]),
             "match_id": g["match_id"],

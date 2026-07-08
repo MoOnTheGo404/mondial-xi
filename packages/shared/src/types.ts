@@ -46,7 +46,7 @@ export interface PlayerAssumption {
   name?: string;
   status: string;
   availability_prob?: number;
-  xg_effect?: number;
+  share_effect?: number;
 }
 
 export interface Prediction {
@@ -98,6 +98,11 @@ export interface Player {
   raw_goals_per_match: number;
   attack_impact: number;
   attack_impact_recent: number;
+  recent_goals: number;
+  team_recent_goals: number;
+  goal_share_recent: number;
+  coverage_pct: number;
+  possible_name_collision: boolean;
   recently_active: boolean;
   shrinkage_weight: number;
   availability?: { status: string; source: string | null; note: string };

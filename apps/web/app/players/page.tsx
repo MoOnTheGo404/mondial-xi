@@ -88,7 +88,9 @@ export default function PlayersPage() {
                   <span className="block font-display text-lg font-bold tabular-nums text-home">
                     {p.goals}
                   </span>
-                  <span className="font-mono text-[10px] uppercase text-ink-500">goals</span>
+                  <span className="font-mono text-[10px] uppercase text-ink-500">
+                    recorded
+                  </span>
                 </span>
               </Card>
             </Link>

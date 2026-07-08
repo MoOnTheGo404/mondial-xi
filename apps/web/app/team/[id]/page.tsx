@@ -192,7 +192,7 @@ export default function TeamPage({ params }: { params: Promise<{ id: string }> }
                   >
                     <span>{p.name}</span>
                     <span className="font-mono text-xs text-ink-400">
-                      {p.goals}g · {p.attack_impact_recent.toFixed(2)} xG/m
+                      {p.goals}g rec. · {(100 * p.goal_share_recent).toFixed(0)}% share
                     </span>
                   </Link>
                 </li>

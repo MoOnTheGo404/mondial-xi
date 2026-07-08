@@ -79,7 +79,7 @@ def team_detail(team_id: str) -> dict:
             STATE.players.filter(
                 (pl.col("team_id") == team_id) & pl.col("recently_active")
             )
-            .sort("attack_impact_recent", descending=True)
+            .sort("goal_share_recent", descending=True)
             .head(20)
             .to_dicts()
         )
@@ -159,7 +159,7 @@ def team_squad(team_id: str) -> dict:
     if not STATE.players.is_empty():
         players = (
             STATE.players.filter(pl.col("team_id") == team_id)
-            .sort("attack_impact_recent", descending=True)
+            .sort("goal_share_recent", descending=True)
             .head(40)
             .to_dicts()
         )

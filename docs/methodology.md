@@ -49,11 +49,16 @@ dominated by rating differentials.
 
 ## Scenario adjustments
 
-Player unavailability subtracts the player's shrunken attack impact from that
-side's expected goals; DC matrices are recomputed and the champion's
+Player unavailability removes the player's **share of the team's recent
+recorded goals** (trailing 4 years; numerator and denominator come from the
+same covered matches, so partial scorer coverage cancels; EB-shrunk with an
+8-pseudo-goal prior). Expected goals scale as `μ × (1 − Σ shares)` — the
+stated no-replacement bound, capped at a 90% reduction — so removing a
+team's entire known attacking core collapses its expected goals rather than
+merely denting them. DC matrices are recomputed and the champion's
 probabilities are tilted by `P_champion × (Q_adj / Q_base)` renormalized —
 transparent, monotonic, and reported next to the untouched team-only
-forecast. Doubtful players contribute `(1 − p_available) × impact`
+forecast. Doubtful players contribute `(1 − p_available) × share`
 (marginalization, not a hard assumption).
 
 ## Knockout math

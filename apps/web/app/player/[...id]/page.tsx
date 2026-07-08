@@ -10,7 +10,7 @@ import { ErrorBox } from "@/components/fixtures";
 
 interface PlayerDetail extends Player {
   team: Team;
-  recent_goals: {
+  goal_log: {
     date: string;
     match_id: string;
     against: string;
@@ -70,6 +70,16 @@ export default function PlayerPage({
             No licensed player photo — initials avatar used. Position, age and caps are
             unavailable without a licensed provider.
           </p>
+          <p className="mt-1 font-mono text-xs text-amber-400/90">
+            Scorer detail exists for {p.coverage_pct}% of {p.team.name}&apos;s matches in
+            this player&apos;s span — recorded goals are a floor, not a career total.
+          </p>
+          {p.possible_name_collision && (
+            <p className="mt-1 font-mono text-xs text-red-400">
+              ⚠ Long gap between recorded goals — this ID may merge two same-named
+              players (the source has no birthdates).
+            </p>
+          )}
         </div>
         <dl className="grid grid-cols-2 gap-x-8 gap-y-3 sm:grid-cols-4">
           <Stat label="recorded goals" value={p.goals} />
@@ -101,7 +111,11 @@ export default function PlayerPage({
                 value={p.shrinkage_weight.toFixed(2)}
                 hint="1 = estimate dominated by data; 0 = dominated by the zero prior"
               />
-              <Stat label="raw rate" value={`${p.raw_goals_per_match.toFixed(3)} g/m`} />
+              <Stat
+                label="recent goal share"
+                value={`${(100 * p.goal_share_recent).toFixed(0)}%`}
+                hint={`${p.recent_goals} of ${p.team_recent_goals} recorded team goals in the trailing 4 years (shrunk) — the weight used by scenario tools`}
+              />
               <Stat label="defensive impact" value="n/a" hint="No licensed defensive data" />
               <Stat
                 label="availability"
@@ -145,11 +159,11 @@ export default function PlayerPage({
         <aside>
           <Card className="p-5">
             <SectionTitle sub="most recent first">Recorded goals</SectionTitle>
-            {p.recent_goals.length === 0 && (
+            {p.goal_log.length === 0 && (
               <p className="text-sm text-ink-400">No goal events on record.</p>
             )}
             <ul className="space-y-1.5">
-              {p.recent_goals.map((g, i) => (
+              {p.goal_log.map((g, i) => (
                 <li key={i}>
                   <Link
                     href={`/match/${g.match_id}`}

@@ -79,28 +79,42 @@ class PredictionEngine:
 
     # -- scenario mechanics --------------------------------------------------
 
-    def _xg_delta(self, absences: list[str], doubtful: list[tuple[str, float]]) -> tuple[float, list[dict]]:
+    MAX_SHARE_LOSS = 0.9  # even a fully-gutted attack retains residual scoring
+
+    def _attack_share_loss(
+        self, absences: list[str], doubtful: list[tuple[str, float]]
+    ) -> tuple[float, list[dict]]:
+        """Fraction of the team's recent recorded attacking output removed.
+
+        Each player's `goal_share_recent` (coverage-robust, EB-shrunk share of
+        the team's recorded goals over the trailing window) is summed; doubtful
+        players contribute (1 - p_available) x share (marginalization).
+        Assumption, stated in every explanation: lost output is NOT replaced
+        like-for-like — this is the transparent no-replacement bound.
+        """
         if self.players.is_empty():
             return 0.0, []
         details: list[dict] = []
         total = 0.0
+
+        def share_of(pid: str) -> tuple[float, str]:
+            row = self.players.filter(pl.col("player_id") == pid)
+            if row.is_empty():
+                return 0.0, pid
+            return float(row["goal_share_recent"][0]), str(row["name"][0])
+
         for pid in absences:
-            row = self.players.filter(pl.col("player_id") == pid)
-            imp = float(row["attack_impact_recent"][0]) if not row.is_empty() else 0.0
-            name = row["name"][0] if not row.is_empty() else pid
-            total += imp
+            share, name = share_of(pid)
+            total += share
             details.append({"player_id": pid, "name": name, "status": "unavailable",
-                            "xg_effect": -round(imp, 3)})
+                            "share_effect": -round(share, 4)})
         for pid, p_avail in doubtful:
-            row = self.players.filter(pl.col("player_id") == pid)
-            imp = float(row["attack_impact_recent"][0]) if not row.is_empty() else 0.0
-            name = row["name"][0] if not row.is_empty() else pid
-            # marginalize over availability: expected loss = (1-p) * impact
-            eff = (1.0 - p_avail) * imp
+            share, name = share_of(pid)
+            eff = (1.0 - p_avail) * share
             total += eff
             details.append({"player_id": pid, "name": name, "status": "doubtful",
-                            "availability_prob": p_avail, "xg_effect": -round(eff, 3)})
-        return min(total, 1.5), details
+                            "availability_prob": p_avail, "share_effect": -round(eff, 4)})
+        return min(total, self.MAX_SHARE_LOSS), details
 
     # -- main API -------------------------------------------------------------
 
@@ -132,11 +146,12 @@ class PredictionEngine:
         mu_h, mu_a = dc.expected_goals(feats)
         mu_h, mu_a = float(mu_h[0]), float(mu_a[0])
 
-        # scenario xG adjustments (attack-side, from goalscorer-derived impacts)
-        dh, home_detail = self._xg_delta(scenario.home_absences, scenario.home_doubtful)
-        da, away_detail = self._xg_delta(scenario.away_absences, scenario.away_doubtful)
-        adj_mu_h = max(mu_h - dh, 0.15)
-        adj_mu_a = max(mu_a - da, 0.15)
+        # scenario adjustments: proportional attack-share reduction
+        fh, home_detail = self._attack_share_loss(scenario.home_absences, scenario.home_doubtful)
+        fa, away_detail = self._attack_share_loss(scenario.away_absences, scenario.away_doubtful)
+        adj_mu_h = max(mu_h * (1.0 - fh), 0.15)
+        adj_mu_a = max(mu_a * (1.0 - fa), 0.15)
+        dh, da = fh, fa  # nonzero when a scenario applies
 
         base_matrix = dc.score_matrix(mu_h, mu_a)
         matrix = dc.score_matrix(adj_mu_h, adj_mu_a)
@@ -250,14 +265,15 @@ class PredictionEngine:
             })
         for side, details in (("home", home_detail), ("away", away_detail)):
             for d in details:
-                if d.get("xg_effect", 0) != 0:
+                if d.get("share_effect", 0) != 0:
                     out.append({
                         "factor": "player_absence",
-                        "text": f"{d['name']} marked {d['status']} (user scenario): expected "
-                                f"attacking contribution changes by {d['xg_effect']:+.2f} xG "
-                                "(scoring-record estimate with shrinkage).",
+                        "text": f"{d['name']} marked {d['status']} (user scenario): removes "
+                                f"~{abs(100 * d['share_effect']):.0f}% of the team's recent "
+                                "recorded attacking output (shrunk share; assumes no "
+                                "like-for-like replacement).",
                         "direction": "away" if side == "home" else "home",
-                        "magnitude": abs(d["xg_effect"]),
+                        "magnitude": abs(d["share_effect"]),
                     })
         return out
 

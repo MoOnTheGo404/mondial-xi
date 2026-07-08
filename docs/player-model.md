@@ -24,15 +24,28 @@ impact_recent(p) = impact(p) × max(0, 1 − days_since_last_goal / 730)
 - Interpretation: shrunken expected goals contributed per team match,
   **attack-side only**. The UI states explicitly that this is *not* overall
   player quality (defenders/keepers barely appear in scoring logs).
+- Goal counts are labeled **recorded** goals with a per-player coverage
+  figure (share of the team's matches in the player's span that have scorer
+  detail) — they are floors, not career totals.
+- Same-named players of one country share an ID (no birthdates in the
+  source); careers with a >10-year scoring gap are flagged
+  `possible_name_collision` and warned about in the UI.
 
 ## How it enters forecasts
 
-Only through **labeled scenarios** (Match Lab / Compare / API `scenario`):
-subtract the summed `impact_recent` of unavailable players (doubtful players
-contribute `(1−p_avail)×impact` — marginalized) from that side's expected
-goals, floor at 0.15, cap total effect at 1.5 xG; recompute the Dixon–Coles
-matrix and tilt the champion's probabilities by the DC ratio. The unadjusted
-team-only forecast is always returned alongside.
+Only through **labeled scenarios** (Match Lab / Compare / API `scenario`),
+via each player's `goal_share_recent`: their share of the team's recorded
+goals over the trailing 4 years, shrunk with an 8-pseudo-goal prior. Shares
+are **coverage-robust** — numerator and denominator come from the same
+covered matches, so the ~30–70% scorer-detail coverage cancels out (unlike
+absolute rates, which it would bias low). Removing players scales expected
+goals by `(1 − Σ shares)` (no-replacement bound, stated in every
+explanation; capped at −90%), floored at 0.15 xG; doubtful players
+contribute `(1−p_avail)×share`. The Dixon–Coles matrix is recomputed and the
+champion probabilities tilted by the DC ratio; the unadjusted team-only
+forecast is always returned alongside. Removing a team's whole known
+attacking core therefore collapses its attack — e.g. Argentina with all 12
+listed contributors out drops from ~39% to ~5% vs France.
 
 ## What we deliberately do NOT claim
 

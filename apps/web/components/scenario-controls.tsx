@@ -70,7 +70,10 @@ export function SquadPanel({
   };
 
   if (isLoading) return <div className="h-40 animate-pulse rounded bg-ink-900" />;
-  const players = (data?.players ?? []).filter((p) => p.recently_active).slice(0, 12);
+  const players = (data?.players ?? [])
+    .filter((p) => p.recently_active)
+    .sort((a, b) => b.goal_share_recent - a.goal_share_recent)
+    .slice(0, 12);
 
   return (
     <div>
@@ -95,9 +98,9 @@ export function SquadPanel({
               <span className="min-w-0 flex-1 truncate text-sm">{p.name}</span>
               <span
                 className="font-mono text-[10px] text-ink-400"
-                title="Shrunken attacking impact (xG/match) from scoring records"
+                title="Shrunk share of the team's recent recorded goals (scenario weight)"
               >
-                {p.attack_impact_recent.toFixed(2)} xG/m
+                {(100 * p.goal_share_recent).toFixed(0)}% of goals
               </span>
               <div
                 role="group"

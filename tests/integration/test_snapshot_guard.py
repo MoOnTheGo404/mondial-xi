@@ -3,6 +3,7 @@ fixture's kickoff date (found by independent review; regression-locked)."""
 
 import os
 import tempfile
+import uuid
 from datetime import UTC, datetime, timedelta
 
 os.environ.setdefault(
@@ -10,7 +11,7 @@ os.environ.setdefault(
     f"sqlite:///{tempfile.gettempdir()}/kickoff_guard_test.db",
 )
 
-from kickoff_ml.providers.base import Fixture  # noqa: E402
+from kickoff_ml.providers.base import Fixture
 
 
 class StubEngine:
@@ -57,19 +58,22 @@ def test_same_day_and_past_fixtures_are_never_snapshotted():
     same_day = today.isoformat()
     future = (today + timedelta(days=2)).isoformat()
 
+    # unique per run: the shared test DB may persist across sessions
+    run = uuid.uuid4().hex[:8]
+    label = f"guard_{run}"
     state = StubState([
-        _fx("guard-past", past),
-        _fx("guard-today", same_day),
-        _fx("guard-future", future),
+        _fx(f"guard-past-{run}", past),
+        _fx(f"guard-today-{run}", same_day),
+        _fx(f"guard-future-{run}", future),
     ])
-    created = snapshot_upcoming(state, version_label="guard_test")
+    created = snapshot_upcoming(state, version_label=label)
     assert created == 1  # only the strictly-future fixture
 
     with get_session() as session:
         rows = session.query(PredictionSnapshot).filter(
-            PredictionSnapshot.version_label == "guard_test"
+            PredictionSnapshot.version_label == label
         ).all()
-        assert [r.fixture_id for r in rows] == ["guard-future"]
+        assert [r.fixture_id for r in rows] == [f"guard-future-{run}"]
         # invariant: generated strictly before kickoff date
         for r in rows:
             assert r.generated_at.date().isoformat() < r.kickoff_date

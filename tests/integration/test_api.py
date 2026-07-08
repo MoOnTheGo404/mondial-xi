@@ -86,7 +86,7 @@ def test_players_search(client):
 def test_player_detail_with_fixture_impact(client):
     d = client.get("/api/v1/players/argentina/lionel-messi").json()
     assert d["goals"] > 30
-    assert len(d["recent_goals"]) > 0
+    assert len(d["goal_log"]) > 0
 
 
 def test_fixtures_upcoming(client):

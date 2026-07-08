@@ -70,7 +70,7 @@ function ScenarioColumn({
           {[...p.player_assumptions.home, ...p.player_assumptions.away].map((a, i) => (
             <p key={i} className="font-mono text-xs text-amber-300">
               {a.name ?? a.player_id}: {a.status}
-              {a.xg_effect ? ` (${a.xg_effect} xG)` : ""}
+              {a.share_effect ? ` (${(100 * a.share_effect).toFixed(0)}% of goals)` : ""}
             </p>
           ))}
         </div>
