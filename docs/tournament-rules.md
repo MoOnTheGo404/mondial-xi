@@ -46,3 +46,16 @@ whole-pipeline validation.
 The engine is fully config-driven (any group count, best-thirds count, fold
 chain), demonstrated by the toy 2-group tournament in the unit tests. Only a
 new JSON config (+ citations) is needed for future editions.
+
+## WC 2030 Outlook (`data/tournaments/wc2030.json`)
+
+Verified (docs/research/wc2030.md): hosts Morocco/Portugal/Spain plus
+centenary hosts Argentina/Uruguay/Paraguay — **all six auto-qualify**;
+48 teams is the working plan. NOT announced by FIFA: the 2030 format,
+per-confederation quotas, and most qualifying formats. The outlook therefore
+runs a generic strength-seeded qualification model (leagues/groups sampled
+from the Dixon–Coles matrices), the 2026-template pot draw (Elo proxies the
+ranking; hosts Pot 1; max 1 per confederation per group, UEFA max 2) and the
+2026 finals template — with every assumption listed in the config, echoed by
+the API, and shown on the page. Ratings are today's; no aging is modeled.
+It is labeled an OUTLOOK, never a prediction of 2030 itself.

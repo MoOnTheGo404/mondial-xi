@@ -12,6 +12,9 @@ router = APIRouter(tags=["tournaments"])
 def list_tournaments() -> dict:
     require_ready()
     cfg = STATE.tournament_config
+    from kickoff_ml.simulation.wc2030 import config_2030
+
+    c30 = config_2030()
     return {
         "tournaments": [
             {
@@ -21,7 +24,15 @@ def list_tournaments() -> dict:
                 "verified_on": cfg["verified_on"],
                 "teams": cfg["format"]["teams"],
                 "status": "knockout_in_progress_at_data_cutoff",
-            }
+            },
+            {
+                "tournament_id": c30["tournament_id"],
+                "name": c30["name"],
+                "config_version": c30["config_version"],
+                "verified_on": c30["verified_on"],
+                "teams": c30["verified_facts"]["teams"],
+                "status": "outlook_simulation_only",
+            },
         ]
     }
 

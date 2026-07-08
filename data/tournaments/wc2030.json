@@ -1,0 +1,39 @@
+{
+  "tournament_id": "wc2030",
+  "name": "FIFA World Cup 2030 — Outlook",
+  "config_version": "0.1.0",
+  "verified_on": "2026-07-08",
+  "kind": "outlook",
+  "sources": [
+    "docs/research/wc2030.md",
+    "https://en.wikipedia.org/wiki/2030_FIFA_World_Cup",
+    "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/procedures-pots-final-draw"
+  ],
+  "verified_facts": {
+    "hosts_auto_qualified": ["morocco", "portugal", "spain", "argentina", "uruguay", "paraguay"],
+    "teams": 48,
+    "slot_allocation_announced": false,
+    "qualifying_formats_announced": ["CONCACAF (subject to FIFA confirmation)", "UEFA (plan, not ratified)"]
+  },
+  "assumptions": [
+    "Format assumed identical to 2026 (12 groups of 4, best 8 thirds, round of 32) — FIFA has not formally published the 2030 format",
+    "Slot allocation assumed = 2026 baseline (UEFA 16, CAF 9, AFC 8, CONMEBOL 6, CONCACAF 6, OFC 1, 2 inter-confederation playoff slots); FIFA explicitly has not announced 2030 quotas",
+    "Host berths assumed deducted from their confederations' quotas (UEFA -2, CAF -1, CONMEBOL -3) — unannounced",
+    "Qualification simulated with a GENERIC seeded-groups model (real 2030 formats mostly unannounced); it approximates strength-ordered qualification with realistic upset rates, not any confederation's actual path",
+    "Inter-confederation playoff: 6 candidates (best non-qualifier of CAF, AFC, CONCACAF, OFC, plus two from CONMEBOL as host-confederation analog) in the 2026 two-round bracket for 2 slots",
+    "Final draw assumed to follow the 2026 template: 4 pots of 12 by strength (Elo proxies the FIFA ranking), all six hosts in Pot 1, max 1 team per confederation per group except UEFA max 2",
+    "Ratings are TODAY'S Elo — no aging, transfers or generational change is modeled; this is a current-strength outlook, not a 2030 prediction"
+  ],
+  "quotas_after_hosts": {
+    "UEFA": 14,
+    "CAF": 8,
+    "AFC": 8,
+    "CONMEBOL": 3,
+    "CONCACAF": 6,
+    "OFC": 1
+  },
+  "playoff_slots": 2,
+  "playoff_candidates": ["CAF", "AFC", "CONCACAF", "OFC", "CONMEBOL", "CONMEBOL"],
+  "min_team_matches": 10,
+  "finals_template": "wc2026"
+}

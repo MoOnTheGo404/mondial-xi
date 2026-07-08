@@ -212,3 +212,22 @@ test("mobile navigation works @mobile", async ({ page }) => {
   ).toBeVisible();
   expect(noCritical(errors)).toEqual([]);
 });
+
+test("2030 outlook: assumptions visible, qualification + title odds render", async ({
+  page,
+}) => {
+  test.slow();
+  await page.goto("/simulator/2030");
+  await expect(page.getByText(/outlook — assumptions apply/i)).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: /championship probabilities \(2030 outlook\)/i }),
+  ).toBeVisible({ timeout: 60_000 });
+  await expect(
+    page.getByRole("heading", { name: /qualification probabilities/i }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: /assumptions behind this outlook/i }),
+  ).toBeVisible();
+  // hosts marked auto
+  await expect(page.getByText("auto").first()).toBeVisible();
+});

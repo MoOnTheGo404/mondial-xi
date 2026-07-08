@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { apiGet, apiPost, fmtPct } from "@kickoff/shared";
@@ -104,9 +105,17 @@ export default function SimulatorPage() {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="font-display text-3xl font-black uppercase tracking-tight">
-          World Cup 2026 Simulator
-        </h1>
+        <div className="flex flex-wrap items-center gap-3">
+          <h1 className="font-display text-3xl font-black uppercase tracking-tight">
+            World Cup 2026 Simulator
+          </h1>
+          <Link
+            href="/simulator/2030"
+            className="font-mono text-xs uppercase tracking-wide text-home hover:underline"
+          >
+            2030 outlook →
+          </Link>
+        </div>
         {detail.data && (
           <p className="mt-1 font-mono text-xs text-ink-400">
             config v{detail.data.config_version} (rules verified from cited sources) · real

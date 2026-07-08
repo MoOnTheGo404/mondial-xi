@@ -25,11 +25,14 @@ class TournamentSimRequest(BaseModel):
     seed: int = Field(42, ge=0, le=2**31 - 1)
     from_scratch: bool = False
     locked: list[LockedMatch] = Field(default_factory=list, max_length=32)
+    blocks: int = Field(16, ge=4, le=32)  # wc2030 only: qualification realizations
 
 
 @router.post("/simulations/tournament")
 def simulate_tournament(req: TournamentSimRequest) -> dict:
     require_ready()
+    if req.tournament_id == "wc2030":
+        return _simulate_outlook_2030(req)
     if req.tournament_id != "wc2026":
         raise HTTPException(404, f"Unknown tournament '{req.tournament_id}'")
     if req.n_sims > settings.max_simulations:
@@ -57,4 +60,23 @@ def simulate_tournament(req: TournamentSimRequest) -> dict:
     result["model_version"] = STATE.engine.model_version
     result["data_cutoff"] = STATE.engine.data_cutoff
     result["locked_applied"] = [lk.model_dump() for lk in req.locked]
+    return result
+
+
+def _simulate_outlook_2030(req: TournamentSimRequest) -> dict:
+    """WC-2030 outlook: qualification + draw + finals under documented
+    assumptions. Heavier than the 2026 path -> tighter sim cap."""
+    if req.n_sims > 8000:
+        raise HTTPException(422, "n_sims capped at 8000 for the 2030 outlook")
+    from kickoff_ml.simulation.wc2030 import simulate_wc2030
+
+    t0 = time.perf_counter()
+    result = simulate_wc2030(
+        STATE.engine, STATE.teams, n_sims=req.n_sims, seed=req.seed, blocks=req.blocks
+    )
+    result["elapsed_ms"] = round(1000 * (time.perf_counter() - t0), 1)
+    result["model_version"] = STATE.engine.model_version
+    result["data_cutoff"] = STATE.engine.data_cutoff
+    for row in result["teams"]:
+        row["team"] = team_payload(row["team_id"])
     return result
