@@ -37,6 +37,16 @@ evaluate: ## tune Elo, fit candidates, chronological evaluation, write artifacts
 snapshots: ## snapshot upcoming fixtures + score completed ones (also runs at API startup)
 	uv run python scripts/run_snapshots.py
 
+refresh: ## daily update: re-download data, rebuild, retrain, re-snapshot (see docs/deployment.md)
+	uv run python -m kickoff_ml.ingestion.download --force
+	uv run python -m kickoff_ml.ingestion.build
+	uv run python -m kickoff_ml.models.players
+	uv run python -m kickoff_ml.evaluation.run
+	uv run python scripts/calibrate_aging.py
+	uv run python scripts/update_readme_metrics.py
+	uv run python scripts/run_snapshots.py
+	@echo "refresh complete — restart the API to serve the new artifacts"
+
 api: ## run FastAPI on :8000
 	uv run uvicorn kickoff_api.main:app --port 8000 --reload
 

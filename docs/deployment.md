@@ -29,20 +29,36 @@ docker compose up --build        # api :8000, web :3000
 - **Frontend alternative**: Vercel for `apps/web` with `API_INTERNAL_URL`
   pointed at the API host.
 
-## Scheduled jobs (design)
+## Daily auto-update
 
-Daily (e.g. 06:00 UTC) via host cron / GitHub Actions schedule / Fly machines:
+The open dataset (martj42/international_results) is refreshed daily as matches
+finish, so the platform can stay current with a scheduled job. One command
+does the whole cycle:
 
 ```bash
-uv run python -m kickoff_ml.ingestion.download --force
-uv run python -m kickoff_ml.ingestion.build
-uv run python -m kickoff_ml.models.players
-uv run python -m kickoff_ml.evaluation.run      # weekly is enough
-uv run python scripts/run_snapshots.py           # snapshot new fixtures, score finished
+make refresh   # re-download → rebuild → retrain → re-evaluate → re-snapshot
 ```
 
-Then redeploy/restart the API (artifacts are immutable inputs). Snapshots of
-fixtures whose forecasts changed insert new immutable versions automatically.
+**Shipped automation:** `.github/workflows/daily-refresh.yml` runs this at
+07:00 UTC daily (and on manual dispatch): it refreshes the data, retrains,
+re-runs the leakage/metrics tests as a sanity check, and commits the changed
+JSON artifacts + README metrics back to the repo (`[skip ci]`). If the
+upstream dataset is unchanged, it no-ops.
+
+**For a deployment:**
+- If the platform redeploys on push (Vercel/Railway/Render), the daily commit
+  triggers a rebuild that runs `make data && make train`, regenerating the
+  parquet + `prediction_bundle.joblib` from the fresh data — no artifacts need
+  to travel through git.
+- Or run `make refresh` on the host via cron and restart the API (it loads
+  artifacts read-only at startup and re-runs snapshot scoring in the
+  lifespan hook). Keep the snapshot SQLite DB on a persistent volume so the
+  track record accumulates.
+
+**Snapshot scoring:** `scripts/run_snapshots.py` (part of `make refresh`)
+records immutable forecasts for genuinely-upcoming fixtures and attaches
+results/scores to snapshots whose matches have now finished — the track
+record updates itself every day without overwriting past forecasts.
 
 ## Environment & secrets
 

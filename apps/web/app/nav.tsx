@@ -50,32 +50,46 @@ export function Nav() {
         </Link>
 
         <nav className="hidden flex-1 lg:block" aria-label="Primary">
-          <ul className="flex items-center gap-1">
-            {LINKS.map((l) => (
-              <li key={l.href}>
-                <Link
-                  href={l.href}
-                  aria-current={pathname === l.href ? "page" : undefined}
-                  className={`rounded px-2.5 py-1.5 text-sm font-medium transition-colors ${
-                    pathname?.startsWith(l.href)
-                      ? "bg-ink-800 text-home"
-                      : "text-ink-300 hover:bg-ink-900 hover:text-ink-100"
-                  }`}
-                >
-                  {l.label}
-                </Link>
-              </li>
-            ))}
+          <ul className="flex items-center gap-0.5">
+            {LINKS.map((l) => {
+              const active = pathname?.startsWith(l.href);
+              return (
+                <li key={l.href}>
+                  <Link
+                    href={l.href}
+                    aria-current={active ? "page" : undefined}
+                    className={`relative rounded px-2.5 py-1.5 text-sm font-medium transition-colors ${
+                      active ? "text-home" : "text-ink-300 hover:text-ink-50"
+                    }`}
+                  >
+                    {l.label}
+                    {active && (
+                      <span
+                        aria-hidden
+                        className="absolute inset-x-2.5 -bottom-[13px] h-0.5 rounded-full bg-home"
+                      />
+                    )}
+                  </Link>
+                </li>
+              );
+            })}
           </ul>
         </nav>
 
-        <div className="ml-auto hidden items-center gap-2 font-mono text-[11px] text-ink-400 md:flex">
+        <div className="ml-auto hidden items-center gap-2 font-mono text-[11px] md:flex">
           {data?.ready ? (
-            <span title={`Model ${data.model_version}`}>
-              data cutoff <span className="text-ink-200">{data.data_cutoff}</span>
+            <span className="flex items-center gap-1.5 text-ink-400" title={`Model ${data.model_version}`}>
+              <span aria-hidden className="relative flex h-1.5 w-1.5">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-home opacity-60" />
+                <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-home" />
+              </span>
+              cutoff <span className="text-ink-200">{data.data_cutoff}</span>
             </span>
           ) : (
-            <span className="text-amber-400">API offline</span>
+            <span className="flex items-center gap-1.5 text-amber-400">
+              <span aria-hidden className="h-1.5 w-1.5 rounded-full bg-amber-400" />
+              API offline
+            </span>
           )}
         </div>
 
@@ -98,7 +112,12 @@ export function Nav() {
                 <Link
                   href={l.href}
                   onClick={() => setOpen(false)}
-                  className="block rounded px-3 py-2 text-sm text-ink-200 hover:bg-ink-900"
+                  aria-current={pathname?.startsWith(l.href) ? "page" : undefined}
+                  className={`block rounded px-3 py-2 text-sm ${
+                    pathname?.startsWith(l.href)
+                      ? "bg-ink-800 font-semibold text-home"
+                      : "text-ink-200 hover:bg-ink-900"
+                  }`}
                 >
                   {l.label}
                 </Link>
