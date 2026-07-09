@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useQuery } from "@tanstack/react-query";
 import { apiGet, fmtPct } from "@kickoff/shared";
-import type { MatchRow, Prediction, SimulationResult, Snapshot } from "@kickoff/shared";
+import type { MatchRow, SimulationResult, Snapshot } from "@kickoff/shared";
 import { Badge, Card, Flag, SectionTitle, Stat } from "@kickoff/ui";
 import { ErrorBox, FixtureCard, LoadingGrid } from "@/components/fixtures";
 
@@ -11,9 +11,6 @@ interface FixtureList {
   total: number;
   fixtures: MatchRow[];
   data_cutoff: string;
-}
-interface FixtureDetail extends MatchRow {
-  prediction?: Prediction;
 }
 interface Status {
   ready: boolean;
@@ -36,12 +33,6 @@ export default function HomePage() {
   const upcoming = useQuery({
     queryKey: ["fixtures-upcoming"],
     queryFn: () => apiGet<FixtureList>("/fixtures?status=upcoming&limit=6"),
-  });
-  const first = upcoming.data?.fixtures[0]?.match_id;
-  const featured = useQuery({
-    queryKey: ["fixture", first],
-    queryFn: () => apiGet<FixtureDetail>(`/fixtures/${first}`),
-    enabled: Boolean(first),
   });
   const simPost = useQuery({
     queryKey: ["sim-champions"],
@@ -134,15 +125,11 @@ export default function HomePage() {
           </Card>
         )}
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {upcoming.data?.fixtures.map((m, i) => (
+          {upcoming.data?.fixtures.map((m) => (
             <FixtureCard
               key={m.match_id}
               m={m}
-              probs={
-                i === 0 && featured.data?.prediction
-                  ? featured.data.prediction.probabilities
-                  : undefined
-              }
+              probs={m.forecast?.probabilities}
               href={`/match/${m.match_id}`}
             />
           ))}

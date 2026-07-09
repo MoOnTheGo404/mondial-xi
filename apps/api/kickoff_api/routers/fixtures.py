@@ -60,6 +60,16 @@ def list_fixtures(
     for m in df.slice(offset, limit).iter_rows(named=True):
         r = match_row(m)
         r["status"] = m["fx_status"]
+        # attach a forecast to scheduled fixtures so cards can show a prob bar
+        if m["fx_status"] == "scheduled":
+            pred = STATE.engine.predict(
+                m["home_id"], m["away_id"], neutral=bool(m["neutral"]), importance=4
+            )
+            r["forecast"] = {
+                "probabilities": pred["probabilities"],
+                "expected_goals": pred["expected_goals"],
+                "data_quality": pred["data_quality"]["grade"],
+            }
         rows.append(r)
     return {
         "total": total,

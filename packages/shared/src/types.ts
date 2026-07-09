@@ -26,6 +26,11 @@ export interface MatchRow {
   status?: "scheduled" | "finished";
   home_team_name_then?: string | null;
   away_team_name_then?: string | null;
+  forecast?: {
+    probabilities: Probabilities;
+    expected_goals: { home: number; away: number };
+    data_quality: string;
+  };
 }
 
 export interface Probabilities {

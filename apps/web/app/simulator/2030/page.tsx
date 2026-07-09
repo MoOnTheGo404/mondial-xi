@@ -93,7 +93,7 @@ export default function Outlook2030Page() {
             onChange={(e) => setNSims(Number(e.target.value))}
             className="rounded border border-ink-700 bg-ink-900 px-2 py-2 text-sm"
           >
-            {[2000, 4000, 8000].map((n) => (
+            {[2000, 3000, 4000].map((n) => (
               <option key={n} value={n}>
                 {n.toLocaleString()}
               </option>

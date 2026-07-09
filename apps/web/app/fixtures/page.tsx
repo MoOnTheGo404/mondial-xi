@@ -126,7 +126,12 @@ export default function FixturesPage() {
       )}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {q.data?.fixtures.map((m) => (
-          <FixtureCard key={m.match_id} m={m} href={`/match/${m.match_id}`} />
+          <FixtureCard
+            key={m.match_id}
+            m={m}
+            probs={m.forecast?.probabilities}
+            href={`/match/${m.match_id}`}
+          />
         ))}
       </div>
 

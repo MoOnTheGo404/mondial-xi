@@ -66,8 +66,8 @@ def simulate_tournament(req: TournamentSimRequest) -> dict:
 def _simulate_outlook_2030(req: TournamentSimRequest) -> dict:
     """WC-2030 outlook: qualification + draw + finals under documented
     assumptions. Heavier than the 2026 path -> tighter sim cap."""
-    if req.n_sims > 8000:
-        raise HTTPException(422, "n_sims capped at 8000 for the 2030 outlook")
+    if req.n_sims > 4000:
+        raise HTTPException(422, "n_sims capped at 4000 for the 2030 outlook")
     from kickoff_ml.simulation.wc2030 import simulate_wc2030
 
     t0 = time.perf_counter()
