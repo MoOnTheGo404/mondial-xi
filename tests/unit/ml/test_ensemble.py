@@ -1,5 +1,4 @@
 import numpy as np
-import polars as pl
 
 from kickoff_ml.features.builder import build_feature_table
 from kickoff_ml.models.goals import PoissonGoalModel
