@@ -17,6 +17,10 @@ from sklearn.preprocessing import StandardScaler
 
 MAX_GOALS = 10  # score matrix support 0..10 per team
 
+# precomputed once — the score matrix is built millions of times in simulation
+_IDX = np.arange(MAX_GOALS + 1)
+_FACT = np.array([math.factorial(k) for k in range(MAX_GOALS + 1)], dtype=float)
+
 GOAL_FEATURES_HOME = ["elo_diff_eff", "home_gf", "away_ga", "home_form", "importance"]
 GOAL_FEATURES_AWAY = ["elo_diff_eff", "away_gf", "home_ga", "away_form", "importance"]
 
@@ -77,20 +81,16 @@ class PoissonGoalModel:
 
     def score_matrix(self, mu_h: float, mu_a: float) -> np.ndarray:
         """P(home=i, away=j) grid with DC correction, normalized."""
-        i = np.arange(MAX_GOALS + 1)
-        fact = np.array([math.factorial(k) for k in i], dtype=float)
-        ph = np.exp(-mu_h) * mu_h**i / fact
-        pa = np.exp(-mu_a) * mu_a**i / fact
+        ph = np.exp(-mu_h) * mu_h**_IDX / _FACT
+        pa = np.exp(-mu_a) * mu_a**_IDX / _FACT
         m = np.outer(ph, pa)
         if self.rho != 0.0:
-            for x in (0, 1):
-                for y in (0, 1):
-                    m[x, y] *= float(
-                        self._tau(
-                            np.array([x], float), np.array([y], float),
-                            np.array([mu_h]), np.array([mu_a]), self.rho,
-                        )[0]
-                    )
+            r = self.rho
+            # Dixon–Coles low-score dependence on the four corner cells
+            m[0, 0] *= max(1.0 - mu_h * mu_a * r, 1e-10)
+            m[0, 1] *= max(1.0 + mu_h * r, 1e-10)
+            m[1, 0] *= max(1.0 + mu_a * r, 1e-10)
+            m[1, 1] *= max(1.0 - r, 1e-10)
         return m / m.sum()
 
     def outcome_probs(self, df: pl.DataFrame) -> np.ndarray:

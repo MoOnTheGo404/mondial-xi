@@ -15,6 +15,7 @@ Every documented assumption is echoed in the API response.
 from __future__ import annotations
 
 import json
+import math
 
 import numpy as np
 import polars as pl
@@ -34,24 +35,47 @@ def config_2030() -> dict:
 
 class AgedMatchModel:
     """Wraps the bundle model with per-team 2030 rating deltas (deterministic
-    aging + this realization's 4-year uncertainty noise). The Dixon–Coles
-    goal model consumes only `elo_diff_eff`, so a delta shifts that term by
-    (delta_home − delta_away); `rating()` returns base+delta for seeding."""
+    aging + this realization's 4-year uncertainty noise).
 
-    def __init__(self, engine, delta: dict[str, float], importance: int) -> None:
+    The Dixon–Coles goal model consumes only `elo_diff_eff`, which enters the
+    Poisson GLM linearly, so a rating shift s = (delta_home − delta_away)
+    multiplies the base expected goals analytically:
+        mu_home(s) = mu_home(0) · exp(+k_h · s)
+        mu_away(s) = mu_away(0) · exp(−k_a · s)
+    with k = coef / scaler_std for each side. Base expected goals at s=0 are
+    computed once per pairing and shared across every realization (via
+    `base_cache`) — this replaces tens of thousands of per-call GLM/DataFrame
+    builds with a handful, keeping the whole 2030 outlook interactive.
+    `rating()` returns base+delta for seeding.
+    """
+
+    def __init__(
+        self, engine, delta: dict[str, float], importance: int, base_cache: dict
+    ) -> None:
         self.engine = engine
         self.delta = delta
         self.importance = importance
         self.dc = engine.models["dixon_coles"]
+        self.base_cache = base_cache
+        self.k_h = float(self.dc.home.coef_[0] / self.dc.scaler_h.scale_[0])
+        self.k_a = float(self.dc.away.coef_[0] / self.dc.scaler_a.scale_[0])
+
+    def _base_mus(self, home: str, away: str, neutral: bool) -> tuple[float, float]:
+        key = (home, away, neutral, self.importance)
+        cached = self.base_cache.get(key)
+        if cached is None:
+            feats = self.engine._features(home, away, neutral, self.importance)
+            mh, ma = self.dc.expected_goals(feats)
+            cached = (float(mh[0]), float(ma[0]))
+            self.base_cache[key] = cached
+        return cached
 
     def _mus(self, home: str, away: str, neutral: bool) -> tuple[float, float]:
-        feats = self.engine._features(home, away, neutral, self.importance)
+        mu_h0, mu_a0 = self._base_mus(home, away, neutral)
         shift = self.delta.get(home, 0.0) - self.delta.get(away, 0.0)
-        feats = feats.with_columns(
-            (feats["elo_diff_eff"] + shift).alias("elo_diff_eff")
-        )
-        mu_h, mu_a = self.dc.expected_goals(feats)
-        return float(mu_h[0]), float(mu_a[0])
+        mu_h = mu_h0 * math.exp(self.k_h * shift)
+        mu_a = mu_a0 * math.exp(-self.k_a * shift)
+        return min(max(mu_h, 0.05), 6.0), min(max(mu_a, 0.05), 6.0)
 
     def score_matrix_for(self, home: str, away: str, neutral: bool):
         mu_h, mu_a = self._mus(home, away, neutral)
@@ -147,6 +171,7 @@ def simulate_wc2030(
     reach_counts: dict[str, dict[str, float]] = {}
     sims_per_block = max(n_sims // blocks, 50)
     total_sims = 0
+    base_cache: dict = {}  # base expected goals per pairing, shared across blocks
 
     for b in range(blocks):
         # this realization's 2030 ratings: base + aging + fresh 4-year noise
@@ -154,9 +179,9 @@ def simulate_wc2030(
             t: aging_delta.get(t, 0.0) + float(rng.normal(0.0, noise_sigma))
             for t in all_teams
         }
-        model = AgedMatchModel(engine, delta, importance=2)      # qualifiers
-        finals_model = AgedMatchModel(engine, delta, importance=4)
-        cache: dict = {}  # matrices depend on this block's deltas
+        model = AgedMatchModel(engine, delta, importance=2, base_cache=base_cache)
+        finals_model = AgedMatchModel(engine, delta, importance=4, base_cache=base_cache)
+        cache: dict = {}  # score matrices depend on this block's deltas
 
         # 1) one qualification realization (pools re-seeded by aged rating)
         qualified: list[str] = list(hosts)
