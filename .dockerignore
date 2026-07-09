@@ -1,0 +1,21 @@
+# Keep build contexts small and clean
+**/node_modules
+**/.next
+**/.turbo
+.venv
+**/__pycache__
+**/*.pyc
+.mypy_cache
+.ruff_cache
+.pytest_cache
+apps/web/coverage
+apps/web/playwright-report
+apps/web/test-results
+data/raw
+data/cache
+data/*.db
+.git
+.github
+docs/screenshots
+*.log
+.DS_Store

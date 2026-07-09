@@ -59,3 +59,7 @@ Thumbs.db
 logs/
 tmp/
 .cache/
+
+# Runtime state (regenerated at API startup)
+data/*.db
+data/*.db-journal

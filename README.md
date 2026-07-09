@@ -182,4 +182,12 @@ README was executed and verified locally.
 [player model](docs/player-model.md) · [availability](docs/availability-model.md) ·
 [tournament rules](docs/tournament-rules.md) · [providers](docs/provider-setup.md) ·
 [deployment](docs/deployment.md) · [security](docs/security.md) ·
-[case study](docs/portfolio-case-study.md) · [interview guide](docs/interview-guide.md)
+[case study](docs/portfolio-case-study.md) · [interview guide](docs/interview-guide.md) ·
+[decisions](DECISIONS.md) · [risk register](RISK_REGISTER.md)
+
+## License
+
+Source code under the [MIT License](LICENSE). Data and assets keep their
+upstream licenses (all CC0 / MIT / CC BY 4.0 — see
+[data-source-evaluation](docs/data-source-evaluation.md)). Forecasts are
+probabilistic estimates for educational use, not betting advice.
