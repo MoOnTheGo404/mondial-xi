@@ -104,6 +104,10 @@ class PoissonGoalModel:
             out[k, 2] = np.triu(m, 1).sum()
         return out
 
+    # alias so ensembles can treat this like any outcome model
+    def predict_proba(self, df: pl.DataFrame) -> np.ndarray:
+        return self.outcome_probs(df)
+
 
 def matrix_summaries(m: np.ndarray) -> dict:
     """Derived quantities from a normalized score matrix."""

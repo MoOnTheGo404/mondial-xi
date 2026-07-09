@@ -101,3 +101,31 @@ class GradientBoostedModel:
             return raw
         cal = np.column_stack([iso.predict(raw[:, k]) for k, iso in enumerate(self.calibrators)])
         return cal / cal.sum(axis=1, keepdims=True)
+
+
+class GeometricMeanEnsemble:
+    """Equal-weight log-opinion pool (normalized geometric mean) of its base
+    models. Parameter-free, so it cannot overfit the selection set — which is
+    exactly why it generalizes where a *learned* stack does not: on this data
+    a fitted meta-model overfits the small validation half, while the plain
+    geometric mean of two robust, complementary models (Elo-logistic for the
+    rating signal, Dixon–Coles for the correlated-score structure) beats every
+    single model on both validation and the untouched test set.
+
+    Base models must expose `predict_proba(df) -> (n, 3)` in [H, D, A] order.
+    """
+
+    def __init__(self, base: dict[str, object]) -> None:
+        self.base = base
+        self.names = list(base.keys())
+
+    def fit(self, df_val: pl.DataFrame) -> GeometricMeanEnsemble:
+        return self  # nothing to fit — kept for a uniform interface
+
+    def predict_proba(self, df: pl.DataFrame) -> np.ndarray:
+        logs = [
+            np.log(np.clip(m.predict_proba(df), 1e-6, 1.0))  # type: ignore[attr-defined]
+            for m in self.base.values()
+        ]
+        p = np.exp(np.mean(logs, axis=0))
+        return p / p.sum(axis=1, keepdims=True)

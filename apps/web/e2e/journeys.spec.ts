@@ -187,7 +187,7 @@ test("performance page loads artifact-driven metrics", async ({ page }) => {
   const errors = watchConsole(page);
   await page.goto("/performance");
   await expect(page.getByRole("heading", { name: /chronological protocol/i })).toBeVisible();
-  await expect(page.getByText("UNTOUCHED TEST")).toBeVisible();
+  await expect(page.getByText("UNTOUCHED TEST", { exact: true })).toBeVisible();
   await expect(page.getByRole("heading", { name: /model comparison/i })).toBeVisible();
   await expect(page.getByText("champion").first()).toBeVisible();
   expect(noCritical(errors)).toEqual([]);

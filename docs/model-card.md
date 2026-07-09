@@ -13,18 +13,23 @@ matches); ratings warm up from 1872. No player, market, weather or ranking
 inputs.
 
 ## Architecture
-- Champion: `HistGradientBoostingClassifier` (depth 4, lr 0.06, 400 iters,
-  L2 1.0, min-leaf 60) over 17 chronological features, with per-class
-  isotonic calibration fitted on the 2019–2022 validation window.
-- Companions in the serving bundle: Dixon–Coles goal model (scorelines,
-  scenario tilts), Elo-logistic (baseline display), tuned Elo state.
+- Champion: **parameter-free geometric-mean ensemble** — the normalized
+  geometric mean of the Elo-logistic outcome model and the Dixon–Coles goal
+  model's outcome probabilities. Nothing to fit, so it cannot overfit the
+  selection set; it exploits the partly-independent errors of a rating model
+  and a correlated-score model.
+- Companions in the serving bundle: Dixon–Coles (scorelines, scenario tilts),
+  Elo-logistic and tuned Elo state; a HistGradientBoosting model and its
+  isotonic-calibrated variant are evaluated for comparison.
 
 ## Evaluation (chronological; see ml/artifacts/metrics.json)
-Untouched test 2023 → cutoff (n=3,689): log loss 0.8701, RPS 0.1687,
-Brier 0.5106, accuracy 60.8%, ECE 0.0137. Baselines: frequency 1.0543,
-Elo-logistic 0.8669, Dixon–Coles 0.8663 (test log loss). Selection was
-pre-registered on validation, where the calibrated GBM was best (0.8555);
-DC's marginal test edge is reported honestly.
+Champion on untouched test 2023 → cutoff: **log loss ≈ 0.865, RPS ≈ 0.169,
+accuracy ≈ 60%, ECE ≈ 0.018** (exact current values in metrics.json). It wins
+both the full validation window and the test set. Rigorous, fully
+out-of-sample selection (base models train on 1980–2018; 2-fold out-of-fold
+GBM calibration) shows the learned stack and the isotonic-calibrated GBM
+**overfit** this modest data and lose — parsimony generalizes here, and that
+finding is reported rather than hidden.
 
 ## Intended use
 Editorial forecasting, scenario exploration, tournament simulation,

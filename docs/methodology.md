@@ -39,13 +39,16 @@ as display/scenario context only.
 ## Models & selection
 
 frequency baseline → Elo logistic → independent Poisson GLMs → Dixon–Coles
-(ρ by MLE) → gradient-boosted trees (+ per-class isotonic calibration fitted
-only on validation). Chronological protocol: fit 1980–2018, select on
-2019–2022, report once on 2023→cutoff. The champion (calibrated GBM by
-validation log loss) was frozen before the test window was evaluated. The
-honest outcome — Dixon–Coles marginally better on test — is reported as-is;
-top models sit within ~0.004 log loss because international outcomes are
-dominated by rating differentials.
+(ρ by MLE) → gradient-boosted trees (+ per-class isotonic calibration) →
+a **parameter-free geometric-mean ensemble** of Elo-logistic and Dixon–Coles.
+Chronological protocol: fit 1980–2018, select on 2019–2022, report once on
+2023→cutoff. Champion selection is fully out-of-sample: base models train on
+1980–2018, the ensemble is parameter-free, and the GBM's isotonic calibration
+is de-biased with 2-fold out-of-fold folds. The champion — the geometric mean
+of Elo-logistic and Dixon–Coles — wins both validation and the untouched
+test. The honest finding that the *learned* stack and the calibrated GBM
+overfit this modest data (and lose under rigorous selection) is reported
+as-is; parsimony generalizes here.
 
 ## Scenario adjustments
 

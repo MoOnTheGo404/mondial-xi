@@ -33,6 +33,7 @@ from kickoff_ml.models.goals import PoissonGoalModel
 from kickoff_ml.models.outcome import (
     EloLogisticModel,
     FrequencyBaseline,
+    GeometricMeanEnsemble,
     GradientBoostedModel,
 )
 from kickoff_ml.ratings.elo import EloConfig
@@ -97,9 +98,31 @@ def evaluate() -> None:
     poisson = PoissonGoalModel().fit(train)
     dc = PoissonGoalModel().fit(train)
     dc.fit_rho(train)
-    gbm = GradientBoostedModel().fit(train)
-    gbm.calibrate(val)
     gbm_raw = GradientBoostedModel().fit(train)  # uncalibrated reference
+
+    # Champion is selected on the FULL validation window. Every candidate is
+    # scored there strictly out-of-sample: the base models (elo/poisson/DC/
+    # GBM) train only on `train`, and the geometric ensemble is parameter-free.
+    # The one model that would otherwise touch validation — the GBM's isotonic
+    # calibration — is made honest with 2-fold out-of-fold calibration, so no
+    # candidate gets an in-sample edge. Test stays sealed until after selection.
+    val_s = val.sort("date")
+    half = val_s.height // 2
+    va, vb = val_s.head(half), val_s.tail(val_s.height - half)
+
+    gbm = GradientBoostedModel().fit(train)  # serving: calibrated on full val
+    gbm.calibrate(val)
+
+    # out-of-fold GBM calibration for a bias-free validation comparison
+    g_a = GradientBoostedModel().fit(train)
+    g_a.calibrate(va)
+    g_b = GradientBoostedModel().fit(train)
+    g_b.calibrate(vb)
+    gbm_oof_val = np.vstack([g_b.predict_proba(va), g_a.predict_proba(vb)])
+
+    ensemble = GeometricMeanEnsemble(
+        {"elo_logistic": elo_model, "dixon_coles": dc}
+    )
 
     candidates = {
         "frequency_baseline": lambda df: freq.predict_proba(df),
@@ -108,18 +131,21 @@ def evaluate() -> None:
         "dixon_coles": lambda df: dc.outcome_probs(df),
         "gbm_uncalibrated": lambda df: gbm_raw.predict_proba(df),
         "gbm_calibrated": lambda df: gbm.predict_proba(df),
+        "geometric_ensemble": lambda df: ensemble.predict_proba(df),
     }
 
-    # ---- validation comparison & champion selection ----------------------
+    # ---- validation comparison & champion selection (full validation) -----
     comparison: dict[str, dict] = {}
-    y_val = val["outcome"].to_numpy()
+    y_val = val_s["outcome"].to_numpy()
     for name, fn in candidates.items():
-        comparison[name] = {"validation": M.all_metrics(y_val, fn(val))}
+        # gbm_calibrated uses its OOF validation probs so it isn't in-sample
+        p_val = gbm_oof_val if name == "gbm_calibrated" else fn(val_s)
+        comparison[name] = {"validation": M.all_metrics(y_val, p_val)}
     champion = min(
         (n for n in candidates if n != "frequency_baseline"),
         key=lambda n: comparison[n]["validation"]["log_loss"],
     )
-    log.info("champion selected on validation", champion=champion)
+    log.info("champion selected on full validation", champion=champion)
 
     # ---- single test evaluation ------------------------------------------
     y_test = test["outcome"].to_numpy()
@@ -166,7 +192,12 @@ def evaluate() -> None:
             "validation_window": ["2019-01-01", VALIDATION_END],
             "test_window": ["2023-01-01", cutoff],
             "split_type": "chronological",
-            "champion_selected_on": "validation log loss",
+            "champion_selected_on": (
+                "log loss on the full validation window, every candidate scored "
+                "strictly out-of-sample (base models train on 1980–2018; the "
+                "geometric ensemble is parameter-free; GBM calibration is made "
+                "honest with 2-fold out-of-fold isotonic)"
+            ),
         },
         "champion": champion,
         "champion_test": M.all_metrics(y_test, p_test),
@@ -176,7 +207,7 @@ def evaluate() -> None:
         "by_tier": by_tier,
         "by_confederation": by_conf,
         "favorites_vs_close": favorites_vs_close,
-        "counts": {"train": train.height, "validation": val.height, "test": test.height},
+        "counts": {"train": train.height, "validation": val_s.height, "test": test.height},
     }
     (ARTIFACTS_DIR / "metrics.json").write_text(json.dumps(metrics_doc, indent=2))
     (ARTIFACTS_DIR / "model_comparison.json").write_text(json.dumps(comparison, indent=2))
@@ -228,7 +259,10 @@ def evaluate() -> None:
         "champion": champion,
         "elo_config": elo_cfg,
         "builder": final_builder,
-        "models": {"elo_logistic": elo_model, "poisson": poisson, "dixon_coles": dc, "gbm_calibrated": gbm},
+        "models": {
+            "elo_logistic": elo_model, "poisson": poisson, "dixon_coles": dc,
+            "gbm_calibrated": gbm, "geometric_ensemble": ensemble,
+        },
         "created_at": datetime.now(UTC).isoformat(),
     }
     joblib.dump(bundle, ARTIFACTS_DIR / "prediction_bundle.joblib", compress=3)

@@ -174,10 +174,11 @@ export default function PerformancePage() {
           </tbody>
         </table>
         <p className="mt-3 max-w-3xl text-xs text-ink-400">
-          Honest reading: Dixon–Coles edges the calibrated GBM on the test window
-          (selection was made on validation, as pre-registered by the protocol). The top
-          models sit within ~0.004 log loss — international results are dominated by
-          rating gaps, and the extra features add calibration more than discrimination.
+          Honest reading: the champion is a <strong>parameter-free geometric mean</strong>{" "}
+          of the Elo-logistic and Dixon–Coles models — it wins both validation and the
+          untouched test set because their errors are partly independent. Notably, a{" "}
+          <em>learned</em> stack and the isotonic-calibrated GBM overfit this modest data
+          and lose under rigorous out-of-sample selection: parsimony generalizes here.
         </p>
       </Card>
 

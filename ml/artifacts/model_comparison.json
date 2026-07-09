@@ -91,11 +91,11 @@
   },
   "gbm_calibrated": {
     "validation": {
-      "log_loss": 0.8555,
-      "brier": 0.50354,
-      "rps": 0.16748,
-      "accuracy": 0.60905,
-      "ece": 0.01517,
+      "log_loss": 0.88854,
+      "brier": 0.51248,
+      "rps": 0.17072,
+      "accuracy": 0.60151,
+      "ece": 0.01149,
       "n": 3581
     },
     "test": {
@@ -104,6 +104,24 @@
       "rps": 0.16867,
       "accuracy": 0.60791,
       "ece": 0.01346,
+      "n": 3693
+    }
+  },
+  "geometric_ensemble": {
+    "validation": {
+      "log_loss": 0.85846,
+      "brier": 0.50384,
+      "rps": 0.16764,
+      "accuracy": 0.6057,
+      "ece": 0.01667,
+      "n": 3581
+    },
+    "test": {
+      "log_loss": 0.8645,
+      "brier": 0.50848,
+      "rps": 0.16858,
+      "accuracy": 0.60195,
+      "ece": 0.0176,
       "n": 3693
     }
   }
