@@ -130,10 +130,9 @@ test("tournament simulator: run, lock an upset, probabilities change", async ({
   await expect(franceRow).toBeVisible();
   const before = await franceRow.locator("td").last().textContent();
 
-  // lock Morocco to beat France in the QF (button exposes an accessible title)
-  await page
-    .getByRole("button", { name: /lock morocco to win this quarter-finals tie/i })
-    .click();
+  // in the knockout bracket, pick Morocco to beat France in the QF
+  await page.getByRole("heading", { name: /knockout bracket/i }).scrollIntoViewIfNeeded();
+  await page.getByRole("button", { name: /lock morocco to win/i }).click();
   await expect(page.getByRole("button", { name: /clear 1 lock/i })).toBeVisible();
   await page.getByRole("button", { name: /re-run/i }).click();
 

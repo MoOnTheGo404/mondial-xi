@@ -1,0 +1,10 @@
+import { chromium } from "playwright";
+const b = await chromium.launch();
+const p = await b.newPage({ viewport: { width: 1600, height: 1000 } });
+await p.goto("http://localhost:3000/simulator", { waitUntil: "networkidle" });
+await p.waitForTimeout(9000);
+const h = p.getByRole("heading", { name: /knockout bracket/i });
+await h.scrollIntoViewIfNeeded();
+await p.waitForTimeout(500);
+await p.screenshot({ path: "/tmp/qa_bracket.png" });
+await b.close();

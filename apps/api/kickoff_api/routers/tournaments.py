@@ -52,5 +52,15 @@ def tournament_detail(tournament_id: str) -> dict:
         for m in rnd["matches"]:
             m["home"] = team_payload(m["home_id"])
             m["away"] = team_payload(m["away_id"])
+
+    def enrich_tree(n: dict | None) -> None:
+        if not n:
+            return
+        n["home"] = team_payload(n["home_id"]) if n.get("home_id") else None
+        n["away"] = team_payload(n["away_id"]) if n.get("away_id") else None
+        for c in n.get("children", []):
+            enrich_tree(c)
+
+    enrich_tree(summary.get("bracket_tree"))
     summary["data_cutoff"] = STATE.engine.data_cutoff
     return summary

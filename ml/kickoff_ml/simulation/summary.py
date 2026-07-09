@@ -85,6 +85,66 @@ def bracket(cfg: TournamentConfig, state: dict, upcoming: pl.DataFrame) -> list[
     return rounds
 
 
+def bracket_tree(cfg: TournamentConfig, state: dict, upcoming: pl.DataFrame) -> dict | None:
+    """The knockout as a nested binary tree (root = final). Each node carries
+    its resolved teams/result where known, or TBD teams fed by its children.
+    Built bottom-up from the recovered R32 pairings + fold config + results."""
+    r32_pairs = state.get("r32_pairs")
+    if not r32_pairs:
+        return None
+
+    # result / schedule lookup keyed by the pair of teams
+    played: dict[frozenset, dict] = {}
+    for rnd, results in state["completed_knockout"].items():
+        for r in results:
+            played[frozenset((r.home, r.away))] = {
+                "round": rnd, "home_id": r.home, "away_id": r.away,
+                "home_goals": r.home_goals, "away_goals": r.away_goals,
+                "winner_id": r.winner, "status": "finished",
+                "shootout": r.home_goals == r.away_goals,
+            }
+    scheduled: dict[frozenset, dict] = {}
+    for r in upcoming.iter_rows(named=True):
+        if r["tournament"] != "FIFA World Cup":
+            continue
+        rnd = next((rn for rn, (lo, hi) in ROUND_DATES.items() if lo <= r["date"] <= hi), None)
+        if rnd:
+            scheduled[frozenset((r["home_id"], r["away_id"]))] = {
+                "round": rnd, "home_id": r["home_id"], "away_id": r["away_id"],
+                "date": str(r["date"]), "status": "scheduled",
+            }
+
+    def node(round_name: str, home: str | None, away: str | None, children: list) -> dict:
+        base = {
+            "round": round_name, "home_id": home, "away_id": away,
+            "winner_id": None, "status": "pending", "children": children,
+        }
+        if home and away:
+            m = played.get(frozenset((home, away))) or scheduled.get(frozenset((home, away)))
+            if m:
+                base.update(m)
+        return base
+
+    # R32 leaves (in template order)
+    r32 = [node("R32", h, a, []) for h, a in r32_pairs]
+    m2i = {t["match"]: i for i, t in enumerate(cfg.r32_template)}
+
+    def build(round_name: str, fold: list[list[int]], children_nodes: list[dict],
+              by_match_number: bool) -> list[dict]:
+        out = []
+        for pa, pb in fold:
+            ca = children_nodes[m2i[pa] if by_match_number else pa]
+            cb = children_nodes[m2i[pb] if by_match_number else pb]
+            out.append(node(round_name, ca["winner_id"], cb["winner_id"], [ca, cb]))
+        return out
+
+    r16 = build("R16", cfg.folds[0], r32, by_match_number=True)
+    qf = build("QF", cfg.folds[1], r16, by_match_number=False)
+    sf = build("SF", cfg.folds[2], qf, by_match_number=False)
+    final = node("F", sf[0]["winner_id"], sf[1]["winner_id"], sf)
+    return final
+
+
 def tournament_summary(matches: pl.DataFrame, upcoming: pl.DataFrame) -> dict:
     cfg = TournamentConfig.from_json(config_path())
     state = load_state(matches, cfg)
@@ -100,4 +160,5 @@ def tournament_summary(matches: pl.DataFrame, upcoming: pl.DataFrame) -> dict:
         "tiebreaker_notes": raw_cfg.get("tiebreaker_notes"),
         "groups": group_tables(cfg, state),
         "bracket": bracket(cfg, state, upcoming),
+        "bracket_tree": bracket_tree(cfg, state, upcoming),
     }

@@ -7,6 +7,7 @@ import { apiGet, apiPost, fmtPct } from "@kickoff/shared";
 import type { BracketMatch, GroupRow, SimulationResult } from "@kickoff/shared";
 import { Badge, Card, Flag, SectionTitle } from "@kickoff/ui";
 import { ErrorBox } from "@/components/fixtures";
+import { KnockoutBracket, type BracketNode } from "@/components/bracket";
 
 interface TournamentDetail {
   tournament_id: string;
@@ -17,6 +18,7 @@ interface TournamentDetail {
   tiebreaker_notes: string;
   groups: Record<string, GroupRow[]>;
   bracket: { round: string; window: string[]; matches: BracketMatch[] }[];
+  bracket_tree: BracketNode | null;
   data_cutoff: string;
 }
 
@@ -26,14 +28,6 @@ interface Lock {
   team_b: string;
   winner: string;
 }
-
-const ROUND_LABEL: Record<string, string> = {
-  R32: "Round of 32",
-  R16: "Round of 16",
-  QF: "Quarter-finals",
-  SF: "Semi-finals",
-  F: "Final",
-};
 
 /** CSV cell sanitizer: quotes + neutralizes leading =+-@ (formula injection). */
 function csvCell(v: string | number): string {
@@ -252,91 +246,30 @@ export default function SimulatorPage() {
         </Card>
       )}
 
-      {/* bracket with lock controls */}
-      {detail.data && (
+      {/* connected knockout bracket with lock controls */}
+      {detail.data?.bracket_tree && (
         <section>
-          <SectionTitle sub="lock a winner for any unplayed pairing, then re-run">
+          <SectionTitle sub="the last 16 · pick a winner for any unplayed tie, then re-run">
             Knockout bracket
           </SectionTitle>
-          <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-5">
-            {detail.data.bracket.map((rnd) => (
-              <Card key={rnd.round} className="p-3">
-                <h3 className="mb-2 font-display text-sm font-bold uppercase text-ink-200">
-                  {ROUND_LABEL[rnd.round]}
-                </h3>
-                <div className="space-y-2">
-                  {rnd.matches.length === 0 && (
-                    <p className="font-mono text-[11px] text-ink-500">
-                      Pairings not yet decided at data cutoff — simulated each run.
-                    </p>
-                  )}
-                  {rnd.matches.map((mm, i) => (
-                    <div key={i} className="rounded border border-ink-800 bg-ink-900/60 p-2">
-                      {(["home", "away"] as const).map((side) => {
-                        const team = mm[side];
-                        const goals = side === "home" ? mm.home_goals : mm.away_goals;
-                        const won = mm.winner_id === team.team_id;
-                        const locked = locks.find(
-                          (l) =>
-                            l.round === rnd.round &&
-                            new Set([l.team_a, l.team_b]).has(team.team_id) &&
-                            l.winner === team.team_id,
-                        );
-                        return (
-                          <div
-                            key={side}
-                            className="flex items-center justify-between gap-2 py-0.5"
-                          >
-                            <span className="flex min-w-0 items-center gap-1.5 text-sm">
-                              <Flag team={team} size={16} />
-                              <span
-                                className={`truncate ${won ? "font-bold text-ink-50" : ""}`}
-                              >
-                                {team.name}
-                              </span>
-                            </span>
-                            {mm.status === "finished" ? (
-                              <span className="font-mono text-sm tabular-nums">
-                                {goals}
-                                {mm.shootout && won ? "·p" : ""}
-                              </span>
-                            ) : (
-                              <button
-                                type="button"
-                                aria-pressed={Boolean(locked)}
-                                aria-label={`Lock ${team.name} to win this ${ROUND_LABEL[rnd.round]} tie`}
-                                title={`Lock ${team.name} to win this ${ROUND_LABEL[rnd.round]} tie`}
-                                onClick={() =>
-                                  toggleLock(
-                                    rnd.round,
-                                    mm.home.team_id,
-                                    mm.away.team_id,
-                                    team.team_id,
-                                  )
-                                }
-                                className={`rounded px-1.5 py-0.5 font-mono text-[10px] uppercase ${
-                                  locked
-                                    ? "bg-amber-400 font-bold text-ink-950"
-                                    : "border border-ink-700 text-ink-400 hover:border-amber-400 hover:text-amber-300"
-                                }`}
-                              >
-                                {locked ? "locked" : "lock win"}
-                              </button>
-                            )}
-                          </div>
-                        );
-                      })}
-                      {mm.status === "finished" && (
-                        <p className="mt-0.5 font-mono text-[10px] text-ink-500">
-                          final{mm.shootout ? " · penalties" : ""}
-                        </p>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              </Card>
-            ))}
-          </div>
+          <Card className="p-4">
+            <KnockoutBracket
+              tree={detail.data.bracket_tree}
+              champion={
+                sim.data && sim.data.teams[0]?.reach.champion > 0
+                  ? { team: sim.data.teams[0].team, prob: sim.data.teams[0].reach.champion }
+                  : null
+              }
+              isLocked={(round, teamId) =>
+                locks.some((l) => l.round === round && l.winner === teamId)
+              }
+              onLock={toggleLock}
+            />
+            <p className="mt-3 font-mono text-[11px] text-ink-500">
+              Completed rounds are pinned to real results; semi-finals and the final are
+              decided by the simulation. Picking a winner locks that tie for the next run.
+            </p>
+          </Card>
         </section>
       )}
 
