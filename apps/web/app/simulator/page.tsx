@@ -212,12 +212,32 @@ export default function SimulatorPage() {
               {sim.data.teams
                 .filter((t) => t.reach.R32 > 0 || fromScratch)
                 .slice(0, 24)
-                .map((t) => (
-                  <tr key={t.team_id} className="border-b border-ink-800/60">
+                .map((t, i) => (
+                  <tr
+                    key={t.team_id}
+                    className={`border-b border-ink-800/60 ${
+                      i === 0 ? "bg-home/[0.06]" : ""
+                    }`}
+                  >
                     <td className="py-1.5 pr-2">
                       <span className="flex items-center gap-2">
+                        {i < 3 && t.reach.champion > 0 ? (
+                          <span
+                            aria-hidden
+                            className="w-4 text-center text-xs"
+                            title={`${i + 1} favorite`}
+                          >
+                            {["🥇", "🥈", "🥉"][i]}
+                          </span>
+                        ) : (
+                          <span className="w-4 text-right font-mono text-[11px] text-ink-600">
+                            {i + 1}
+                          </span>
+                        )}
                         <Flag team={t.team} size={18} />
-                        <span className="truncate">{t.team.name}</span>
+                        <span className={`truncate ${i === 0 ? "font-semibold text-ink-50" : ""}`}>
+                          {t.team.name}
+                        </span>
                       </span>
                     </td>
                     {(["R32", "R16", "QF", "SF", "F", "champion"] as const).map((r) => {

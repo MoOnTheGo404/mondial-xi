@@ -15,6 +15,7 @@ const PAGES: { name: string; path: string; settle?: number }[] = [
   { name: "match-lab", path: "/lab?home=norway&away=england&neutral=true&hs=norway%2Ferling-haaland%3Aout", settle: 6000 },
   { name: "compare", path: "/compare?home=argentina&away=france&neutral=true&bh=argentina%2Flionel-messi%3Aout", settle: 8000 },
   { name: "simulator", path: "/simulator", settle: 8000 },
+  { name: "simulator-2030", path: "/simulator/2030", settle: 12000 },
   { name: "teams", path: "/teams" },
   { name: "team-profile", path: "/team/brazil", settle: 4000 },
   { name: "players", path: "/players" },
