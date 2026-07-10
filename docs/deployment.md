@@ -37,13 +37,33 @@ The images are identical to what Render builds. (Docker was not installed on
 the original dev machine, so images were validated via the CI `docker` job
 rather than run locally there.)
 
-## Other hosts
+## Split host: frontend on Netlify/Vercel + API on Render/Railway/Fly
 
-- **Railway / Fly.io**: same two Dockerfiles; point each service's build at
-  `infrastructure/{api,web}.Dockerfile`, set `API_INTERNAL_URL` on the web
-  service to the API's URL.
-- **Frontend on Vercel + API on Render**: deploy `apps/web` to Vercel (native
-  Next.js) with `API_INTERNAL_URL` set to the Render API URL.
+The frontend can live on a JS host (Netlify, Vercel) while the API runs on a
+Python host. **The API cannot run as a Netlify/Vercel serverless function** —
+it's a persistent Python process with numpy/scipy/scikit-learn/polars and a
+trained model bundle, far past a function bundle's size/runtime limits. Deploy
+`apps/api` to a host that runs a real process; the frontend's `/api/v1/*` proxy
+([`app/api/v1/[...path]/route.ts`](../apps/web/app/api/v1/%5B...path%5D/route.ts))
+forwards to it server-side (so no CORS), reading `API_INTERNAL_URL` at request
+time.
+
+1. **Deploy the API** to Render (New → Web Service → Docker,
+   `infrastructure/api.Dockerfile`, free plan) — or Railway / Fly.io / Cloud Run
+   with the same Dockerfile. The `mondial-xi-api` service in
+   [`render.yaml`](../render.yaml) already describes this; via Blueprint you can
+   ignore the `mondial-xi-web` service it also creates. Confirm
+   `https://<api-host>/api/v1/health` returns `{"status":"ok"}`.
+2. **Point the frontend at it**: set the site env var
+   `API_INTERNAL_URL = https://<api-host>` (Netlify: Site configuration →
+   Environment variables; Vercel: Project → Settings → Environment Variables),
+   then **trigger a redeploy** so the proxy function picks up the new value.
+3. Re-test `https://<your-frontend>/api/v1/health` — it should now return ok.
+
+Gotcha: an unset `API_INTERNAL_URL` makes the proxy target `localhost:8000`, so
+every call returns `{"error":{"code":"upstream_unreachable"}}` (502) — the tell
+that the API host or env var is missing.
+
 - **Database**: SQLite by default; set
   `KICKOFF_DATABASE_URL=postgresql+psycopg://…` for managed Postgres
   (SQLAlchemy handles both).
@@ -58,11 +78,13 @@ does the whole cycle:
 make refresh   # re-download → rebuild → retrain → re-evaluate → re-snapshot
 ```
 
-**Shipped automation:** `.github/workflows/daily-refresh.yml` runs this at
-07:00 UTC daily (and on manual dispatch): it refreshes the data, retrains,
-re-runs the leakage/metrics tests as a sanity check, and commits the changed
-JSON artifacts + README metrics back to the repo (`[skip ci]`). If the
-upstream dataset is unchanged, it no-ops.
+**Shipped automation:** `.github/workflows/daily-refresh.yml` runs this **every
+30 minutes** (and on manual dispatch): it re-downloads the CC0 core, pulls the
+Wikipedia fresh-results overlay, rebuilds, retrains, re-runs the leakage/metrics
+tests as a sanity check, commits any changed JSON artifacts + README metrics
+back to the repo (`[skip ci]`), and — if `RENDER_DEPLOY_HOOK` is set — redeploys
+the live API so new results appear within the half-hour. If nothing changed
+upstream, it no-ops.
 
 **For a deployment:**
 - If the platform redeploys on push (Vercel/Railway/Render), the daily commit
