@@ -168,14 +168,36 @@ def test_simulation_deterministic_and_capped(client):
     assert over.status_code == 422
 
 
+def _find_upcoming_tie(node):
+    """Deepest not-yet-played knockout tie with both teams known (or None)."""
+    if not node:
+        return None
+    for child in node.get("children") or []:
+        found = _find_upcoming_tie(child)
+        if found:
+            return found
+    if node["status"] != "finished" and node.get("home_id") and node.get("away_id"):
+        return node
+    return None
+
+
 def test_simulation_locked_result(client):
+    # Pick an actually-upcoming tie so the test stays valid as real results land
+    # (e.g. once a QF is played it is pinned and can no longer be locked).
+    detail = client.get("/api/v1/tournaments/wc2026").json()
+    tie = _find_upcoming_tie(detail["bracket_tree"])
+    if tie is None:
+        pytest.skip("no upcoming knockout tie to lock (tournament fully resolved)")
+    loser, winner, rnd = tie["home_id"], tie["away_id"], tie["round"]
+    nxt = {"R16": "QF", "QF": "SF", "SF": "F", "F": "champion"}[rnd]
+
     body = {
         "n_sims": 3000, "seed": 11,
-        "locked": [{"round": "QF", "team_a": "france", "team_b": "morocco", "winner": "morocco"}],
+        "locked": [{"round": rnd, "team_a": tie["home_id"], "team_b": tie["away_id"], "winner": winner}],
     }
     d = client.post("/api/v1/simulations/tournament", json=body).json()
-    france = next(t for t in d["teams"] if t["team_id"] == "france")
-    assert france["reach"]["SF"] == 0.0  # France cannot pass a locked QF loss
+    loser_row = next(t for t in d["teams"] if t["team_id"] == loser)
+    assert loser_row["reach"][nxt] == 0.0  # the locked loser cannot advance
 
 
 def test_models_metrics_from_artifacts(client):

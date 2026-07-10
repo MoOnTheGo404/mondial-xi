@@ -60,11 +60,61 @@ def _canonical_cols(df: pl.DataFrame) -> pl.DataFrame:
     )
 
 
+def _overlay_wikipedia(raw: pl.DataFrame) -> pl.DataFrame:
+    """Fill scores the core (martj42) hasn't published yet from the Wikipedia
+    overlay (data/raw/wikipedia_results.csv). Only *missing* core scores are
+    filled — recorded results are never overwritten — and matches absent from
+    the core in either orientation are appended. No-op if the overlay is absent
+    (graceful degradation)."""
+    path = RAW_DIR / "wikipedia_results.csv"
+    if not path.exists():
+        return raw
+    wiki = pl.read_csv(path, schema_overrides=RESULT_SCHEMA)
+    if wiki.is_empty():
+        return raw
+
+    keys = ["date", "home_team", "away_team"]
+    missing = pl.col("home_score").is_null() | pl.col("home_score").is_in(["NA", ""])
+    w = wiki.select([*keys, "home_score", "away_score"]).rename(
+        {"home_score": "_whs", "away_score": "_was"}
+    )
+    joined = raw.join(w, on=keys, how="left")
+    filled = joined.filter(missing & pl.col("_whs").is_not_null()).height
+    merged = joined.with_columns(
+        pl.when(missing & pl.col("_whs").is_not_null())
+        .then(pl.col("_whs"))
+        .otherwise(pl.col("home_score"))
+        .alias("home_score"),
+        pl.when(missing & pl.col("_was").is_not_null())
+        .then(pl.col("_was"))
+        .otherwise(pl.col("away_score"))
+        .alias("away_score"),
+    ).drop(["_whs", "_was"])
+
+    core_pairs = {
+        (d, frozenset((h, a)))
+        for d, h, a in zip(raw["date"], raw["home_team"], raw["away_team"], strict=True)
+    }
+    extra = [
+        r
+        for r in wiki.iter_rows(named=True)
+        if (r["date"], frozenset((r["home_team"], r["away_team"]))) not in core_pairs
+    ]
+    if extra:
+        merged = pl.concat(
+            [merged, pl.DataFrame(extra, schema_overrides=RESULT_SCHEMA).select(merged.columns)],
+            how="vertical",
+        )
+    log.info("wikipedia overlay applied", filled_scores=filled, appended=len(extra))
+    return merged
+
+
 def build_all() -> dict:
     PROCESSED_DIR.mkdir(parents=True, exist_ok=True)
     report: dict = {"generated_at": datetime.now(UTC).isoformat(), "checks": []}
 
     raw = pl.read_csv(RAW_DIR / "results.csv", schema_overrides=RESULT_SCHEMA)
+    raw = _overlay_wikipedia(raw)
     n_raw = raw.height
 
     # --- validation -------------------------------------------------------

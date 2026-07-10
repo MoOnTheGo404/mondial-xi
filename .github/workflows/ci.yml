@@ -24,6 +24,7 @@ jobs:
       - name: Build data + artifacts (CC0 download, ~10 MB)
         run: |
           uv run python -m kickoff_ml.ingestion.download
+          uv run python -m kickoff_ml.ingestion.wikipedia
           uv run python -m kickoff_ml.ingestion.build
           uv run python -m kickoff_ml.models.players
           uv run python scripts/make_test_fixtures.py
@@ -88,6 +89,7 @@ jobs:
       - name: Data + artifacts
         run: |
           uv run python -m kickoff_ml.ingestion.download
+          uv run python -m kickoff_ml.ingestion.wikipedia
           uv run python -m kickoff_ml.ingestion.build
           uv run python -m kickoff_ml.models.players
           uv run python -m kickoff_ml.evaluation.run

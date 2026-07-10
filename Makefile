@@ -13,8 +13,9 @@ bootstrap: ## install Python + JS dependencies
 	uv sync --all-packages
 	pnpm install
 
-data: ## download (CC0) + validate + build processed datasets + player registry
+data: ## download (CC0) + fresh-results overlay (Wikipedia) + validate + build + player registry
 	uv run python -m kickoff_ml.ingestion.download
+	uv run python -m kickoff_ml.ingestion.wikipedia
 	uv run python -m kickoff_ml.ingestion.build
 	uv run python -m kickoff_ml.models.players
 	uv run python scripts/make_test_fixtures.py

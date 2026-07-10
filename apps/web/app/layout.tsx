@@ -47,7 +47,7 @@ export default function RootLayout({
           </main>
           <footer className="border-t border-ink-800 py-6">
             <div className="mx-auto flex max-w-7xl flex-wrap justify-between gap-x-6 gap-y-1 px-4 font-mono text-[11px] text-ink-500 sm:px-6">
-              <span>Open data · martj42 (CC0), Wikidata (CC0), flag-icons (MIT), Open-Meteo (CC BY 4.0)</span>
+              <span>Open data · martj42 (CC0), Wikipedia (CC BY-SA 4.0), Wikidata (CC0), flag-icons (MIT), Open-Meteo (CC BY 4.0)</span>
               <span>Probabilistic estimates for study, not betting advice.</span>
             </div>
           </footer>

@@ -35,6 +35,14 @@ export default function MethodologyPage() {
           header. Downloads are checksummed and recorded in provenance manifests.
         </li>
         <li>
+          <strong>Fresh-results overlay</strong>: Wikipedia (CC BY-SA 4.0). The CC0
+          core is volunteer-maintained and can lag a day or two behind a final whistle,
+          so the current tournament&apos;s Wikipedia page is parsed for <em>completed</em>{" "}
+          scorelines (facts only) to fill matches the core hasn&apos;t published yet.
+          Never overwrites a recorded result; skips any tie without a numeric score, so
+          nothing is invented. Falls back to the core alone if unavailable.
+        </li>
+        <li>
           <strong>Flags</strong>: <code>flag-icons</code> (MIT). Historical/dissolved
           teams without a licensed flag render a neutral monogram.
         </li>

@@ -34,6 +34,7 @@ RUN uv sync --all-packages --frozen --no-dev
 # (downloads the CC0 dataset, validates, builds parquet, trains & evaluates
 #  models, writes the serving bundle and the aging calibration)
 RUN uv run python -m kickoff_ml.ingestion.download \
+ && uv run python -m kickoff_ml.ingestion.wikipedia \
  && uv run python -m kickoff_ml.ingestion.build \
  && uv run python -m kickoff_ml.models.players \
  && uv run python -m kickoff_ml.evaluation.run \

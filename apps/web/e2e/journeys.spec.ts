@@ -125,27 +125,41 @@ test("tournament simulator: run, lock an upset, probabilities change", async ({
     page.getByRole("heading", { name: /advancement probabilities/i }),
   ).toBeVisible({ timeout: 30_000 });
 
-  // France row shows a championship probability
-  const franceRow = page.locator("tr", { hasText: "France" }).first();
-  await expect(franceRow).toBeVisible();
-  const before = await franceRow.locator("td").last().textContent();
-
-  // in the knockout bracket, pick Morocco to beat France in the QF
+  // Lock whatever tie is still upcoming (played ties are pinned & unlockable,
+  // so we can't hard-code one — the tournament moves on as results land).
   await page.getByRole("heading", { name: /knockout bracket/i }).scrollIntoViewIfNeeded();
-  await page.getByRole("button", { name: /lock morocco to win/i }).click();
+  const lockBtn = page.getByRole("button", { name: /lock .* to win/i }).first();
+  await expect(lockBtn).toBeVisible({ timeout: 30_000 });
+  const stripLabel = (l: string) => l.replace(/^Lock /, "").replace(/ to win$/, "");
+  const winner = stripLabel((await lockBtn.getAttribute("aria-label")) ?? "");
+  // the loser is the other team in the same match box
+  const box = lockBtn.locator("xpath=ancestor::div[contains(@class,'w-44')][1]");
+  const labels = await box
+    .getByRole("button", { name: /lock .* to win/i })
+    .evaluateAll((els) => els.map((e) => e.getAttribute("aria-label") ?? ""));
+  const loser = labels.map(stripLabel).find((n) => n && n !== winner)!;
+
+  await lockBtn.click();
   await expect(page.getByRole("button", { name: /clear 1 lock/i })).toBeVisible();
   await page.getByRole("button", { name: /re-run/i }).click();
 
   await expect(async () => {
     const after = await page
-      .locator("tr", { hasText: "France" })
+      .locator("tr", { hasText: loser })
       .first()
       .locator("td")
       .last()
       .textContent();
-    expect(after).toBe("—"); // France cannot win after a locked QF exit
+    expect(after).toBe("—"); // the locked loser can no longer be champion
   }).toPass({ timeout: 30_000 });
-  expect(before).not.toBe("—");
+  // the locked winner is still alive
+  const winnerCell = await page
+    .locator("tr", { hasText: winner })
+    .first()
+    .locator("td")
+    .last()
+    .textContent();
+  expect(winnerCell).not.toBe("—");
   expect(noCritical(errors)).toEqual([]);
 });
 

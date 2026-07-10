@@ -39,6 +39,7 @@ jobs:
       - name: Refresh data + retrain + re-evaluate
         run: |
           uv run python -m kickoff_ml.ingestion.download --force
+          uv run python -m kickoff_ml.ingestion.wikipedia
           uv run python -m kickoff_ml.ingestion.build
           uv run python -m kickoff_ml.models.players
           uv run python -m kickoff_ml.evaluation.run
