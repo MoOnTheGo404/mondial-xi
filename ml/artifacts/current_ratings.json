@@ -1,5 +1,5 @@
 {
-  "as_of": "2026-07-09",
+  "as_of": "2026-07-10",
   "elo_config": {
     "home_advantage": 80.0,
     "k_scale": 0.75
@@ -50,8 +50,8 @@
       "matches": 520
     },
     "belgium": {
-      "elo": 1985.3,
-      "matches": 858
+      "elo": 1974.4,
+      "matches": 859
     },
     "france": {
       "elo": 2166.3,
@@ -170,8 +170,8 @@
       "matches": 761
     },
     "spain": {
-      "elo": 2184.2,
-      "matches": 788
+      "elo": 2195.1,
+      "matches": 789
     },
     "estonia": {
       "elo": 1411.3,
