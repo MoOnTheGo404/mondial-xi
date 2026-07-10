@@ -33,8 +33,8 @@ export default function HomePage() {
   const upcoming = useQuery({
     queryKey: ["fixtures-upcoming"],
     queryFn: () => apiGet<FixtureList>("/fixtures?status=upcoming&limit=6"),
-    // fixtures/results are the live-moving data — poll every 2 min
-    refetchInterval: 120_000,
+    // fixtures/results are the live-moving data — poll every minute
+    refetchInterval: 60_000,
   });
   const simPost = useQuery({
     queryKey: ["sim-champions"],
@@ -56,7 +56,7 @@ export default function HomePage() {
   const recent = useQuery({
     queryKey: ["fixtures-recent-home"],
     queryFn: () => apiGet<FixtureList>("/fixtures?status=recent&limit=6&tournament=FIFA World Cup"),
-    refetchInterval: 120_000,
+    refetchInterval: 60_000,
   });
 
   return (

@@ -2,14 +2,19 @@ name: Data refresh
 
 # The open dataset (martj42/international_results) is updated through the day as
 # matches finish. This job re-downloads it, rebuilds the processed data,
-# retrains and re-evaluates the models, refreshes the README metrics, and
-# commits any changed artifacts so the repo (and any deployment that tracks it)
-# stays current. Runs every 3 hours so new results appear within hours, not the
-# next day; the commit/redeploy steps are no-ops when the dataset is unchanged.
+# retrains and re-evaluates the models, refreshes the README metrics, commits
+# any changed artifacts, and (if RENDER_DEPLOY_HOOK is set) redeploys the live
+# site so a freshly-finished result appears within the half-hour. It can only
+# pull what the upstream open dataset has published — it never fabricates a
+# result. Runs every 30 minutes; the commit/redeploy steps are no-ops when the
+# dataset is unchanged, so quiet periods cost almost nothing.
+#
+# Note: GitHub may delay or drop very high-frequency scheduled runs under load;
+# 30 min is the practical floor for a reliable cadence.
 
 on:
   schedule:
-    - cron: "0 */3 * * *" # every 3 hours (00:00, 03:00, … UTC)
+    - cron: "*/30 * * * *" # every 30 minutes
   workflow_dispatch: {} # allow manual runs
 
 permissions:
