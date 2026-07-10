@@ -11,7 +11,10 @@ export function Providers({ children }: { children: React.ReactNode }) {
           queries: {
             staleTime: 60_000,
             retry: 1,
-            refetchOnWindowFocus: false,
+            // Pull fresh data when the user returns to the tab or reconnects,
+            // so newly-finished matches show up without a manual reload.
+            refetchOnWindowFocus: true,
+            refetchOnReconnect: true,
           },
         },
       }),

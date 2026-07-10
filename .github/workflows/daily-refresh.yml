@@ -1,14 +1,15 @@
-name: Daily data refresh
+name: Data refresh
 
-# The open dataset (martj42/international_results) is updated daily as matches
-# finish. This job re-downloads it, rebuilds the processed data, retrains and
-# re-evaluates the models, refreshes the README metrics, and commits any
-# changed artifacts so the repo (and any deployment that tracks it) stays
-# current. Runs after the day's games are typically complete.
+# The open dataset (martj42/international_results) is updated through the day as
+# matches finish. This job re-downloads it, rebuilds the processed data,
+# retrains and re-evaluates the models, refreshes the README metrics, and
+# commits any changed artifacts so the repo (and any deployment that tracks it)
+# stays current. Runs every 3 hours so new results appear within hours, not the
+# next day; the commit/redeploy steps are no-ops when the dataset is unchanged.
 
 on:
   schedule:
-    - cron: "0 7 * * *" # 07:00 UTC daily
+    - cron: "0 */3 * * *" # every 3 hours (00:00, 03:00, … UTC)
   workflow_dispatch: {} # allow manual runs
 
 permissions:

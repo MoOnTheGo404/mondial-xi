@@ -33,6 +33,8 @@ export default function HomePage() {
   const upcoming = useQuery({
     queryKey: ["fixtures-upcoming"],
     queryFn: () => apiGet<FixtureList>("/fixtures?status=upcoming&limit=6"),
+    // fixtures/results are the live-moving data — poll every 2 min
+    refetchInterval: 120_000,
   });
   const simPost = useQuery({
     queryKey: ["sim-champions"],
@@ -54,28 +56,30 @@ export default function HomePage() {
   const recent = useQuery({
     queryKey: ["fixtures-recent-home"],
     queryFn: () => apiGet<FixtureList>("/fixtures?status=recent&limit=6&tournament=FIFA World Cup"),
+    refetchInterval: 120_000,
   });
 
   return (
     <div className="space-y-10">
-      {/* hero — "stadium at night" */}
-      <section className="relative overflow-hidden rounded-2xl border border-ink-700 pitch-glow">
-        {/* ambient floodlights + drifting pitch stripes */}
+      {/* hero — "floodlit night" showpiece */}
+      <section className="relative overflow-hidden rounded-3xl border border-ink-700/80 pitch-glow">
+        {/* ambient floodlights + drifting stripes + top hairline */}
         <div aria-hidden className="pointer-events-none absolute inset-0">
-          <div className="floodlight absolute -top-12 left-[12%] h-56 w-44 -rotate-12 animate-[beam-pulse_6s_ease-in-out_infinite]" />
-          <div className="floodlight absolute -top-12 right-[16%] h-56 w-44 rotate-12 animate-[beam-pulse_7.5s_ease-in-out_infinite]" />
+          <div className="floodlight absolute -top-14 left-[10%] h-64 w-48 -rotate-12 animate-[beam-pulse_6s_ease-in-out_infinite]" />
+          <div className="floodlight absolute -top-14 right-[14%] h-64 w-48 rotate-12 animate-[beam-pulse_7.5s_ease-in-out_infinite]" />
           <div className="pitch-stripes absolute inset-x-0 bottom-0 h-24 opacity-70" />
+          <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-brand/60 to-transparent" />
         </div>
 
         <div className="relative grid items-center gap-6 p-6 sm:p-10 lg:grid-cols-[1.55fr_1fr]">
           <div className="animate-fade-up">
-            <p className="inline-flex items-center gap-2 rounded-full border border-gold/30 bg-gold/10 px-3 py-1 font-mono text-[11px] uppercase tracking-[0.25em] text-gold">
-              <span aria-hidden className="h-1.5 w-1.5 rounded-full bg-gold" />
+            <p className="inline-flex items-center gap-2 rounded-full border border-brand/40 bg-brand/10 px-3 py-1 font-mono text-[11px] uppercase tracking-[0.25em] text-brand">
+              <span aria-hidden className="h-1.5 w-1.5 animate-pulse rounded-full bg-flare" />
               Le Mondial · World Cup 2026
             </p>
-            <h1 className="mt-4 max-w-2xl font-display text-4xl font-black uppercase leading-[0.9] tracking-tight text-ink-50 sm:text-6xl">
-              Who lifts the <span className="text-gold">trophy</span>?
-              <span className="mt-1 block text-home">The data has a hunch.</span>
+            <h1 className="mt-4 max-w-2xl font-display text-4xl font-black uppercase leading-[0.88] tracking-tight text-ink-50 sm:text-6xl">
+              Who lifts the <span className="text-gradient">trophy</span>?
+              <span className="mt-1 block">The data has a hunch.</span>
             </h1>
             <p className="mt-4 max-w-xl text-ink-300">
               Calibrated match forecasts, player-scenario experiments and a tournament
@@ -86,13 +90,13 @@ export default function HomePage() {
             <div className="mt-6 flex flex-wrap gap-3">
               <Link
                 href="/simulator"
-                className="btn-glow rounded bg-home px-5 py-2.5 font-display text-sm font-bold uppercase tracking-wide text-ink-950"
+                className="btn-glow rounded-lg bg-gradient-to-r from-brand-deep to-brand px-5 py-2.5 font-display text-sm font-bold uppercase tracking-wide text-white shadow-[0_10px_30px_-10px_rgba(139,124,255,0.7)]"
               >
                 Simulate the World Cup
               </Link>
               <Link
                 href="/lab"
-                className="rounded border border-ink-600 px-5 py-2.5 font-display text-sm font-bold uppercase tracking-wide text-ink-100 transition-colors hover:border-gold hover:text-gold"
+                className="rounded-lg border border-ink-600 px-5 py-2.5 font-display text-sm font-bold uppercase tracking-wide text-ink-100 transition-colors hover:border-brand hover:text-brand"
               >
                 Open Match Lab
               </Link>
@@ -117,22 +121,41 @@ export default function HomePage() {
             )}
           </div>
 
-          {/* animated crest: spinning ball with a gleaming trophy */}
-          <div
-            aria-hidden
-            className="relative mx-auto hidden aspect-square w-full max-w-[19rem] items-center justify-center lg:flex"
-          >
-            <div className="absolute inset-8 rounded-full bg-home/10 blur-2xl" />
-            <div className="absolute inset-12 rounded-full bg-gold/10 blur-2xl" />
-            <div className="animate-float">
-              <SoccerBall size={228} spin className="drop-shadow-[0_22px_44px_rgba(0,0,0,0.6)]" />
+          {/* animated crest: spotlit spinning ball + gleaming trophy + live favourite chip */}
+          <div className="relative mx-auto hidden aspect-square w-full max-w-[20rem] items-center justify-center lg:flex">
+            <div aria-hidden className="spotlight absolute -inset-6 animate-[beam-pulse_8s_ease-in-out_infinite]" />
+            <div aria-hidden className="absolute inset-10 rounded-full bg-brand/20 blur-3xl" />
+            <div aria-hidden className="absolute inset-16 rounded-full bg-flare/15 blur-2xl" />
+            {/* orbiting particles */}
+            <div aria-hidden className="animate-spin-slow absolute inset-0" style={{ animationDuration: "26s" }}>
+              <span className="absolute left-1/2 top-1 h-1.5 w-1.5 -translate-x-1/2 rounded-full bg-flare/80" />
+              <span className="absolute bottom-3 left-6 h-1 w-1 rounded-full bg-brand/80" />
+              <span className="absolute right-4 top-10 h-1 w-1 rounded-full bg-gold/80" />
+            </div>
+
+            <div aria-hidden className="animate-float">
+              <SoccerBall size={236} spin className="drop-shadow-[0_26px_50px_rgba(0,0,0,0.65)]" />
             </div>
             <div
-              className="animate-float absolute -right-1 -top-1"
+              aria-hidden
+              className="animate-float absolute -right-2 -top-2"
               style={{ animationDelay: "-2.2s" }}
             >
-              <Trophy size={96} shine className="drop-shadow-[0_12px_26px_rgba(245,196,81,0.4)]" />
+              <Trophy size={104} shine className="drop-shadow-[0_14px_30px_rgba(245,196,81,0.45)]" />
             </div>
+
+            {/* live favourite chip */}
+            {simPost.data && simPost.data.teams[0] && (
+              <div className="absolute -bottom-1 left-0 flex items-center gap-2 rounded-full border border-brand/30 bg-ink-950/85 px-3 py-1.5 shadow-lg backdrop-blur animate-fade-up">
+                <Flag team={simPost.data.teams[0].team} size={18} />
+                <span className="font-display text-xs font-bold text-ink-50">
+                  {simPost.data.teams[0].team.name}
+                </span>
+                <span className="font-mono text-xs tabular-nums text-gold">
+                  {fmtPct(simPost.data.teams[0].reach.champion, 1)}
+                </span>
+              </div>
+            )}
           </div>
         </div>
       </section>
@@ -187,12 +210,11 @@ export default function HomePage() {
                 .filter((t) => t.reach.champion > 0)
                 .slice(0, 12)
                 .map((t, i) => (
-                  <li key={t.team_id} className="flex items-center gap-3">
-                    {i === 0 ? (
-                      <Trophy size={22} title="Current favourite" className="shrink-0" />
-                    ) : (
-                      <Flag team={t.team} size={22} />
-                    )}
+                  <li key={t.team_id} className="flex items-center gap-2">
+                    <span className="flex w-5 shrink-0 justify-center">
+                      {i === 0 && <Trophy size={20} title="Current favourite" />}
+                    </span>
+                    <Flag team={t.team} size={22} />
                     <Link
                       href={`/team/${t.team_id}`}
                       className={`w-32 truncate hover:text-home ${

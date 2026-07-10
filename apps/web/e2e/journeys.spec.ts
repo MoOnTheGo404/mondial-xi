@@ -23,9 +23,9 @@ test("home page shows system status, fixtures and championship odds", async ({
   const errors = watchConsole(page);
   await page.goto("/");
   await expect(page.getByRole("heading", { level: 1 })).toContainText(
-    /likely to happen/i,
+    /who lifts the trophy/i,
   );
-  await expect(page.getByText("matches ingested")).toBeVisible();
+  await expect(page.getByText("matches", { exact: true })).toBeVisible();
   await expect(
     page.getByRole("heading", { name: /championship probabilities/i }),
   ).toBeVisible({ timeout: 20_000 });
@@ -151,8 +151,10 @@ test("tournament simulator: run, lock an upset, probabilities change", async ({
 
 test("team explorer → team profile with Elo chart and history", async ({ page }) => {
   await page.goto("/teams");
-  await page.getByRole("link", { name: /brazil/i }).first().click();
-  await expect(page).toHaveURL(/\/team\/brazil/);
+  const brazil = page.getByRole("link", { name: /brazil/i }).first();
+  await brazil.waitFor({ state: "visible" });
+  await brazil.click();
+  await expect(page).toHaveURL(/\/team\/brazil/, { timeout: 15_000 });
   await expect(page.getByRole("heading", { name: /elo history/i })).toBeVisible();
   await expect(page.getByRole("heading", { name: /record by venue/i })).toBeVisible();
   // venue filter works

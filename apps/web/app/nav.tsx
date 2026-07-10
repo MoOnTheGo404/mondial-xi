@@ -44,7 +44,7 @@ export function Nav() {
           <span className="font-display text-lg font-black uppercase tracking-tight text-ink-50">
             Mondial
           </span>
-          <span className="font-display text-sm font-black leading-none text-home transition-colors group-hover:text-gold">
+          <span className="font-display text-sm font-black leading-none text-gradient transition-opacity group-hover:opacity-80">
             XI
           </span>
         </Link>
@@ -59,14 +59,14 @@ export function Nav() {
                     href={l.href}
                     aria-current={active ? "page" : undefined}
                     className={`relative rounded px-2.5 py-1.5 text-sm font-medium transition-colors ${
-                      active ? "text-home" : "text-ink-300 hover:text-ink-50"
+                      active ? "text-brand" : "text-ink-300 hover:text-ink-50"
                     }`}
                   >
                     {l.label}
                     {active && (
                       <span
                         aria-hidden
-                        className="absolute inset-x-2.5 -bottom-[13px] h-0.5 rounded-full bg-home"
+                        className="absolute inset-x-2.5 -bottom-[13px] h-0.5 rounded-full bg-brand"
                       />
                     )}
                   </Link>
@@ -80,8 +80,8 @@ export function Nav() {
           {data?.ready ? (
             <span className="flex items-center gap-1.5 text-ink-400" title={`Model ${data.model_version}`}>
               <span aria-hidden className="relative flex h-1.5 w-1.5">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-home opacity-60" />
-                <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-home" />
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-brand opacity-60" />
+                <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-brand" />
               </span>
               cutoff <span className="text-ink-200">{data.data_cutoff}</span>
             </span>
@@ -115,7 +115,7 @@ export function Nav() {
                   aria-current={pathname?.startsWith(l.href) ? "page" : undefined}
                   className={`block rounded px-3 py-2 text-sm ${
                     pathname?.startsWith(l.href)
-                      ? "bg-ink-800 font-semibold text-home"
+                      ? "bg-ink-800 font-semibold text-brand"
                       : "text-ink-200 hover:bg-ink-900"
                   }`}
                 >

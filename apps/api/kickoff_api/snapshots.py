@@ -62,6 +62,22 @@ def snapshot_upcoming(state, version_label: str = "dataset_snapshot") -> int:
                 },
                 "prediction": pred,
             }
+            # Hash only the *forecast content* — never volatile provenance like
+            # provider_retrieved_at. Otherwise every refresh re-hashes an
+            # unchanged forecast to a new value and stores a duplicate row. A
+            # genuinely revised forecast (new probs/xG/model/cutoff) still yields
+            # a new hash → a new immutable row, as intended.
+            content = {
+                "fixture_id": fx.fixture_id,
+                "kickoff_date": fx.date,
+                "home_id": fx.home_id,
+                "away_id": fx.away_id,
+                "neutral": fx.neutral,
+                "model_version": pred["model_version"],
+                "data_cutoff": pred["data_cutoff"],
+                "probabilities": pred["probabilities"],
+                "expected_goals": pred["expected_goals"],
+            }
             row = PredictionSnapshot(
                 fixture_id=fx.fixture_id,
                 kickoff_date=fx.date,
@@ -72,7 +88,7 @@ def snapshot_upcoming(state, version_label: str = "dataset_snapshot") -> int:
                 lineup_status="none_available",
                 version_label=version_label,
                 payload=payload,
-                content_hash=_content_hash(payload),
+                content_hash=_content_hash(content),
             )
             session.add(row)
             try:
@@ -128,8 +144,20 @@ def list_snapshots(limit: int = 200) -> list[dict]:
             select(PredictionSnapshot).order_by(
                 PredictionSnapshot.kickoff_date.desc(),
                 PredictionSnapshot.generated_at.desc(),
-            ).limit(limit)
+            )
         ).all()
+        # Collapse to one row per fixture — the latest forecast we stand by.
+        # Historic runs (before the content-hash fix) left several near-identical
+        # rows per fixture; showing them all is noise and would multi-count
+        # cumulative metrics. Rows arrive latest-first, so keep the first seen.
+        seen: set[str] = set()
+        deduped: list[PredictionSnapshot] = []
+        for s in rows:
+            if s.fixture_id in seen:
+                continue
+            seen.add(s.fixture_id)
+            deduped.append(s)
+        rows = deduped[:limit]
         return [
             {
                 "id": s.id,

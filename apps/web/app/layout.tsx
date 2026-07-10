@@ -37,7 +37,7 @@ export default function RootLayout({
         <Providers>
           <a
             href="#main"
-            className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded focus:bg-home focus:px-3 focus:py-2 focus:font-bold focus:text-ink-950"
+            className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded focus:bg-brand focus:px-3 focus:py-2 focus:font-bold focus:text-white"
           >
             Skip to content
           </a>
