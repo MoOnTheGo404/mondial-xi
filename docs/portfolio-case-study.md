@@ -36,12 +36,15 @@ champion frozen on validation before test was touched.
 ## Modeling
 
 Tuned Elo (grid on validation) → Poisson GLMs → Dixon–Coles (ρ by MLE) →
-calibrated GBM. Result on the untouched test window (n=3,689): log loss
-0.870 vs 1.054 frequency baseline, top-pick accuracy 60.8%, ECE 0.014.
-Honest finding: Dixon–Coles edges the GBM on test by 0.004 — international
-outcomes are rating-gap dominated; the GBM mostly buys *calibration* (its
-uncalibrated version is worse than Elo). That finding is printed on the
-Performance page rather than buried.
+calibrated GBM → a parameter-free **geometric-mean ensemble** (log-opinion pool
+of Elo-logistic × Dixon–Coles), which is the champion, frozen on validation
+before test was touched. Result on the untouched test window (n=3,694): log loss
+**0.8644** vs 1.054 frequency baseline, top-pick accuracy **60.2%**, ECE 0.0175.
+Honest finding: the ensemble edges the calibrated GBM on test (0.8644 vs 0.8701)
+and the standalone Dixon–Coles is close behind (0.8662) — international outcomes
+are rating-gap dominated, so the GBM mostly buys *calibration* (its uncalibrated
+version is worse than Elo). That comparison is printed on the Performance page
+rather than buried.
 
 ## Simulation engineering
 

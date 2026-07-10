@@ -31,12 +31,16 @@ identical. No rankings/odds/post-match stats in features at all.
 prediction via shared team state → inflated metrics. Fit 1980–2018, select
 2019–2022, single evaluation on 2023→cutoff.
 
-**Your champion loses to Dixon–Coles on test — why keep it?** Selection was
-pre-registered on validation (GBM 0.8555 vs DC 0.8606). Swapping after seeing
-test = test-set shopping. The 0.004 gap is within noise; the GBM wins on
-calibration (ECE 0.014 vs 0.017) which is what we display to users.
+**Why the geometric ensemble as champion?** It had the lowest *validation* log
+loss (0.8585), pre-registered before test was touched — and it also generalizes
+best on the untouched test (0.8644, ahead of Dixon–Coles 0.8662 and the
+calibrated GBM 0.8701). It's **parameter-free** (a log-opinion pool / geometric
+mean of the Elo-logistic and Dixon–Coles probabilities), so there is nothing to
+overfit. Honest caveats we print rather than bury: standalone Dixon–Coles is
+within noise, and the calibrated GBM has the best *calibration* (ECE 0.0133 vs
+0.0175).
 
-**Why is 60.8% accuracy good?** Three-class problem with structural draw
+**Why is 60.2% accuracy good?** Three-class problem with structural draw
 noise; frequency baseline is 47.2%, Elo 60.3%. Log loss/RPS are the honest
 lens; we beat the naive baseline by ~0.18 log loss = large.
 
