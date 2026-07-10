@@ -4,6 +4,12 @@
 international football** — built end-to-end on public-domain data with
 chronological evaluation, honest provenance, and a full product UI.
 
+### ▶ Live demo — **[mondial-xi-web.onrender.com](https://mondial-xi-web.onrender.com)**
+
+*Hosted on a free tier, so the first request after idle can take ~30–60 s to
+wake the API — reload once and it's instant. API health:
+[`/api/v1/health`](https://mondial-xi-api.onrender.com/api/v1/health).*
+
 ![Home](docs/screenshots/home-desktop.png)
 
 > *What is likely to happen, why does the model believe it, how reliable has
