@@ -1,6 +1,6 @@
-# Kickoff Atlas web image.
+# Mondial XI — web image (Next.js).
 # Build context = repository root:
-#   docker build -f infrastructure/web.Dockerfile -t kickoff-web .
+#   docker build -f infrastructure/web.Dockerfile -t mondial-xi-web .
 FROM node:22-slim AS builder
 RUN corepack enable && corepack prepare pnpm@11.10.0 --activate
 WORKDIR /app
@@ -20,6 +20,6 @@ WORKDIR /app
 ENV NODE_ENV=production NEXT_TELEMETRY_DISABLED=1
 COPY --from=builder /app ./
 EXPOSE 3000
-HEALTHCHECK --interval=30s --timeout=5s --start-period=20s \
-  CMD node -e "fetch('http://localhost:3000').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"
-CMD ["pnpm", "--filter", "@kickoff/web", "start"]
+# The Next server proxies /api/v1/* to API_INTERNAL_URL (set at runtime).
+# Render injects $PORT; default to 3000 locally.
+CMD ["sh", "-c", "pnpm --filter @kickoff/web exec next start -p ${PORT:-3000}"]

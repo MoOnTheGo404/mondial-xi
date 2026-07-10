@@ -1,6 +1,6 @@
-# Kickoff Atlas — local container stack.
-# Prerequisite on the build machine: `make data && make train` (the API image
-# copies processed data + trained artifacts; models are never trained at startup).
+# Mondial XI — local container stack (mirrors the Render deployment).
+# The API image builds the CC0 data + trained artifacts during its Docker
+# build, so no prerequisites: `docker compose up --build` is enough.
 services:
   api:
     build:

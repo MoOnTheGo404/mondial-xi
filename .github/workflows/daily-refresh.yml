@@ -42,9 +42,9 @@ jobs:
       - name: Sanity check (leakage + metrics tests)
         run: uv run pytest tests/unit/ml -q
 
-      - name: Commit refreshed artifacts if changed
+      - name: Commit refreshed metrics if changed
         run: |
-          git config user.name "kickoff-atlas-bot"
+          git config user.name "mondial-xi-bot"
           git config user.email "actions@github.com"
           git add data/manifests ml/artifacts README.md
           if git diff --cached --quiet; then
@@ -54,3 +54,12 @@ jobs:
             git commit -m "chore(data): daily refresh — cutoff ${CUTOFF} [skip ci]"
             git push
           fi
+
+      # Optional: trigger a Render redeploy so the live site rebuilds with the
+      # fresh dataset. Add a RENDER_DEPLOY_HOOK repo secret (Render → service →
+      # Settings → Deploy Hook) to enable; skipped silently if unset.
+      - name: Trigger Render redeploy
+        if: ${{ env.RENDER_DEPLOY_HOOK != '' }}
+        env:
+          RENDER_DEPLOY_HOOK: ${{ secrets.RENDER_DEPLOY_HOOK }}
+        run: curl -fsS -X POST "$RENDER_DEPLOY_HOOK" && echo "Render redeploy triggered"

@@ -54,27 +54,18 @@ jobs:
 
   docker:
     runs-on: ubuntu-latest
-    needs: [python]
     steps:
       - uses: actions/checkout@v4
-      - uses: astral-sh/setup-uv@v5
-        with:
-          python-version: "3.12"
-      - name: Build data + artifacts for image
-        run: |
-          uv sync --all-packages
-          uv run python -m kickoff_ml.ingestion.download
-          uv run python -m kickoff_ml.ingestion.build
-          uv run python -m kickoff_ml.models.players
-          uv run python -m kickoff_ml.evaluation.run
-      - name: Build API image
-        run: docker build -f infrastructure/api.Dockerfile -t kickoff-api .
+      # The API image builds its own data + artifacts during the Docker build,
+      # so no pre-build step is needed — this mirrors the Render deploy exactly.
+      - name: Build API image (downloads CC0 data + trains inside the build)
+        run: docker build -f infrastructure/api.Dockerfile -t mondial-xi-api .
       - name: Build web image
-        run: docker build -f infrastructure/web.Dockerfile -t kickoff-web .
+        run: docker build -f infrastructure/web.Dockerfile -t mondial-xi-web .
       - name: Smoke-test API container
         run: |
-          docker run -d --name api -p 8000:8000 kickoff-api
-          for i in $(seq 1 30); do
+          docker run -d --name api -e PORT=8000 -p 8000:8000 mondial-xi-api
+          for i in $(seq 1 40); do
             curl -sf http://localhost:8000/api/v1/health && exit 0 || sleep 2
           done
           docker logs api

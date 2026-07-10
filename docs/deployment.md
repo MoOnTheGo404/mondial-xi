@@ -1,33 +1,52 @@
 # Deployment
 
-## Status (honest)
+## Deploy to Render (recommended — full app, free)
 
-Not deployed to a public host. Docker images are authored and CI builds +
-smoke-tests them (`.github/workflows/ci.yml`, `docker` job); the development
-machine has no Docker, so container startup was **not** verified locally.
-Everything below is the designed path.
+The whole app (Next.js frontend + FastAPI backend + trained models) runs as
+two Docker services. The API image **builds the CC0 data and trains the
+models during its Docker build**, so a fresh clone deploys self-contained —
+no pre-built artifacts, no manual steps.
 
-## Containers
+1. Push this repo to GitHub (already done if you're reading this there).
+2. Go to **render.com → New → Blueprint**, connect this repo.
+3. Render reads [`render.yaml`](../render.yaml) and provisions both services on
+   the **free plan**: `mondial-xi-api` and `mondial-xi-web`. The web service's
+   `API_INTERNAL_URL` is wired to the API automatically.
+4. First build takes ~3–5 min (the API downloads data + trains). When both are
+   live, open the **web** service URL — it behaves exactly like `make dev`.
+
+Notes:
+- The browser only talks to the web service; Next proxies `/api/v1/*` to the
+  API server-side, so there is no CORS to configure.
+- Free web services **sleep after ~15 min idle** and cold-start in ~30–60 s.
+  The first request after a nap is slow; everything works after.
+- The snapshot SQLite DB is ephemeral on the free plan (regenerated at
+  startup). For a persistent track record, attach a paid disk at
+  `/app/data` or set `KICKOFF_DATABASE_URL` to managed Postgres.
+- **Daily fresh data:** add a `RENDER_DEPLOY_HOOK` repo secret (Render →
+  service → Settings → Deploy Hook) and the daily-refresh workflow triggers a
+  rebuild each morning; each rebuild re-downloads the latest results.
+
+## Run the container stack locally
 
 ```bash
-make data && make train          # artifacts are baked into the API image
-docker compose up --build        # api :8000, web :3000
+docker compose up --build        # api :8000, web :3000 — no prerequisites
 ```
 
-- API image: uv-based, copies processed parquet + artifacts, healthcheck on
-  `/api/v1/health`, **never trains at startup**.
-- Web image: pnpm build → `next start`, healthcheck on `/`.
-- Snapshot DB on a named volume (`sqlite:////app/data/kickoff.db`).
+The images are identical to what Render builds. (Docker was not installed on
+the original dev machine, so images were validated via the CI `docker` job
+rather than run locally there.)
 
-## Low-cost production architecture
+## Other hosts
 
-- **Fly.io / Railway / Render**: one small VM each for api + web
-  (512 MB–1 GB is ample; artifact bundle ~1 MB, dataset parquet ~4 MB).
-- **Database**: keep SQLite on a volume at this scale, or set
-  `KICKOFF_DATABASE_URL=postgresql+psycopg://…` (SQLAlchemy handles both;
-  managed Postgres ≈ $5/mo when multi-instance).
-- **Frontend alternative**: Vercel for `apps/web` with `API_INTERNAL_URL`
-  pointed at the API host.
+- **Railway / Fly.io**: same two Dockerfiles; point each service's build at
+  `infrastructure/{api,web}.Dockerfile`, set `API_INTERNAL_URL` on the web
+  service to the API's URL.
+- **Frontend on Vercel + API on Render**: deploy `apps/web` to Vercel (native
+  Next.js) with `API_INTERNAL_URL` set to the Render API URL.
+- **Database**: SQLite by default; set
+  `KICKOFF_DATABASE_URL=postgresql+psycopg://…` for managed Postgres
+  (SQLAlchemy handles both).
 
 ## Daily auto-update
 

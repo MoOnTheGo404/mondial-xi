@@ -1,0 +1,41 @@
+# Render blueprint — deploys Mondial XI (web + API) from this repo.
+# One-time setup:
+#   1. Push this repo to GitHub.
+#   2. render.com → New → Blueprint → connect this repo.
+#   3. Render reads this file and provisions both services (free plan).
+# The API image builds the CC0 data + trained models during its Docker build,
+# so nothing extra is needed. Auto-deploys on every push to the default branch.
+services:
+  # ---- Python / FastAPI backend (predictions, simulations, snapshots) ----
+  - type: web
+    name: mondial-xi-api
+    runtime: docker
+    dockerfilePath: ./infrastructure/api.Dockerfile
+    dockerContext: .
+    plan: free
+    region: oregon
+    autoDeploy: true
+    healthCheckPath: /api/v1/health
+    envVars:
+      - key: KICKOFF_WEATHER_ENABLED
+        value: "true"
+      # The browser reaches the API only through the web server's proxy
+      # (same origin), so CORS never fires for normal use; permissive is safe.
+      - key: KICKOFF_CORS_ORIGINS
+        value: '["*"]'
+
+  # ---- Next.js frontend (proxies /api/v1/* to the API service) ----
+  - type: web
+    name: mondial-xi-web
+    runtime: docker
+    dockerfilePath: ./infrastructure/web.Dockerfile
+    dockerContext: .
+    plan: free
+    region: oregon
+    autoDeploy: true
+    envVars:
+      - key: API_INTERNAL_URL
+        fromService:
+          type: web
+          name: mondial-xi-api
+          property: host

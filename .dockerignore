@@ -11,7 +11,9 @@
 apps/web/coverage
 apps/web/playwright-report
 apps/web/test-results
-data/raw
+# raw CSVs are re-downloaded during the build; keep the committed Wikidata JSON
+data/raw/*.csv
+data/raw/*.parquet
 data/cache
 data/*.db
 .git

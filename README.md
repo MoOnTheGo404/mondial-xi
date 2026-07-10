@@ -153,16 +153,17 @@ Interactive docs at `localhost:8000/api/docs`.
 
 ## Deployment
 
-Dockerfiles + compose in [infrastructure/](infrastructure) &
-[docker-compose.yml](docker-compose.yml); CI (lint, types, tests, builds,
-container smoke test, e2e) in `.github/workflows/ci.yml`. Deployment
-architecture, scheduled refresh design and rollback:
+**One-click on Render:** connect this repo as a Blueprint and
+[`render.yaml`](render.yaml) provisions the full app (web + API) on the free
+plan. The API image builds the CC0 data and trains the models during its
+Docker build, so it deploys self-contained — the live site behaves exactly
+like `make dev`. Step-by-step + other hosts (Railway, Fly, Vercel+Render):
 [docs/deployment.md](docs/deployment.md).
 
-**Status honesty:** this repository has not been deployed to a public host,
-and Docker images were authored + CI-built but not verified on the
-development machine (Docker not installed there). Everything else in this
-README was executed and verified locally.
+Dockerfiles in [infrastructure/](infrastructure), local stack via
+`docker compose up --build`, CI (lint, types, tests, builds, container smoke
+test, e2e) in `.github/workflows/ci.yml`, and a daily data-refresh workflow
+that retrains and can trigger a redeploy.
 
 ## Limitations (read before quoting numbers)
 
