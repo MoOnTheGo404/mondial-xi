@@ -2,7 +2,7 @@
 
 import { useMemo } from "react";
 import type { Team } from "@kickoff/shared";
-import { Flag } from "@kickoff/ui";
+import { Flag, Trophy } from "@kickoff/ui";
 
 export interface BracketNode {
   round: string;
@@ -295,7 +295,7 @@ export function KnockoutBracket({
               {pickedChamp?.team ? (
                 <>
                   <div className="flex items-center gap-2">
-                    <span aria-hidden className="text-xs">🏆</span>
+                    <Trophy size={18} className="shrink-0" />
                     <Flag team={pickedChamp.team} size={18} />
                     <span className="truncate text-sm font-bold text-gold">
                       {pickedChamp.team.name}
@@ -306,7 +306,7 @@ export function KnockoutBracket({
               ) : champion ? (
                 <>
                   <div className="flex items-center gap-2">
-                    <span aria-hidden className="text-xs">🏆</span>
+                    <Trophy size={18} className="shrink-0" />
                     <Flag team={champion.team} size={18} />
                     <span className="truncate text-sm font-bold text-gold">
                       {champion.team.name}
