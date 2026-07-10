@@ -1,25 +1,28 @@
 @import "tailwindcss";
 @import "flag-icons/css/flag-icons.min.css";
 
-/* Kickoff Atlas design tokens — editorial night-pitch palette.
-   Color semantics: home/team-A = lime signal, away/team-B = azure,
-   draw = neutral slate. Lime/azure remain distinguishable under
-   deuteranopia/protanopia (yellow-vs-blue axis). */
+/* Mondial XI design tokens — deep night-pitch palette with a trophy-gold
+   accent. Semantics: home/team-A = emerald (the pitch), away/team-B = azure,
+   draw = neutral slate, champion/winner = gold. Emerald vs azure stay
+   distinguishable under deuteranopia/protanopia (green-vs-blue axis); gold is
+   only ever a *secondary* emphasis paired with labels/medals, never the sole
+   encoder of H/D/A data. */
 @theme {
-  --color-ink-950: #070b09;
-  --color-ink-900: #0d1410;
-  --color-ink-800: #17211b;
-  --color-ink-700: #253229;
-  --color-ink-600: #37483d;
-  --color-ink-500: #55685c;
-  --color-ink-400: #7f9186;
-  --color-ink-300: #a6b5ac;
-  --color-ink-200: #c9d4cd;
-  --color-ink-100: #e4eae6;
-  --color-ink-50: #f5f8f6;
+  --color-ink-950: #05080a;
+  --color-ink-900: #0a1012;
+  --color-ink-800: #131b1e;
+  --color-ink-700: #202b2e;
+  --color-ink-600: #33413f;
+  --color-ink-500: #52625f;
+  --color-ink-400: #7d8d8a;
+  --color-ink-300: #a4b3af;
+  --color-ink-200: #c8d2cf;
+  --color-ink-100: #e4eae8;
+  --color-ink-50: #f5f8f7;
 
-  --color-home: #a3e635; /* lime-400 */
-  --color-away: #38bdf8; /* sky-400 */
+  --color-home: #34e57e; /* emerald — pitch / positive / team A */
+  --color-away: #38bdf8; /* sky — team B */
+  --color-gold: #f5c451; /* trophy gold — champion / winner emphasis */
 
   --font-display: var(--font-archivo), system-ui, sans-serif;
   --font-mono: var(--font-plex-mono), ui-monospace, monospace;
@@ -33,7 +36,8 @@ html {
 
 body {
   background:
-    radial-gradient(1200px 500px at 85% -10%, rgba(163, 230, 53, 0.05), transparent),
+    radial-gradient(1100px 480px at 88% -12%, rgba(52, 229, 126, 0.06), transparent 70%),
+    radial-gradient(900px 420px at 8% 4%, rgba(245, 196, 81, 0.035), transparent 70%),
     var(--color-ink-950);
   color: var(--color-ink-100);
   font-family: var(--font-sans);
@@ -65,5 +69,97 @@ body {
 }
 
 ::selection {
-  background: rgba(163, 230, 53, 0.25);
+  background: rgba(52, 229, 126, 0.25);
+}
+
+/* ---- motion ------------------------------------------------------------ */
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes grow-x {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+.animate-fade-up {
+  animation: fade-up 0.55s cubic-bezier(0.22, 0.7, 0.2, 1) both;
+}
+.animate-fade-in {
+  animation: fade-in 0.5s ease both;
+}
+/* stagger helpers for revealing a group of elements in sequence */
+.stagger > * {
+  animation: fade-up 0.55s cubic-bezier(0.22, 0.7, 0.2, 1) both;
+}
+.stagger > *:nth-child(1) {
+  animation-delay: 0.03s;
+}
+.stagger > *:nth-child(2) {
+  animation-delay: 0.09s;
+}
+.stagger > *:nth-child(3) {
+  animation-delay: 0.15s;
+}
+.stagger > *:nth-child(4) {
+  animation-delay: 0.21s;
+}
+.stagger > *:nth-child(5) {
+  animation-delay: 0.27s;
+}
+.stagger > *:nth-child(6) {
+  animation-delay: 0.33s;
+}
+
+/* probability-bar segments grow from the left on mount */
+.bar-grow {
+  transform-origin: left;
+  animation: grow-x 0.7s cubic-bezier(0.22, 0.7, 0.2, 1) both;
+}
+
+/* interactive card lift */
+.card-hover {
+  transition:
+    transform 0.18s ease,
+    border-color 0.18s ease,
+    background-color 0.18s ease,
+    box-shadow 0.18s ease;
+}
+.card-hover:hover {
+  transform: translateY(-2px);
+  border-color: var(--color-ink-500);
+  box-shadow: 0 8px 24px -12px rgba(0, 0, 0, 0.7);
+}
+
+/* glow on primary actions */
+.btn-glow {
+  transition:
+    filter 0.18s ease,
+    box-shadow 0.18s ease,
+    transform 0.12s ease;
+}
+.btn-glow:hover {
+  filter: brightness(1.08);
+  box-shadow: 0 0 0 1px rgba(52, 229, 126, 0.4), 0 8px 28px -10px rgba(52, 229, 126, 0.45);
+}
+.btn-glow:active {
+  transform: translateY(1px);
 }

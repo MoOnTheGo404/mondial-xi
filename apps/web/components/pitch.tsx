@@ -75,8 +75,8 @@ export function PitchFormation({
                 cx={s.x}
                 cy={s.y}
                 r="13"
-                fill={name ? "#a3e635" : "#17211b"}
-                stroke={name ? "#a3e635" : "#55685c"}
+                fill={name ? "#34e57e" : "#131b1e"}
+                stroke={name ? "#34e57e" : "#52625f"}
                 strokeWidth="1.5"
               />
               <text
@@ -85,7 +85,7 @@ export function PitchFormation({
                 textAnchor="middle"
                 fontSize="9"
                 fontFamily="monospace"
-                fill={name ? "#0d1410" : "#7f9186"}
+                fill={name ? "#0a1012" : "#7d8d8a"}
               >
                 {s.label}
               </text>
@@ -95,7 +95,7 @@ export function PitchFormation({
                   y={s.y + 26}
                   textAnchor="middle"
                   fontSize="9"
-                  fill="#c9d4cd"
+                  fill="#c8d2cf"
                 >
                   {name.split(" ").slice(-1)[0]}
                 </text>

@@ -99,7 +99,7 @@ function MatchBox({
   const canLock = scheduled && node.home_id && node.away_id;
   const border =
     node.round === "F"
-      ? "border-home/60"
+      ? "border-gold/50"
       : finished
         ? "border-ink-700"
         : scheduled
@@ -225,16 +225,17 @@ export function KnockoutBracket({
           {/* champion cap */}
           <div className="flex items-center">
             <Connector />
-            <div className="w-40 rounded-md border border-home/50 bg-home/5 p-2">
+            <div className="w-40 rounded-md border border-gold/50 bg-gold/[0.07] p-2 shadow-[0_0_24px_-8px_rgba(245,196,81,0.35)]">
               {champion ? (
                 <>
                   <div className="flex items-center gap-2">
+                    <span aria-hidden className="text-xs">🏆</span>
                     <Flag team={champion.team} size={18} />
-                    <span className="truncate text-sm font-bold text-ink-50">
+                    <span className="truncate text-sm font-bold text-gold">
                       {champion.team.name}
                     </span>
                   </div>
-                  <p className="mt-1 font-mono text-[10px] text-home">
+                  <p className="mt-1 font-mono text-[10px] text-gold/80">
                     {(100 * champion.prob).toFixed(1)}% title (sim)
                   </p>
                 </>

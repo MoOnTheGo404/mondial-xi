@@ -1,4 +1,4 @@
-# Kickoff Atlas ⚽
+# Mondial XI ⚽
 
 **Probabilistic forecasting and Monte Carlo tournament simulation for
 international football** — built end-to-end on public-domain data with

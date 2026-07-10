@@ -62,10 +62,11 @@ export default function HomePage() {
       <section className="grid items-end gap-6 border-b border-ink-800 pb-8 lg:grid-cols-[1.4fr_1fr]">
         <div>
           <p className="font-mono text-xs uppercase tracking-[0.25em] text-home">
-            International football, quantified
+            The international football forecast
           </p>
           <h1 className="mt-3 max-w-2xl font-display text-4xl font-black uppercase leading-[0.95] tracking-tight text-ink-50 sm:text-5xl">
-            What&apos;s likely to happen — and why the model believes it
+            What&apos;s likely to happen —{" "}
+            <span className="text-home">and why</span> the model believes it
           </h1>
           <p className="mt-4 max-w-xl text-ink-300">
             Calibrated match forecasts, player-scenario experiments and Monte Carlo
@@ -75,13 +76,13 @@ export default function HomePage() {
           <div className="mt-5 flex flex-wrap gap-3">
             <Link
               href="/simulator"
-              className="rounded bg-home px-4 py-2 font-display text-sm font-bold uppercase tracking-wide text-ink-950 hover:brightness-110"
+              className="btn-glow rounded bg-home px-4 py-2 font-display text-sm font-bold uppercase tracking-wide text-ink-950"
             >
               Simulate the World Cup
             </Link>
             <Link
               href="/lab"
-              className="rounded border border-ink-600 px-4 py-2 font-display text-sm font-bold uppercase tracking-wide text-ink-100 hover:border-home hover:text-home"
+              className="rounded border border-ink-600 px-4 py-2 font-display text-sm font-bold uppercase tracking-wide text-ink-100 transition-colors hover:border-home hover:text-home"
             >
               Open Match Lab
             </Link>

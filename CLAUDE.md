@@ -1,6 +1,6 @@
 # CLAUDE.md — Engineering guide for this repository
 
-**Product:** Kickoff Atlas — an international football forecasting & tournament
+**Product:** Mondial XI — an international football forecasting & tournament
 simulation platform. Open-data core (CC0 historical results), provider-based
 architecture for optional live enrichment, chronologically-validated
 probabilistic models, Monte Carlo tournament engine, Next.js frontend.

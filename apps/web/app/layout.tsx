@@ -3,6 +3,7 @@ import { Archivo, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./providers";
 import { Nav } from "./nav";
+import { PageTransition } from "./page-transition";
 
 const archivo = Archivo({
   subsets: ["latin"],
@@ -18,8 +19,8 @@ const plexMono = IBM_Plex_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "Kickoff Atlas — international football forecasting",
-    template: "%s · Kickoff Atlas",
+    default: "Mondial XI — international football forecasting",
+    template: "%s · Mondial XI",
   },
   description:
     "Probabilistic forecasts, player-scenario labs and Monte Carlo tournament simulation for international football, built on open data with honest provenance.",
@@ -42,7 +43,7 @@ export default function RootLayout({
           </a>
           <Nav />
           <main id="main" className="mx-auto w-full max-w-7xl px-4 pb-20 pt-6 sm:px-6">
-            {children}
+            <PageTransition>{children}</PageTransition>
           </main>
           <footer className="border-t border-ink-800 py-6">
             <div className="mx-auto flex max-w-7xl flex-wrap justify-between gap-x-6 gap-y-1 px-4 font-mono text-[11px] text-ink-500 sm:px-6">

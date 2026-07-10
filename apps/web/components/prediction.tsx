@@ -71,8 +71,8 @@ export function ScoreMatrix({
                     key={j}
                     className="rounded-sm p-1 text-center tabular-nums"
                     style={{
-                      background: `rgba(163, 230, 53, ${(0.85 * alpha).toFixed(3)})`,
-                      color: alpha > 0.55 ? "#0d1410" : "#a6b5ac",
+                      background: `rgba(52, 229, 126, ${(0.85 * alpha).toFixed(3)})`,
+                      color: alpha > 0.55 ? "#0a1012" : "#a4b3af",
                       minWidth: 38,
                     }}
                     title={`${homeName} ${i}–${j} ${awayName}: ${fmtPct(p, 1)}`}

@@ -1,4 +1,4 @@
-# Case study — Kickoff Atlas
+# Case study — Mondial XI
 
 ## The problem
 
@@ -60,8 +60,9 @@ independently verified Wikipedia standings exactly.
 ## Product & design
 
 Next.js 16 App Router with an editorial "night pitch" identity (Tailwind v4
-tokens, Archivo + Plex Mono, lime/azure colorblind-safe probability
-semantics). Twelve pages, all functional: the Match Lab debounces scenario
+tokens, Archivo + Plex Mono, an emerald/azure colorblind-safe probability
+palette with a trophy-gold champion accent, restrained motion). Every page is
+functional: the Match Lab debounces scenario
 edits into the API and encodes the entire scenario in the URL; the simulator
 exposes seeds, locks and CSV export; every forecast shows model version,
 data cutoff, quality grade and generated explanations. Empty states say *why*

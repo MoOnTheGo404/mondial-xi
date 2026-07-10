@@ -197,7 +197,7 @@ test("keyboard navigation: skip link and focusable nav", async ({ page }) => {
   await page.keyboard.press("Tab");
   await expect(page.getByRole("link", { name: /skip to content/i })).toBeFocused();
   await page.keyboard.press("Tab");
-  await expect(page.getByRole("link", { name: /kickoff atlas home/i })).toBeFocused();
+  await expect(page.getByRole("link", { name: /mondial xi home/i })).toBeFocused();
 });
 
 test("mobile navigation works @mobile", async ({ page }) => {

@@ -56,7 +56,7 @@ function downloadCsv(sim: SimulationResult) {
   const blob = new Blob([lines.join("\n")], { type: "text/csv" });
   const a = document.createElement("a");
   a.href = URL.createObjectURL(blob);
-  a.download = `kickoff-atlas-sim-${sim.seed}-${sim.n_sims}.csv`;
+  a.download = `mondial-xi-sim-${sim.seed}-${sim.n_sims}.csv`;
   a.click();
   URL.revokeObjectURL(a.href);
 }
@@ -215,8 +215,8 @@ export default function SimulatorPage() {
                 .map((t, i) => (
                   <tr
                     key={t.team_id}
-                    className={`border-b border-ink-800/60 ${
-                      i === 0 ? "bg-home/[0.06]" : ""
+                    className={`border-b border-ink-800/60 transition-colors hover:bg-ink-800/40 ${
+                      i === 0 ? "bg-gold/[0.06]" : ""
                     }`}
                   >
                     <td className="py-1.5 pr-2">
@@ -249,9 +249,9 @@ export default function SimulatorPage() {
                           style={{
                             color:
                               v === 0
-                                ? "#55685c"
+                                ? "#52625f"
                                 : v === 1
-                                  ? "#a3e635"
+                                  ? "#34e57e"
                                   : `rgba(228, 234, 230, ${0.45 + 0.55 * v})`,
                           }}
                         >

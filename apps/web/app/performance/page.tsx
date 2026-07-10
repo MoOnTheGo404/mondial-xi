@@ -60,8 +60,8 @@ interface Metrics {
 
 const chartTheme = {
   contentStyle: {
-    background: "#0d1410",
-    border: "1px solid #253229",
+    background: "#0a1012",
+    border: "1px solid #202b2e",
     borderRadius: 6,
     fontFamily: "monospace",
     fontSize: 12,
@@ -191,28 +191,28 @@ export default function PerformancePage() {
           <div className="h-72" aria-hidden>
             <ResponsiveContainer>
               <ScatterChart margin={{ top: 8, right: 8, bottom: 4, left: -14 }}>
-                <CartesianGrid stroke="#1c2921" />
+                <CartesianGrid stroke="#131b1e" />
                 <XAxis
                   type="number"
                   dataKey="forecast_mean"
                   domain={[0, 1]}
-                  stroke="#55685c"
+                  stroke="#52625f"
                   fontSize={11}
                   fontFamily="monospace"
-                  label={{ value: "forecast", position: "insideBottom", offset: -2, fill: "#7f9186", fontSize: 11 }}
+                  label={{ value: "forecast", position: "insideBottom", offset: -2, fill: "#7d8d8a", fontSize: 11 }}
                 />
                 <YAxis
                   type="number"
                   dataKey="observed_freq"
                   domain={[0, 1]}
-                  stroke="#55685c"
+                  stroke="#52625f"
                   fontSize={11}
                   fontFamily="monospace"
-                  label={{ value: "observed", angle: -90, position: "insideLeft", offset: 24, fill: "#7f9186", fontSize: 11 }}
+                  label={{ value: "observed", angle: -90, position: "insideLeft", offset: 24, fill: "#7d8d8a", fontSize: 11 }}
                 />
                 <ReferenceLine
                   segment={[{ x: 0, y: 0 }, { x: 1, y: 1 }]}
-                  stroke="#55685c"
+                  stroke="#52625f"
                   strokeDasharray="4 4"
                 />
                 <Tooltip
@@ -224,7 +224,7 @@ export default function PerformancePage() {
                     key={cls}
                     name={cls}
                     data={rel.filter((r) => r.class === cls)}
-                    fill={["#a3e635", "#7f9186", "#38bdf8"][i]}
+                    fill={["#34e57e", "#7d8d8a", "#38bdf8"][i]}
                   />
                 ))}
               </ScatterChart>
@@ -244,11 +244,11 @@ export default function PerformancePage() {
           <div className="h-72" aria-hidden>
             <ResponsiveContainer>
               <LineChart data={metrics.by_year} margin={{ top: 8, right: 8, bottom: 4, left: -14 }}>
-                <CartesianGrid stroke="#1c2921" />
-                <XAxis dataKey="year" stroke="#55685c" fontSize={11} fontFamily="monospace" />
-                <YAxis stroke="#55685c" fontSize={11} fontFamily="monospace" domain={["auto", "auto"]} />
+                <CartesianGrid stroke="#131b1e" />
+                <XAxis dataKey="year" stroke="#52625f" fontSize={11} fontFamily="monospace" />
+                <YAxis stroke="#52625f" fontSize={11} fontFamily="monospace" domain={["auto", "auto"]} />
                 <Tooltip {...chartTheme} />
-                <Line type="monotone" dataKey="log_loss" stroke="#a3e635" strokeWidth={2} dot />
+                <Line type="monotone" dataKey="log_loss" stroke="#34e57e" strokeWidth={2} dot />
                 <Line type="monotone" dataKey="accuracy" stroke="#38bdf8" strokeWidth={1.5} dot />
               </LineChart>
             </ResponsiveContainer>

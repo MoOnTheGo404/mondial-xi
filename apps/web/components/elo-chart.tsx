@@ -37,14 +37,14 @@ export function EloChart({ teamId, teamName }: { teamId: string; teamName: strin
           <LineChart data={pts} margin={{ top: 6, right: 8, bottom: 0, left: -18 }}>
             <XAxis
               dataKey="year"
-              stroke="#55685c"
+              stroke="#52625f"
               fontSize={11}
               tickLine={false}
               minTickGap={40}
               fontFamily="monospace"
             />
             <YAxis
-              stroke="#55685c"
+              stroke="#52625f"
               fontSize={11}
               tickLine={false}
               domain={["auto", "auto"]}
@@ -52,8 +52,8 @@ export function EloChart({ teamId, teamName }: { teamId: string; teamName: strin
             />
             <Tooltip
               contentStyle={{
-                background: "#0d1410",
-                border: "1px solid #253229",
+                background: "#0a1012",
+                border: "1px solid #202b2e",
                 borderRadius: 6,
                 fontFamily: "monospace",
                 fontSize: 12,
@@ -66,7 +66,7 @@ export function EloChart({ teamId, teamName }: { teamId: string; teamName: strin
             <Line
               type="monotone"
               dataKey="elo"
-              stroke="#a3e635"
+              stroke="#34e57e"
               strokeWidth={1.75}
               dot={false}
               isAnimationActive={false}

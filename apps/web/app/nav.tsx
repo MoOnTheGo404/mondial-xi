@@ -38,14 +38,14 @@ export function Nav() {
       <div className="mx-auto flex max-w-7xl items-center gap-4 px-4 py-3 sm:px-6">
         <Link
           href="/"
-          className="flex items-baseline gap-1.5 whitespace-nowrap"
-          aria-label="Kickoff Atlas home"
+          className="group flex items-baseline gap-1 whitespace-nowrap"
+          aria-label="Mondial XI home"
         >
           <span className="font-display text-lg font-black uppercase tracking-tight text-ink-50">
-            Kickoff
+            Mondial
           </span>
-          <span className="font-display text-lg font-black uppercase tracking-tight text-home">
-            Atlas
+          <span className="font-display text-sm font-black leading-none text-home transition-colors group-hover:text-gold">
+            XI
           </span>
         </Link>
 

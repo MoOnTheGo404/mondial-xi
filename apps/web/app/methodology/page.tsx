@@ -21,7 +21,7 @@ export default function MethodologyPage() {
         Methodology &amp; Data
       </h1>
       <p className="mt-2 text-ink-300">
-        Kickoff Atlas is built on a simple contract: every number is traceable to open
+        Mondial XI is built on a simple contract: every number is traceable to open
         data, a documented model, and a written-down protocol. This page summarizes the
         full documentation in the repository&apos;s <code>docs/</code> directory.
       </p>

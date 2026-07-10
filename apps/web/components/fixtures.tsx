@@ -44,7 +44,7 @@ export function FixtureCard({
 }) {
   const finished = m.home_score !== null && m.home_score !== undefined;
   return (
-    <Card className="p-4">
+    <Card className={`p-4 ${href ? "card-hover" : ""}`}>
       <div className="mb-2 flex items-center justify-between gap-2 font-mono text-[11px] text-ink-400">
         <span>{fmtDate(m.date)}</span>
         <span className="truncate">{m.tournament}</span>

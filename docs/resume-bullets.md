@@ -1,10 +1,10 @@
-# Résumé material — Kickoff Atlas
+# Résumé material — Mondial XI
 
 All figures are measured/verified in this repo (metrics.json, test suite,
 manifests). Pick the length that fits your résumé.
 
 ## One-line headline
-**Kickoff Atlas** — full-stack international-football forecasting &
+**Mondial XI** — full-stack international-football forecasting &
 Monte-Carlo tournament-simulation platform (Next.js + FastAPI + Python ML),
 built on 49k+ public-domain matches with leakage-safe, calibrated models.
 
