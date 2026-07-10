@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     template: "%s · Mondial XI",
   },
   description:
-    "Probabilistic forecasts, player-scenario labs and Monte Carlo tournament simulation for international football, built on open data with honest provenance.",
+    "Probabilistic forecasts, player-scenario labs and full-tournament simulation for international football, built on open data with honest provenance.",
 };
 
 export default function RootLayout({

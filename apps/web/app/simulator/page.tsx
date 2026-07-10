@@ -61,6 +61,83 @@ function downloadCsv(sim: SimulationResult) {
   URL.revokeObjectURL(a.href);
 }
 
+/** The 8 best third-placed teams advance at WC 2026. Rank thirds by the FIFA
+ * tiebreakers we have: points, then goal difference, then goals for. */
+function ThirdPlaceTable({
+  groups,
+  bestThirds,
+}: {
+  groups: Record<string, GroupRow[]>;
+  bestThirds: number;
+}) {
+  const thirds = Object.entries(groups)
+    .map(([g, rows]) => {
+      const row = rows.find((r) => r.rank === 3);
+      return row ? { group: g, ...row } : null;
+    })
+    .filter((x): x is NonNullable<typeof x> => x !== null)
+    .sort((a, b) => b.points - a.points || b.gd - a.gd || b.gf - a.gf);
+
+  if (thirds.length === 0) return null;
+
+  return (
+    <section>
+      <SectionTitle sub={`The ${bestThirds} best third-placed teams advance to the round of 32; the rest are eliminated.`}>
+        Third-place ranking
+      </SectionTitle>
+      <Card className="overflow-x-auto p-4">
+        <table className="w-full min-w-[420px] text-sm">
+          <thead>
+            <tr className="border-b border-ink-800 text-left font-mono text-[10px] uppercase tracking-wide text-ink-500">
+              <th className="py-1.5 pr-2 font-normal">#</th>
+              <th className="py-1.5 pr-2 font-normal">Group</th>
+              <th className="py-1.5 pr-2 font-normal">Team</th>
+              <th className="py-1.5 pr-2 text-right font-normal">Pts</th>
+              <th className="py-1.5 pr-2 text-right font-normal">GD</th>
+              <th className="py-1.5 pr-2 text-right font-normal">GF</th>
+              <th className="py-1.5 text-right font-normal">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            {thirds.map((t, i) => {
+              const qualified = i < bestThirds;
+              return (
+                <tr
+                  key={t.team_id}
+                  className={`border-b border-ink-900 ${qualified ? "text-ink-50" : "text-ink-500"}`}
+                >
+                  <td className="py-1.5 pr-2 font-mono text-[11px] text-ink-400">{i + 1}</td>
+                  <td className="py-1.5 pr-2 font-mono text-[11px] text-ink-400">{t.group}</td>
+                  <td className="py-1.5 pr-2">
+                    <span className="flex items-center gap-1.5">
+                      <Flag team={t.team} size={16} />
+                      <span className="truncate">{t.team.name}</span>
+                    </span>
+                  </td>
+                  <td className="py-1.5 pr-2 text-right font-mono tabular-nums">{t.points}</td>
+                  <td className="py-1.5 pr-2 text-right font-mono tabular-nums">
+                    {t.gd > 0 ? `+${t.gd}` : t.gd}
+                  </td>
+                  <td className="py-1.5 pr-2 text-right font-mono tabular-nums">{t.gf}</td>
+                  <td className="py-1.5 text-right">
+                    {qualified ? (
+                      <span className="rounded bg-home/15 px-1.5 py-0.5 font-mono text-[9px] uppercase text-home">
+                        advanced
+                      </span>
+                    ) : (
+                      <span className="font-mono text-[9px] uppercase text-ink-600">out</span>
+                    )}
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </Card>
+    </section>
+  );
+}
+
 export default function SimulatorPage() {
   const [nSims, setNSims] = useState(10_000);
   const [seed, setSeed] = useState(42);
@@ -275,6 +352,7 @@ export default function SimulatorPage() {
           <Card className="p-4">
             <KnockoutBracket
               tree={detail.data.bracket_tree}
+              locks={locks}
               champion={
                 sim.data && sim.data.teams[0]?.reach.champion > 0
                   ? { team: sim.data.teams[0].team, prob: sim.data.teams[0].reach.champion }
@@ -286,11 +364,20 @@ export default function SimulatorPage() {
               onLock={toggleLock}
             />
             <p className="mt-3 font-mono text-[11px] text-ink-500">
-              Completed rounds are pinned to real results; semi-finals and the final are
-              decided by the simulation. Picking a winner locks that tie for the next run.
+              Completed rounds are pinned to real results. Pick a winner for any unplayed
+              tie and it advances to the next round so you can build the bracket out to the
+              final — then Re-run to see how your picks reshape the odds.
             </p>
           </Card>
         </section>
+      )}
+
+      {/* best third-placed teams */}
+      {detail.data && (
+        <ThirdPlaceTable
+          groups={detail.data.groups}
+          bestThirds={detail.data.format.best_thirds}
+        />
       )}
 
       {/* group tables */}

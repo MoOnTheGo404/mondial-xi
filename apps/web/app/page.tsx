@@ -69,9 +69,10 @@ export default function HomePage() {
             <span className="text-home">and why</span> the model believes it
           </h1>
           <p className="mt-4 max-w-xl text-ink-300">
-            Calibrated match forecasts, player-scenario experiments and Monte Carlo
-            tournament simulation, built on 150 years of open international results.
-            Every number carries its model version, data cutoff and data-quality grade.
+            Calibrated match forecasts, player-scenario experiments and a tournament
+            engine that plays the World Cup out tens of thousands of times, built on
+            150 years of open international results. Every number carries its model
+            version, data cutoff and data-quality grade.
           </p>
           <div className="mt-5 flex flex-wrap gap-3">
             <Link
@@ -143,7 +144,7 @@ export default function HomePage() {
           sub={
             simPost.data
               ? `${simPost.data.n_sims.toLocaleString()} simulations · seed ${simPost.data.seed} · ${simPost.data.elapsed_ms} ms · remaining tournament from real state`
-              : "Monte Carlo"
+              : "simulated tournaments"
           }
         >
           World Cup 2026 — championship probabilities

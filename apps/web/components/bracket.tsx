@@ -1,5 +1,6 @@
 "use client";
 
+import { useMemo } from "react";
 import type { Team } from "@kickoff/shared";
 import { Flag } from "@kickoff/ui";
 
@@ -17,6 +18,13 @@ export interface BracketNode {
   children?: BracketNode[];
 }
 
+export interface Lock {
+  round: string;
+  team_a: string;
+  team_b: string;
+  winner: string;
+}
+
 const ROUND_LABEL: Record<string, string> = {
   R16: "Round of 16",
   QF: "Quarter-finals",
@@ -26,6 +34,43 @@ const ROUND_LABEL: Record<string, string> = {
 
 // rounds we expand children for (leaves are Round of 16)
 const EXPAND = new Set(["F", "SF", "QF"]);
+
+// column geometry — must match MatchBox width (w-44) + Connector width (w-7)
+const COL_W = "11rem"; // w-44
+const CONN_W = "1.75rem"; // w-7
+
+/** The winner of a node: the real result, or the user's pick for that tie. */
+function pickedWinner(node: BracketNode, locks: Lock[]): { id: string; team: Team | null } | null {
+  if (node.status === "finished" && node.winner_id) {
+    return { id: node.winner_id, team: node.winner_id === node.home_id ? node.home : node.away };
+  }
+  if (node.home_id && node.away_id) {
+    const lk = locks.find(
+      (l) =>
+        l.round === node.round &&
+        ((l.team_a === node.home_id && l.team_b === node.away_id) ||
+          (l.team_a === node.away_id && l.team_b === node.home_id)),
+    );
+    if (lk) return { id: lk.winner, team: lk.winner === node.home_id ? node.home : node.away };
+  }
+  return null;
+}
+
+/** Fill undecided (pending) rounds with the winners the user has picked in the
+ * rounds below, so a pick advances and the next tie becomes pickable. */
+function resolve(node: BracketNode, locks: Lock[]): BracketNode {
+  const children = node.children?.map((c) => resolve(c, locks));
+  let { home_id, away_id, home, away } = node;
+  if (node.status === "pending" && children && children.length === 2) {
+    const w0 = pickedWinner(children[0], locks);
+    const w1 = pickedWinner(children[1], locks);
+    home_id = w0?.id ?? null;
+    home = w0?.team ?? null;
+    away_id = w1?.id ?? null;
+    away = w1?.team ?? null;
+  }
+  return { ...node, home_id, away_id, home, away, children };
+}
 
 function TeamRow({
   team,
@@ -70,13 +115,13 @@ function TeamRow({
           aria-pressed={locked}
           aria-label={`Lock ${team?.name ?? "team"} to win`}
           onClick={onLock}
-          className={`rounded px-1.5 py-0.5 font-mono text-[9px] uppercase transition-colors ${
+          className={`shrink-0 rounded px-1.5 py-0.5 font-mono text-[9px] uppercase transition-colors ${
             locked
-              ? "bg-amber-400 font-bold text-ink-950"
-              : "border border-ink-700 text-ink-500 hover:border-amber-400 hover:text-amber-300"
+              ? "bg-gold font-bold text-ink-950"
+              : "border border-ink-600 text-ink-400 hover:border-gold hover:text-gold"
           }`}
         >
-          {locked ? "✓" : "pick"}
+          {locked ? "✓ won" : "pick"}
         </button>
       ) : null}
     </div>
@@ -93,16 +138,19 @@ function MatchBox({
   onLock: (round: string, a: string, b: string, winner: string) => void;
 }) {
   const finished = node.status === "finished";
-  const scheduled = node.status === "scheduled";
   const homeWon = node.winner_id === node.home_id;
   const awayWon = node.winner_id === node.away_id;
-  const canLock = scheduled && node.home_id && node.away_id;
-  const border =
-    node.round === "F"
-      ? "border-gold/50"
+  // pickable once both teams are known and the tie hasn't actually been played
+  const canPick = !finished && Boolean(node.home_id) && Boolean(node.away_id);
+  const homeLocked = node.home_id ? isLocked(node.round, node.home_id) : false;
+  const awayLocked = node.away_id ? isLocked(node.round, node.away_id) : false;
+  const border = homeLocked || awayLocked
+    ? "border-gold/60"
+    : node.round === "F"
+      ? "border-gold/40"
       : finished
         ? "border-ink-700"
-        : scheduled
+        : canPick
           ? "border-away/40"
           : "border-ink-800";
 
@@ -112,11 +160,11 @@ function MatchBox({
         team={node.home}
         teamId={node.home_id}
         goals={finished ? node.home_goals : undefined}
-        won={homeWon}
-        faded={finished && !homeWon}
-        locked={node.home_id ? isLocked(node.round, node.home_id) : false}
+        won={finished ? homeWon : homeLocked}
+        faded={(finished && !homeWon) || (!finished && awayLocked)}
+        locked={homeLocked}
         onLock={
-          canLock
+          canPick
             ? () => onLock(node.round, node.home_id!, node.away_id!, node.home_id!)
             : undefined
         }
@@ -126,20 +174,24 @@ function MatchBox({
         team={node.away}
         teamId={node.away_id}
         goals={finished ? node.away_goals : undefined}
-        won={awayWon}
-        faded={finished && !awayWon}
-        locked={node.away_id ? isLocked(node.round, node.away_id) : false}
+        won={finished ? awayWon : awayLocked}
+        faded={(finished && !awayWon) || (!finished && homeLocked)}
+        locked={awayLocked}
         onLock={
-          canLock
+          canPick
             ? () => onLock(node.round, node.home_id!, node.away_id!, node.away_id!)
             : undefined
         }
       />
-      {(finished || scheduled) && (
-        <div className="border-t border-ink-800 px-2 py-0.5 font-mono text-[9px] uppercase tracking-wide text-ink-500">
-          {finished ? (node.shootout ? "penalties" : "full time") : "quarter-final"}
-        </div>
-      )}
+      <div className="border-t border-ink-800 px-2 py-0.5 font-mono text-[9px] uppercase tracking-wide text-ink-500">
+        {finished
+          ? node.shootout
+            ? "penalties"
+            : "full time"
+          : canPick
+            ? "pick a winner →"
+            : "awaiting teams"}
+      </div>
     </div>
   );
 }
@@ -148,7 +200,7 @@ function MatchBox({
 function Connector() {
   return (
     <svg
-      className="w-7 shrink-0 self-stretch text-ink-700"
+      className="w-7 shrink-0 self-stretch text-ink-600"
       preserveAspectRatio="none"
       viewBox="0 0 28 100"
       aria-hidden
@@ -194,39 +246,64 @@ function Node({
 
 export function KnockoutBracket({
   tree,
+  locks,
   champion,
   isLocked,
   onLock,
 }: {
   tree: BracketNode;
+  locks: Lock[];
   champion?: { team: Team; prob: number } | null;
   isLocked: (round: string, teamId: string) => boolean;
   onLock: (round: string, a: string, b: string, winner: string) => void;
 }) {
-  // column headers, left→right (R16 … Final)
-  const cols = ["R16", "QF", "SF", "F"];
+  const resolved = useMemo(() => resolve(tree, locks), [tree, locks]);
+  // if the user has picked the final, that team is *their* champion
+  const pickedChamp = pickedWinner(resolved, locks);
+  const cols = ["R16", "QF", "SF", "F"] as const;
+
   return (
     <div className="overflow-x-auto pb-2">
       <div className="min-w-[900px]">
-        <div className="mb-2 flex items-stretch">
-          {cols.map((c, i) => (
-            <div key={c} className="flex items-center" style={{ flex: i === cols.length - 1 ? "0 0 auto" : 1 }}>
-              <span className="font-mono text-[10px] uppercase tracking-widest text-ink-500">
+        {/* column headers — fixed widths matching the bracket columns below */}
+        <div className="mb-1 flex">
+          {cols.map((c) => (
+            <div key={c} className="flex shrink-0">
+              <div
+                className="text-center font-mono text-[10px] uppercase tracking-widest text-ink-500"
+                style={{ width: COL_W }}
+              >
                 {ROUND_LABEL[c]}
-              </span>
+              </div>
+              <div className="shrink-0" style={{ width: CONN_W }} aria-hidden />
             </div>
           ))}
-          <div className="ml-7 flex items-center">
-            <span className="font-mono text-[10px] uppercase tracking-widest text-home">Champion</span>
+          <div
+            className="text-center font-mono text-[10px] uppercase tracking-widest text-gold"
+            style={{ width: "10rem" }}
+          >
+            Champion
           </div>
         </div>
+
         <div className="flex items-stretch">
-          <Node node={tree} isLocked={isLocked} onLock={onLock} />
+          <Node node={resolved} isLocked={isLocked} onLock={onLock} />
           {/* champion cap */}
           <div className="flex items-center">
             <Connector />
             <div className="w-40 rounded-md border border-gold/50 bg-gold/[0.07] p-2 shadow-[0_0_24px_-8px_rgba(245,196,81,0.35)]">
-              {champion ? (
+              {pickedChamp?.team ? (
+                <>
+                  <div className="flex items-center gap-2">
+                    <span aria-hidden className="text-xs">🏆</span>
+                    <Flag team={pickedChamp.team} size={18} />
+                    <span className="truncate text-sm font-bold text-gold">
+                      {pickedChamp.team.name}
+                    </span>
+                  </div>
+                  <p className="mt-1 font-mono text-[10px] text-gold/80">your pick</p>
+                </>
+              ) : champion ? (
                 <>
                   <div className="flex items-center gap-2">
                     <span aria-hidden className="text-xs">🏆</span>
