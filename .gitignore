@@ -37,6 +37,7 @@ test-results/
 # --- Data (raw downloads are reproducible; never commit bulk data) ---
 data/raw/*
 !data/raw/wikidata_players.json
+!data/raw/former_names.csv
 data/processed/
 data/cache/
 !data/fixtures/
