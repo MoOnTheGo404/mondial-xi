@@ -65,7 +65,7 @@ export default function FixturesPage() {
               }}
               aria-pressed={status === s}
               className={`px-3 py-1.5 text-sm capitalize ${
-                status === s ? "bg-home font-bold text-ink-950" : "text-ink-300 hover:bg-ink-800"
+                status === s ? "bg-brand font-bold text-white" : "text-ink-300 hover:bg-ink-800"
               }`}
             >
               {s}

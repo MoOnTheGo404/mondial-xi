@@ -18,7 +18,7 @@ export function TeamCell({
   return (
     <Link
       href={`/team/${team.team_id}`}
-      className={`flex items-center gap-2 hover:text-home ${right ? "flex-row-reverse text-right" : ""}`}
+      className={`flex items-center gap-2 hover:text-brand ${right ? "flex-row-reverse text-right" : ""}`}
     >
       <Flag team={team} size={22} />
       <span className="font-medium leading-tight">
@@ -79,7 +79,7 @@ export function FixtureCard({
       {href && (
         <Link
           href={href}
-          className="mt-3 inline-block font-mono text-xs uppercase tracking-wide text-home hover:underline"
+          className="mt-3 inline-block font-mono text-xs uppercase tracking-wide text-brand hover:underline"
         >
           Match center →
         </Link>

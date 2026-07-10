@@ -143,7 +143,7 @@ make dev         # API :8000 + web :3000`}
         Deeper reading in the repository: docs/methodology.md · docs/model-card.md ·
         docs/data-card.md · docs/player-model.md · docs/tournament-rules.md ·
         docs/data-source-evaluation.md.{" "}
-        <Link href="/performance" className="text-home hover:underline">
+        <Link href="/performance" className="text-brand hover:underline">
           See measured performance →
         </Link>
       </p>

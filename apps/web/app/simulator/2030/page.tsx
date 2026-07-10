@@ -69,7 +69,7 @@ export default function Outlook2030Page() {
           <Badge tone="warn">outlook — assumptions apply</Badge>
           <Link
             href="/simulator"
-            className="font-mono text-xs uppercase tracking-wide text-home hover:underline"
+            className="font-mono text-xs uppercase tracking-wide text-brand hover:underline"
           >
             ← 2026 simulator (real state)
           </Link>
@@ -113,7 +113,7 @@ export default function Outlook2030Page() {
         <button
           type="button"
           onClick={() => setRunKey((k) => k + 1)}
-          className="rounded bg-home px-4 py-2 font-display text-sm font-bold uppercase text-ink-950"
+          className="rounded bg-brand px-4 py-2 font-display text-sm font-bold uppercase text-white"
         >
           Re-run
         </button>
@@ -145,7 +145,7 @@ export default function Outlook2030Page() {
                     <Flag team={t.team} size={20} />
                     <Link
                       href={`/team/${t.team_id}`}
-                      className="w-36 truncate font-medium hover:text-home"
+                      className="w-36 truncate font-medium hover:text-brand"
                     >
                       {t.team.name}
                     </Link>

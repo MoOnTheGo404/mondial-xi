@@ -97,7 +97,7 @@ export default function TeamPage({ params }: { params: Promise<{ id: string }> }
                     type="button"
                     aria-pressed={comp === c}
                     onClick={() => setComp(c)}
-                    className={`px-2.5 py-1 text-xs capitalize ${comp === c ? "bg-home font-bold text-ink-950" : "text-ink-300 hover:bg-ink-800"}`}
+                    className={`px-2.5 py-1 text-xs capitalize ${comp === c ? "bg-brand font-bold text-white" : "text-ink-300 hover:bg-ink-800"}`}
                   >
                     {c}
                   </button>
@@ -110,7 +110,7 @@ export default function TeamPage({ params }: { params: Promise<{ id: string }> }
                     type="button"
                     aria-pressed={venue === v}
                     onClick={() => setVenue(v)}
-                    className={`px-2.5 py-1 text-xs capitalize ${venue === v ? "bg-home font-bold text-ink-950" : "text-ink-300 hover:bg-ink-800"}`}
+                    className={`px-2.5 py-1 text-xs capitalize ${venue === v ? "bg-brand font-bold text-white" : "text-ink-300 hover:bg-ink-800"}`}
                   >
                     {v}
                   </button>
@@ -207,13 +207,13 @@ export default function TeamPage({ params }: { params: Promise<{ id: string }> }
             <div className="flex flex-col gap-2">
               <Link
                 href={`/lab?home=${id}`}
-                className="rounded bg-home px-3 py-2 text-center font-display text-sm font-bold uppercase text-ink-950"
+                className="rounded bg-brand px-3 py-2 text-center font-display text-sm font-bold uppercase text-white"
               >
                 Forecast a {t.name} match
               </Link>
               <Link
                 href="/simulator"
-                className="rounded border border-ink-600 px-3 py-2 text-center font-display text-sm font-bold uppercase hover:border-home"
+                className="rounded border border-ink-600 px-3 py-2 text-center font-display text-sm font-bold uppercase hover:border-brand"
               >
                 Tournament odds
               </Link>

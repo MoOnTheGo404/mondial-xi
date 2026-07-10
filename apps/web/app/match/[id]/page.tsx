@@ -158,7 +158,7 @@ export default function MatchPage({ params }: { params: Promise<{ id: string }> 
                       />
                       <Link
                         href={`/player/${g.player_id}`}
-                        className="hover:text-home"
+                        className="hover:text-brand"
                       >
                         {g.scorer}
                       </Link>
@@ -221,13 +221,13 @@ export default function MatchPage({ params }: { params: Promise<{ id: string }> 
               <div className="mt-3 flex flex-col gap-2">
                 <Link
                   href={`/lab?home=${m.home.team_id}&away=${m.away.team_id}&neutral=${m.neutral}`}
-                  className="rounded bg-home px-3 py-2 text-center font-display text-sm font-bold uppercase text-ink-950"
+                  className="rounded bg-brand px-3 py-2 text-center font-display text-sm font-bold uppercase text-white"
                 >
                   Open in Match Lab
                 </Link>
                 <Link
                   href={`/compare?home=${m.home.team_id}&away=${m.away.team_id}&neutral=${m.neutral}`}
-                  className="rounded border border-ink-600 px-3 py-2 text-center font-display text-sm font-bold uppercase text-ink-100 hover:border-home"
+                  className="rounded border border-ink-600 px-3 py-2 text-center font-display text-sm font-bold uppercase text-ink-100 hover:border-brand"
                 >
                   Compare scenarios
                 </Link>
@@ -266,7 +266,7 @@ export default function MatchPage({ params }: { params: Promise<{ id: string }> 
             </p>
             <Link
               href="/methodology#availability"
-              className="mt-2 inline-block font-mono text-xs text-home hover:underline"
+              className="mt-2 inline-block font-mono text-xs text-brand hover:underline"
             >
               Why? →
             </Link>
@@ -290,7 +290,7 @@ function TeamHeader({
     <div className={right ? "justify-items-end text-right" : ""}>
       <Link
         href={`/team/${team.team_id}`}
-        className={`flex items-center gap-3 hover:text-home ${right ? "flex-row-reverse" : ""}`}
+        className={`flex items-center gap-3 hover:text-brand ${right ? "flex-row-reverse" : ""}`}
       >
         <Flag team={team} size={40} />
         <span>

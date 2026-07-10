@@ -182,7 +182,7 @@ export default function SimulatorPage() {
           </h1>
           <Link
             href="/simulator/2030"
-            className="font-mono text-xs uppercase tracking-wide text-home hover:underline"
+            className="font-mono text-xs uppercase tracking-wide text-brand hover:underline"
           >
             2030 outlook →
           </Link>
@@ -235,7 +235,7 @@ export default function SimulatorPage() {
         <button
           type="button"
           onClick={() => setRunKey((k) => k + 1)}
-          className="rounded bg-home px-4 py-2 font-display text-sm font-bold uppercase text-ink-950"
+          className="rounded bg-brand px-4 py-2 font-display text-sm font-bold uppercase text-white"
         >
           Re-run
         </button>
@@ -252,7 +252,7 @@ export default function SimulatorPage() {
           <button
             type="button"
             onClick={() => downloadCsv(sim.data)}
-            className="rounded border border-ink-600 px-3 py-2 font-mono text-xs uppercase text-ink-200 hover:border-home"
+            className="rounded border border-ink-600 px-3 py-2 font-mono text-xs uppercase text-ink-200 hover:border-brand"
           >
             Export CSV
           </button>

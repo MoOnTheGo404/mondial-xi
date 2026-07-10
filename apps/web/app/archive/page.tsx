@@ -26,6 +26,46 @@ interface Archive {
   } | null;
 }
 
+function SnapshotRow({ s }: { s: Snapshot }) {
+  return (
+    <Card className="card-hover p-4">
+      <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+        <span className="font-mono text-xs text-ink-400">{s.kickoff_date}</span>
+        <Link
+          href={`/match/${s.fixture_id}`}
+          className="flex items-center gap-2 font-medium hover:text-brand"
+        >
+          {s.home && <Flag team={s.home} size={18} />}
+          {s.home?.name ?? s.home_id}
+          <span className="text-ink-500">v</span>
+          {s.away?.name ?? s.away_id}
+          {s.away && <Flag team={s.away} size={18} />}
+        </Link>
+        {s.result ? (
+          <span className="ml-auto flex items-center gap-3">
+            <span className="font-display font-black tabular-nums">
+              {s.result.home}–{s.result.away}
+            </span>
+            <Badge tone={s.scores?.top_pick_correct ? "signal" : "danger"}>
+              {s.scores?.top_pick_correct ? "top pick ✓" : "top pick ✗"}
+            </Badge>
+            <span className="font-mono text-xs text-ink-400">RPS {s.scores?.rps.toFixed(3)}</span>
+          </span>
+        ) : (
+          <Badge tone="info">sealed · awaiting kickoff</Badge>
+        )}
+      </div>
+      <div className="mt-3 max-w-xl">
+        <ProbBar probs={s.probabilities} homeName={s.home?.name} awayName={s.away?.name} showLabels />
+      </div>
+      <p className="mt-2 font-mono text-[10px] text-ink-500">
+        locked {s.generated_at.slice(0, 16).replace("T", " ")} · model {s.model_version} · cutoff{" "}
+        {s.data_cutoff} · hash {s.content_hash.slice(0, 8)}…
+      </p>
+    </Card>
+  );
+}
+
 export default function ArchivePage() {
   const q = useQuery({
     queryKey: ["archive"],
@@ -36,97 +76,94 @@ export default function ArchivePage() {
   if (q.isError) return <ErrorBox message={(q.error as Error).message} />;
   const d = q.data!;
 
+  const graded = d.prospective.snapshots.filter((s) => s.result);
+  const sealed = d.prospective.snapshots.filter((s) => !s.result);
+  const nextUp = [...sealed].sort((a, b) => a.kickoff_date.localeCompare(b.kickoff_date))[0];
+
   return (
     <div className="space-y-8">
       <div>
         <h1 className="font-display text-3xl font-black uppercase tracking-tight">
-          Prediction Archive
+          Forecast track record
         </h1>
         <p className="mt-1 max-w-2xl text-sm text-ink-300">
-          Every genuine prospective forecast is stored as an immutable, content-hashed
-          snapshot before kickoff, then scored against the real result. Backtests live in
-          a separate, clearly-labeled section — they are never presented as published
-          forecasts.
+          Every forecast is{" "}
+          <span className="text-ink-100">sealed as a content-hashed snapshot before kickoff</span>,
+          then graded against the real result. Nothing here is back-dated — the honest test of a
+          model is how the predictions it committed to <em>in advance</em> hold up.
         </p>
       </div>
 
+      {/* graded track record — the meaningful scoreboard */}
       <section>
-        <SectionTitle sub={d.prospective.label}>
-          Prospective forecasts
+        <SectionTitle sub="scored strictly after each match kicked off">
+          Graded forecasts
         </SectionTitle>
-        {d.prospective.cumulative && (
+        {d.prospective.cumulative ? (
           <Card className="mb-4 p-5">
             <dl className="grid grid-cols-2 gap-4 sm:grid-cols-5">
-              <Stat label="scored" value={d.prospective.cumulative.n_scored} />
+              <Stat label="graded" value={d.prospective.cumulative.n_scored} />
               <Stat label="top-pick acc." value={fmtPct(d.prospective.cumulative.top_pick_accuracy)} />
               <Stat label="mean RPS" value={d.prospective.cumulative.mean_rps.toFixed(4)} />
               <Stat label="mean Brier" value={d.prospective.cumulative.mean_brier.toFixed(4)} />
               <Stat label="mean log loss" value={d.prospective.cumulative.mean_log_loss.toFixed(4)} />
             </dl>
           </Card>
+        ) : (
+          <Card className="border-dashed p-6">
+            <p className="font-display font-semibold text-ink-100">
+              No forecasts have been graded yet.
+            </p>
+            <p className="mt-1 max-w-2xl text-sm text-ink-400">
+              Sealed predictions are scored only once their match has actually been played — never
+              retroactively.{" "}
+              {nextUp
+                ? `The first will be graded after ${nextUp.home?.name ?? nextUp.home_id} v ${
+                    nextUp.away?.name ?? nextUp.away_id
+                  } on ${nextUp.kickoff_date}.`
+                : "New fixtures are sealed as they approach."}{" "}
+              In the meantime, the model&apos;s accuracy is validated on the historical backtest below.
+            </p>
+          </Card>
         )}
-        <div className="space-y-3">
-          {d.prospective.snapshots.map((s) => (
-            <Card key={s.id} className="p-4">
-              <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
-                <span className="font-mono text-xs text-ink-400">{s.kickoff_date}</span>
-                <Link
-                  href={`/match/${s.fixture_id}`}
-                  className="flex items-center gap-2 font-medium hover:text-home"
-                >
-                  {s.home && <Flag team={s.home} size={18} />}
-                  {s.home?.name ?? s.home_id}
-                  <span className="text-ink-500">v</span>
-                  {s.away?.name ?? s.away_id}
-                  {s.away && <Flag team={s.away} size={18} />}
-                </Link>
-                <Badge>{s.version_label}</Badge>
-                <span className="font-mono text-[10px] text-ink-500">
-                  model {s.model_version} · cutoff {s.data_cutoff} · generated{" "}
-                  {s.generated_at.slice(0, 16).replace("T", " ")} · hash{" "}
-                  {s.content_hash.slice(0, 10)}…
-                </span>
-                {s.result ? (
-                  <span className="ml-auto flex items-center gap-3">
-                    <span className="font-display font-black tabular-nums">
-                      {s.result.home}–{s.result.away}
-                    </span>
-                    <Badge tone={s.scores?.top_pick_correct ? "signal" : "danger"}>
-                      {s.scores?.top_pick_correct ? "top pick ✓" : "top pick ✗"}
-                    </Badge>
-                    <span className="font-mono text-xs text-ink-400">
-                      RPS {s.scores?.rps.toFixed(3)}
-                    </span>
-                  </span>
-                ) : (
-                  <Badge tone="info">awaiting result</Badge>
-                )}
-              </div>
-              <div className="mt-3 max-w-xl">
-                <ProbBar
-                  probs={s.probabilities}
-                  homeName={s.home?.name}
-                  awayName={s.away?.name}
-                  showLabels
-                />
-              </div>
-            </Card>
-          ))}
-          {d.prospective.snapshots.length === 0 && (
-            <Card className="p-6 text-ink-300">No snapshots yet.</Card>
-          )}
-        </div>
+        {graded.length > 0 && (
+          <div className="space-y-3">
+            {graded.map((s) => (
+              <SnapshotRow key={s.id} s={s} />
+            ))}
+          </div>
+        )}
       </section>
 
+      {/* sealed, awaiting kickoff */}
+      {sealed.length > 0 && (
+        <section>
+          <SectionTitle
+            sub={`${sealed.length} prediction${sealed.length > 1 ? "s" : ""} locked in, not yet playable`}
+          >
+            Sealed &amp; awaiting kickoff
+          </SectionTitle>
+          <div className="space-y-3">
+            {sealed
+              .sort((a, b) => a.kickoff_date.localeCompare(b.kickoff_date))
+              .map((s) => (
+                <SnapshotRow key={s.id} s={s} />
+              ))}
+          </div>
+        </section>
+      )}
+
+      {/* historical backtest — clearly separate validation */}
       {d.backtest_summary && (
         <section>
           <SectionTitle sub={d.backtest_summary.label}>
-            Historical backtest (separate)
+            Historical backtest — model validation
           </SectionTitle>
           <Card className="p-5">
             <p className="mb-3 font-mono text-xs text-ink-400">
               Chronological test window {d.backtest_summary.window[0]} →{" "}
-              {d.backtest_summary.window[1]} · untouched during model selection
+              {d.backtest_summary.window[1]} · untouched during model selection · not a published
+              forecast
             </p>
             <dl className="grid grid-cols-2 gap-4 sm:grid-cols-6">
               <Stat label="matches" value={d.backtest_summary.metrics.n.toLocaleString()} />
@@ -138,7 +175,7 @@ export default function ArchivePage() {
             </dl>
             <Link
               href="/performance"
-              className="mt-4 inline-block font-mono text-xs uppercase tracking-wide text-home hover:underline"
+              className="mt-4 inline-block font-mono text-xs uppercase tracking-wide text-brand hover:underline"
             >
               Full model performance →
             </Link>

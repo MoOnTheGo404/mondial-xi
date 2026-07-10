@@ -132,7 +132,7 @@ export function SquadPanel({
                             ? "bg-red-500/80 font-bold text-ink-950"
                             : key === "doubtful"
                               ? "bg-amber-400 font-bold text-ink-950"
-                              : "bg-home font-bold text-ink-950"
+                              : "bg-brand font-bold text-white"
                           : "text-ink-300 hover:bg-ink-800"
                       }`}
                     >

@@ -62,7 +62,7 @@ export default function PlayerPage({
           </h1>
           <Link
             href={`/team/${p.team.team_id}`}
-            className="mt-1 inline-flex items-center gap-2 text-ink-300 hover:text-home"
+            className="mt-1 inline-flex items-center gap-2 text-ink-300 hover:text-brand"
           >
             <Flag team={p.team} size={20} /> {p.team.name}
           </Link>
@@ -167,7 +167,7 @@ export default function PlayerPage({
               </SectionTitle>
               <p className="text-sm text-ink-200">
                 <Link
-                  className="text-home hover:underline"
+                  className="text-brand hover:underline"
                   href={`/match/${p.upcoming_fixture_impact.fixture_id}`}
                 >
                   vs {p.upcoming_fixture_impact.opponent} ({fmtDate(p.upcoming_fixture_impact.date)})

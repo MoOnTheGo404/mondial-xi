@@ -172,15 +172,15 @@ test("player explorer → profile with honest availability", async ({ page }) =>
   await expect(page.getByText(/not an overall player-quality rating/i)).toBeVisible();
 });
 
-test("prediction archive separates prospective from backtests", async ({ page }) => {
+test("prediction archive separates sealed forecasts from backtests", async ({ page }) => {
   await page.goto("/archive");
   await expect(
-    page.getByRole("heading", { name: /prospective forecasts/i }),
+    page.getByRole("heading", { name: /graded forecasts/i }),
   ).toBeVisible();
   await expect(
     page.getByRole("heading", { name: /historical backtest/i }),
   ).toBeVisible();
-  await expect(page.getByText(/immutable snapshots/i).first()).toBeVisible();
+  await expect(page.getByText(/sealed as a content-hashed snapshot/i).first()).toBeVisible();
   await expect(page.getByText(/hash [0-9a-f]+/i).first()).toBeVisible();
 });
 

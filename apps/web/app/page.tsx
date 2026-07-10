@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useQuery } from "@tanstack/react-query";
 import { apiGet, fmtPct } from "@kickoff/shared";
 import type { MatchRow, SimulationResult, Snapshot } from "@kickoff/shared";
-import { Badge, Card, Flag, SectionTitle, SoccerBall, Stat, Trophy } from "@kickoff/ui";
+import { Badge, Card, Flag, SectionTitle, Stat, Trophy } from "@kickoff/ui";
 import { ErrorBox, FixtureCard, LoadingGrid } from "@/components/fixtures";
 
 interface FixtureList {
@@ -121,37 +121,37 @@ export default function HomePage() {
             )}
           </div>
 
-          {/* animated crest: spotlit spinning ball + gleaming trophy + live favourite chip */}
-          <div className="relative mx-auto hidden aspect-square w-full max-w-[20rem] items-center justify-center lg:flex">
-            <div aria-hidden className="spotlight absolute -inset-6 animate-[beam-pulse_8s_ease-in-out_infinite]" />
-            <div aria-hidden className="absolute inset-10 rounded-full bg-brand/20 blur-3xl" />
-            <div aria-hidden className="absolute inset-16 rounded-full bg-flare/15 blur-2xl" />
-            {/* orbiting particles */}
-            <div aria-hidden className="animate-spin-slow absolute inset-0" style={{ animationDuration: "26s" }}>
-              <span className="absolute left-1/2 top-1 h-1.5 w-1.5 -translate-x-1/2 rounded-full bg-flare/80" />
-              <span className="absolute bottom-3 left-6 h-1 w-1 rounded-full bg-brand/80" />
-              <span className="absolute right-4 top-10 h-1 w-1 rounded-full bg-gold/80" />
-            </div>
-
-            <div aria-hidden className="animate-float">
-              <SoccerBall size={236} spin className="drop-shadow-[0_26px_50px_rgba(0,0,0,0.65)]" />
-            </div>
+          {/* centrepiece: the trophy under a spotlight, crowning the live favourite */}
+          <div className="relative mx-auto hidden aspect-square w-full max-w-[20rem] flex-col items-center justify-center lg:flex">
+            {/* slow spotlight rays + brand bloom */}
             <div
               aria-hidden
-              className="animate-float absolute -right-2 -top-2"
-              style={{ animationDelay: "-2.2s" }}
-            >
-              <Trophy size={104} shine className="drop-shadow-[0_14px_30px_rgba(245,196,81,0.45)]" />
-            </div>
+              className="spotlight animate-spin-slow absolute inset-[-12%]"
+              style={{ animationDuration: "42s" }}
+            />
+            <div aria-hidden className="absolute inset-12 rounded-full bg-brand/20 blur-3xl" />
+            <div aria-hidden className="absolute inset-x-10 top-1/3 h-24 rounded-full bg-flare/15 blur-2xl" />
 
-            {/* live favourite chip */}
+            <div aria-hidden className="animate-float">
+              <Trophy size={188} shine className="drop-shadow-[0_20px_44px_rgba(245,196,81,0.35)]" />
+            </div>
+            {/* reflective pedestal glow */}
+            <div
+              aria-hidden
+              className="mt-1 h-3 w-40 rounded-[100%] bg-gold/25 blur-md"
+            />
+
+            {/* live favourite the trophy is "awarded" to */}
             {simPost.data && simPost.data.teams[0] && (
-              <div className="absolute -bottom-1 left-0 flex items-center gap-2 rounded-full border border-brand/30 bg-ink-950/85 px-3 py-1.5 shadow-lg backdrop-blur animate-fade-up">
-                <Flag team={simPost.data.teams[0].team} size={18} />
-                <span className="font-display text-xs font-bold text-ink-50">
+              <div className="animate-fade-up mt-4 flex items-center gap-2.5 rounded-full border border-brand/30 bg-ink-950/70 px-4 py-2 shadow-lg backdrop-blur">
+                <span className="font-mono text-[10px] uppercase tracking-wider text-ink-400">
+                  Favourite
+                </span>
+                <Flag team={simPost.data.teams[0].team} size={20} />
+                <span className="font-display text-sm font-bold text-ink-50">
                   {simPost.data.teams[0].team.name}
                 </span>
-                <span className="font-mono text-xs tabular-nums text-gold">
+                <span className="font-mono text-sm tabular-nums text-gold">
                   {fmtPct(simPost.data.teams[0].reach.champion, 1)}
                 </span>
               </div>
@@ -217,7 +217,7 @@ export default function HomePage() {
                     <Flag team={t.team} size={22} />
                     <Link
                       href={`/team/${t.team_id}`}
-                      className={`w-32 truncate hover:text-home ${
+                      className={`w-32 truncate hover:text-brand ${
                         i === 0 ? "font-bold text-gold" : "font-medium"
                       }`}
                     >
@@ -244,7 +244,7 @@ export default function HomePage() {
             <p className="mt-4 font-mono text-[11px] text-ink-500">
               Group results and completed knockouts are pinned to real outcomes from the
               dataset; only unplayed matches are simulated.{" "}
-              <Link className="text-home hover:underline" href="/simulator">
+              <Link className="text-brand hover:underline" href="/simulator">
                 Full simulator →
               </Link>
             </p>
@@ -294,7 +294,7 @@ export default function HomePage() {
               )}
               <Link
                 href="/archive"
-                className="mt-4 inline-block font-mono text-xs uppercase tracking-wide text-home hover:underline"
+                className="mt-4 inline-block font-mono text-xs uppercase tracking-wide text-brand hover:underline"
               >
                 Full archive →
               </Link>
@@ -302,7 +302,9 @@ export default function HomePage() {
           )}
         </div>
         <div>
-          <SectionTitle sub="World Cup 2026">Latest results</SectionTitle>
+          <SectionTitle sub={recent.data ? `World Cup 2026 · latest as of ${recent.data.data_cutoff}` : "World Cup 2026"}>
+            Latest results
+          </SectionTitle>
           {recent.isLoading && <div className="h-40 animate-pulse rounded-lg bg-ink-900" />}
           {recent.data && (
             <div className="space-y-2">
@@ -342,7 +344,7 @@ export default function HomePage() {
           </p>
           <Link
             href="/methodology"
-            className="font-mono text-xs uppercase tracking-wide text-home hover:underline"
+            className="font-mono text-xs uppercase tracking-wide text-brand hover:underline"
           >
             Read the methodology →
           </Link>

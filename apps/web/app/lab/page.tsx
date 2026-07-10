@@ -124,14 +124,14 @@ function LabInner() {
           <button
             type="button"
             onClick={() => navigator.clipboard?.writeText(window.location.href)}
-            className="rounded border border-ink-600 px-3 py-2 font-mono text-xs uppercase text-ink-200 hover:border-home"
+            className="rounded border border-ink-600 px-3 py-2 font-mono text-xs uppercase text-ink-200 hover:border-brand"
           >
             Copy share URL
           </button>
           <button
             type="button"
             onClick={reset}
-            className="rounded border border-ink-600 px-3 py-2 font-mono text-xs uppercase text-ink-200 hover:border-home"
+            className="rounded border border-ink-600 px-3 py-2 font-mono text-xs uppercase text-ink-200 hover:border-brand"
           >
             Reset assumptions
           </button>
