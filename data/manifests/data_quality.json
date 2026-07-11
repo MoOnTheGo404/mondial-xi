@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-11T08:01:11.086116+00:00",
+  "generated_at": "2026-07-11T09:59:25.245025+00:00",
   "checks": [
     {
       "check": "bad_date_rows_dropped",
@@ -21,8 +21,8 @@
   "raw_rows": 49505,
   "completed_matches": 49501,
   "upcoming_fixtures": 2,
-  "goal_events_raw": 47888,
-  "goal_events_kept": 47888,
+  "goal_events_raw": 47891,
+  "goal_events_kept": 47891,
   "teams": 336,
   "teams_with_flag": 234,
   "date_min": "1872-11-30",
