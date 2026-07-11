@@ -143,8 +143,11 @@ test("tournament simulator: run, lock an upset, probabilities change", async ({
   await expect(page.getByRole("button", { name: /clear 1 lock/i })).toBeVisible();
   await page.getByRole("button", { name: /re-run/i }).click();
 
+  // scope to the advancement table (the only one with a "Champion" column) —
+  // team names also appear in the group / third-place tables.
+  const advTable = page.getByRole("table").filter({ hasText: /champion/i });
   await expect(async () => {
-    const after = await page
+    const after = await advTable
       .locator("tr", { hasText: loser })
       .first()
       .locator("td")
@@ -153,7 +156,7 @@ test("tournament simulator: run, lock an upset, probabilities change", async ({
     expect(after).toBe("—"); // the locked loser can no longer be champion
   }).toPass({ timeout: 30_000 });
   // the locked winner is still alive
-  const winnerCell = await page
+  const winnerCell = await advTable
     .locator("tr", { hasText: winner })
     .first()
     .locator("td")
@@ -195,7 +198,10 @@ test("prediction archive separates sealed forecasts from backtests", async ({ pa
     page.getByRole("heading", { name: /historical backtest/i }),
   ).toBeVisible();
   await expect(page.getByText(/sealed as a content-hashed snapshot/i).first()).toBeVisible();
-  await expect(page.getByText(/hash [0-9a-f]+/i).first()).toBeVisible();
+  // persistent per-game scorecard (from the backtest artifact) is always present,
+  // unlike sealed snapshots which only exist while fixtures are still upcoming.
+  await expect(page.getByRole("heading", { name: /model scorecard/i })).toBeVisible();
+  await expect(page.getByText(/top-pick accuracy/i).first()).toBeVisible();
 });
 
 test("performance page loads artifact-driven metrics", async ({ page }) => {
