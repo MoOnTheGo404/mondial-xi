@@ -25,19 +25,8 @@ export interface Lock {
   winner: string;
 }
 
-const ROUND_LABEL: Record<string, string> = {
-  R16: "Round of 16",
-  QF: "Quarter-finals",
-  SF: "Semi-finals",
-  F: "Final",
-};
-
 // rounds we expand children for (leaves are Round of 16)
 const EXPAND = new Set(["F", "SF", "QF"]);
-
-// column geometry — must match MatchBox width (w-44) + Connector width (w-7)
-const COL_W = "11rem"; // w-44
-const CONN_W = "1.75rem"; // w-7
 
 /** The winner of a node: the real result, or the user's pick for that tie. */
 function pickedWinner(node: BracketNode, locks: Lock[]): { id: string; team: Team | null } | null {
@@ -155,7 +144,7 @@ function MatchBox({
           : "border-ink-800";
 
   return (
-    <div className={`w-44 rounded-md border bg-ink-900/70 ${border}`}>
+    <div className={`w-40 rounded-md border bg-ink-900/70 ${border}`}>
       <TeamRow
         team={node.home}
         teamId={node.home_id}
@@ -216,6 +205,26 @@ function Connector() {
   );
 }
 
+/** Mirror of Connector — parent stub on the LEFT, children on the RIGHT (right half). */
+function ConnectorMirrored() {
+  return (
+    <svg
+      className="w-7 shrink-0 self-stretch text-ink-600"
+      preserveAspectRatio="none"
+      viewBox="0 0 28 100"
+      aria-hidden
+    >
+      <path
+        d="M28,25 H14 V75 H28 M14,50 H0"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth={1.5}
+        vectorEffect="non-scaling-stroke"
+      />
+    </svg>
+  );
+}
+
 function Node({
   node,
   isLocked,
@@ -244,6 +253,35 @@ function Node({
   );
 }
 
+/** Mirrored node for the right half: MatchBox on the left, children fan out right. */
+function NodeR({
+  node,
+  isLocked,
+  onLock,
+}: {
+  node: BracketNode;
+  isLocked: (round: string, teamId: string) => boolean;
+  onLock: (round: string, a: string, b: string, winner: string) => void;
+}) {
+  const expand = EXPAND.has(node.round) && node.children?.length === 2;
+  return (
+    <div className="flex items-stretch">
+      <div className="flex items-center py-3">
+        <MatchBox node={node} isLocked={isLocked} onLock={onLock} />
+      </div>
+      {expand && (
+        <>
+          <ConnectorMirrored />
+          <div className="flex flex-col justify-around">
+            <NodeR node={node.children![0]} isLocked={isLocked} onLock={onLock} />
+            <NodeR node={node.children![1]} isLocked={isLocked} onLock={onLock} />
+          </div>
+        </>
+      )}
+    </div>
+  );
+}
+
 export function KnockoutBracket({
   tree,
   locks,
@@ -260,68 +298,54 @@ export function KnockoutBracket({
   const resolved = useMemo(() => resolve(tree, locks), [tree, locks]);
   // if the user has picked the final, that team is *their* champion
   const pickedChamp = pickedWinner(resolved, locks);
-  const cols = ["R16", "QF", "SF", "F"] as const;
+  const [sfLeft, sfRight] = resolved.children ?? [];
+
+  const champTeam = pickedChamp?.team ?? champion?.team ?? null;
+  const champNote = pickedChamp?.team
+    ? "your pick"
+    : champion
+      ? `${(100 * champion.prob).toFixed(1)}% title (sim)`
+      : "most likely champion";
 
   return (
     <div className="overflow-x-auto pb-2">
-      <div className="min-w-[900px]">
-        {/* column headers — fixed widths matching the bracket columns below */}
-        <div className="mb-1 flex">
-          {cols.map((c) => (
-            <div key={c} className="flex shrink-0">
-              <div
-                className="text-center font-mono text-[10px] uppercase tracking-widest text-ink-500"
-                style={{ width: COL_W }}
-              >
-                {ROUND_LABEL[c]}
+      {/* two-sided bracket: left half and right half converge on the centre final */}
+      <div className="mx-auto flex min-w-[1200px] items-stretch justify-center">
+        {sfLeft && <Node node={sfLeft} isLocked={isLocked} onLock={onLock} />}
+
+        {/* centre column: the final, flanked by short stubs, with the champion cap */}
+        <div className="flex items-center">
+          <div className="flex items-center">
+            <span aria-hidden className="h-px w-6 self-center bg-ink-600" />
+            <div className="relative">
+              <span className="absolute inset-x-0 -top-5 text-center font-mono text-[10px] uppercase tracking-widest text-gold">
+                Final
+              </span>
+              <MatchBox node={resolved} isLocked={isLocked} onLock={onLock} />
+              <div className="absolute inset-x-0 top-full mt-3 flex justify-center">
+                <div className="w-40 rounded-md border border-gold/50 bg-gold/[0.07] p-2 text-center shadow-[0_0_24px_-8px_rgba(245,196,81,0.35)]">
+                  {champTeam ? (
+                    <>
+                      <div className="flex items-center justify-center gap-2">
+                        <Trophy size={18} className="shrink-0" />
+                        <Flag team={champTeam} size={18} />
+                        <span className="truncate text-sm font-bold text-gold">
+                          {champTeam.name}
+                        </span>
+                      </div>
+                      <p className="mt-1 font-mono text-[10px] text-gold/80">{champNote}</p>
+                    </>
+                  ) : (
+                    <p className="font-mono text-[10px] text-ink-500">most likely champion</p>
+                  )}
+                </div>
               </div>
-              <div className="shrink-0" style={{ width: CONN_W }} aria-hidden />
             </div>
-          ))}
-          <div
-            className="text-center font-mono text-[10px] uppercase tracking-widest text-gold"
-            style={{ width: "10rem" }}
-          >
-            Champion
+            <span aria-hidden className="h-px w-6 self-center bg-ink-600" />
           </div>
         </div>
 
-        <div className="flex items-stretch">
-          <Node node={resolved} isLocked={isLocked} onLock={onLock} />
-          {/* champion cap */}
-          <div className="flex items-center">
-            <Connector />
-            <div className="w-40 rounded-md border border-gold/50 bg-gold/[0.07] p-2 shadow-[0_0_24px_-8px_rgba(245,196,81,0.35)]">
-              {pickedChamp?.team ? (
-                <>
-                  <div className="flex items-center gap-2">
-                    <Trophy size={18} className="shrink-0" />
-                    <Flag team={pickedChamp.team} size={18} />
-                    <span className="truncate text-sm font-bold text-gold">
-                      {pickedChamp.team.name}
-                    </span>
-                  </div>
-                  <p className="mt-1 font-mono text-[10px] text-gold/80">your pick</p>
-                </>
-              ) : champion ? (
-                <>
-                  <div className="flex items-center gap-2">
-                    <Trophy size={18} className="shrink-0" />
-                    <Flag team={champion.team} size={18} />
-                    <span className="truncate text-sm font-bold text-gold">
-                      {champion.team.name}
-                    </span>
-                  </div>
-                  <p className="mt-1 font-mono text-[10px] text-gold/80">
-                    {(100 * champion.prob).toFixed(1)}% title (sim)
-                  </p>
-                </>
-              ) : (
-                <p className="font-mono text-[10px] text-ink-500">most likely champion</p>
-              )}
-            </div>
-          </div>
-        </div>
+        {sfRight && <NodeR node={sfRight} isLocked={isLocked} onLock={onLock} />}
       </div>
     </div>
   );

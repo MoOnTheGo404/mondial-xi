@@ -133,7 +133,7 @@ test("tournament simulator: run, lock an upset, probabilities change", async ({
   const stripLabel = (l: string) => l.replace(/^Lock /, "").replace(/ to win$/, "");
   const winner = stripLabel((await lockBtn.getAttribute("aria-label")) ?? "");
   // the loser is the other team in the same match box
-  const box = lockBtn.locator("xpath=ancestor::div[contains(@class,'w-44')][1]");
+  const box = lockBtn.locator("xpath=ancestor::div[contains(@class,'w-40')][1]");
   const labels = await box
     .getByRole("button", { name: /lock .* to win/i })
     .evaluateAll((els) => els.map((e) => e.getAttribute("aria-label") ?? ""));
