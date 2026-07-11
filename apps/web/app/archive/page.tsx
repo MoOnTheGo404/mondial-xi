@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useQuery } from "@tanstack/react-query";
 import { apiGet, fmtPct } from "@kickoff/shared";
-import type { Snapshot } from "@kickoff/shared";
+import type { Snapshot, Team } from "@kickoff/shared";
 import { Badge, Card, Flag, ProbBar, SectionTitle, Stat } from "@kickoff/ui";
 import { ErrorBox } from "@/components/fixtures";
 
@@ -24,6 +24,57 @@ interface Archive {
     window: string[];
     metrics: { log_loss: number; rps: number; brier: number; accuracy: number; ece: number; n: number };
   } | null;
+}
+
+interface ScoredResult {
+  match_id: string;
+  date: string;
+  home: Team;
+  away: Team;
+  probabilities: { home: number; draw: number; away: number };
+  result: { home: number; away: number; outcome: string };
+  top_pick: string;
+  correct: boolean;
+}
+interface ResultsResp {
+  results: ScoredResult[];
+  cumulative: { n: number; top_pick_accuracy: number } | null;
+  label: string;
+}
+
+function ResultRow({ r }: { r: ScoredResult }) {
+  return (
+    <div className="flex flex-wrap items-center gap-x-3 gap-y-1 border-b border-ink-900 py-2 last:border-0">
+      <span className="w-[4.5rem] shrink-0 font-mono text-[11px] text-ink-500">{r.date}</span>
+      <Link
+        href={`/match/${r.match_id}`}
+        className="flex min-w-0 flex-1 items-center gap-2 hover:text-brand sm:flex-none"
+      >
+        <span className="flex items-center gap-1.5">
+          <Flag team={r.home} size={16} />
+          <span className="truncate text-sm">{r.home.name}</span>
+        </span>
+        <span className="font-display font-black tabular-nums">
+          {r.result.home}–{r.result.away}
+        </span>
+        <span className="flex items-center gap-1.5">
+          <span className="truncate text-sm">{r.away.name}</span>
+          <Flag team={r.away} size={16} />
+        </span>
+      </Link>
+      <span
+        className={`ml-auto shrink-0 rounded px-1.5 py-0.5 font-mono text-[9px] uppercase ${
+          r.correct ? "bg-home/15 text-home" : "bg-red-500/15 text-red-400"
+        }`}
+      >
+        {r.correct ? "pick ✓" : "pick ✗"}
+      </span>
+      <span className="hidden w-32 shrink-0 text-right font-mono text-[10px] text-ink-500 lg:inline">
+        H {(100 * r.probabilities.home).toFixed(0)} · D {(100 * r.probabilities.draw).toFixed(0)} · A{" "}
+        {(100 * r.probabilities.away).toFixed(0)}
+      </span>
+    </div>
+  );
 }
 
 function SnapshotRow({ s }: { s: Snapshot }) {
@@ -71,6 +122,10 @@ export default function ArchivePage() {
     queryKey: ["archive"],
     queryFn: () => apiGet<Archive>("/predictions/archive?limit=200"),
   });
+  const res = useQuery({
+    queryKey: ["backtest-results"],
+    queryFn: () => apiGet<ResultsResp>("/predictions/results?limit=40"),
+  });
 
   if (q.isLoading) return <div className="h-96 animate-pulse rounded-lg bg-ink-900" />;
   if (q.isError) return <ErrorBox message={(q.error as Error).message} />;
@@ -93,6 +148,32 @@ export default function ArchivePage() {
           model is how the predictions it committed to <em>in advance</em> hold up.
         </p>
       </div>
+
+      {/* model scorecard — persistent per-game record on completed matches */}
+      {res.data && res.data.cumulative && res.data.results.length > 0 && (
+        <section>
+          <SectionTitle sub={res.data.label}>Model scorecard — recent completed games</SectionTitle>
+          <Card className="p-4 sm:p-5">
+            <div className="mb-3 flex flex-wrap items-baseline gap-x-6 gap-y-1 border-b border-ink-800 pb-3">
+              <div>
+                <div className="font-mono text-[11px] uppercase tracking-wider text-ink-400">
+                  top-pick accuracy
+                </div>
+                <div className="font-display text-2xl font-bold tabular-nums text-ink-50">
+                  {fmtPct(res.data.cumulative.top_pick_accuracy)}
+                </div>
+              </div>
+              <div className="font-mono text-xs text-ink-500">
+                over {res.data.cumulative.n.toLocaleString()} scored games · chronological test window
+                (2023 → cutoff)
+              </div>
+            </div>
+            {res.data.results.map((r) => (
+              <ResultRow key={r.match_id} r={r} />
+            ))}
+          </Card>
+        </section>
+      )}
 
       {/* graded track record — the meaningful scoreboard */}
       <section>

@@ -168,3 +168,61 @@ def prediction_archive(limit: int = Query(100, le=500)) -> dict:
         },
         "backtest_summary": backtest,
     }
+
+
+@router.get("/predictions/results")
+def prediction_results(
+    limit: int = Query(40, le=500),
+    tier: str | None = Query(None, description="e.g. world_cup"),
+) -> dict:
+    """Per-match scorecard on *completed* games from the untouched chronological
+    test window (`test_predictions.parquet`). This is a **retrospective backtest**
+    — the champion's out-of-sample prediction scored against the real result —
+    NOT a forecast published before kickoff (see /predictions/archive for those).
+    Persistent across restarts, so it always shows how past games actually went."""
+    require_ready()
+    import polars as pl
+
+    tp = STATE.test_predictions
+    if tp is None or tp.is_empty():
+        return {"results": [], "cumulative": None, "label": "no backtest predictions"}
+
+    df = tp.filter(pl.col("tier") == tier) if tier else tp
+    df = df.sort("date", descending=True)
+
+    def top_pick(r: dict) -> str:
+        probs = {"H": r["p_home"], "D": r["p_draw"], "A": r["p_away"]}
+        return max(probs, key=lambda k: probs[k])
+
+    rows = df.to_dicts()
+    n = len(rows)
+    cumulative = (
+        {
+            "n": n,
+            "top_pick_accuracy": round(sum(top_pick(r) == r["outcome"] for r in rows) / n, 4),
+        }
+        if n
+        else None
+    )
+
+    results = []
+    for r in rows[:limit]:
+        tpk = top_pick(r)
+        results.append(
+            {
+                "match_id": r["match_id"],
+                "date": str(r["date"]),
+                "tier": r["tier"],
+                "home": team_payload(r["home_id"]),
+                "away": team_payload(r["away_id"]),
+                "probabilities": {"home": r["p_home"], "draw": r["p_draw"], "away": r["p_away"]},
+                "result": {"home": r["home_score"], "away": r["away_score"], "outcome": r["outcome"]},
+                "top_pick": tpk,
+                "correct": tpk == r["outcome"],
+            }
+        )
+    return {
+        "results": results,
+        "cumulative": cumulative,
+        "label": "Retrospective backtest — champion scored on the untouched test window, not published pre-kickoff",
+    }
