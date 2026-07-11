@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-11T02:53:56.153121+00:00",
+  "generated_at": "2026-07-11T05:44:29.499758+00:00",
   "model_version": "2026.07.11-1",
   "data_cutoff": "2026-07-10",
   "protocol": {
@@ -107,24 +107,6 @@
   ],
   "by_tier": [
     {
-      "tier": "other",
-      "log_loss": 0.92356,
-      "brier": 0.53868,
-      "rps": 0.18923,
-      "accuracy": 0.58701,
-      "ece": 0.03871,
-      "n": 431
-    },
-    {
-      "tier": "continental",
-      "log_loss": 0.90579,
-      "brier": 0.53376,
-      "rps": 0.18038,
-      "accuracy": 0.57181,
-      "ece": 0.05158,
-      "n": 752
-    },
-    {
       "tier": "friendly",
       "log_loss": 0.90984,
       "brier": 0.53845,
@@ -141,6 +123,24 @@
       "accuracy": 0.65306,
       "ece": 0.10448,
       "n": 98
+    },
+    {
+      "tier": "other",
+      "log_loss": 0.92356,
+      "brier": 0.53868,
+      "rps": 0.18923,
+      "accuracy": 0.58701,
+      "ece": 0.03871,
+      "n": 431
+    },
+    {
+      "tier": "continental",
+      "log_loss": 0.90579,
+      "brier": 0.53376,
+      "rps": 0.18038,
+      "accuracy": 0.57181,
+      "ece": 0.05158,
+      "n": 752
     },
     {
       "tier": "qualifier",
