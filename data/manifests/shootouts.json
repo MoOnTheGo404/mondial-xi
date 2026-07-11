@@ -3,7 +3,7 @@
   "dataset": "shootouts",
   "description": "Penalty shootout outcomes for drawn matches",
   "url": "https://raw.githubusercontent.com/martj42/international_results/master/shootouts.csv",
-  "retrieved_at": "2026-07-11T14:04:59.761578+00:00",
+  "retrieved_at": "2026-07-11T15:32:02.663505+00:00",
   "license": {
     "name": "CC0 1.0 Universal (public domain)",
     "url": "https://github.com/martj42/international_results/blob/master/LICENSE",
