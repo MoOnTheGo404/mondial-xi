@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-11T20:54:09.577465+00:00",
+  "generated_at": "2026-07-11T21:54:13.282290+00:00",
   "model_version": "2026.07.11-1",
   "data_cutoff": "2026-07-10",
   "protocol": {
@@ -39,31 +39,31 @@
     {
       "bucket": "0.33\u20130.45",
       "count": 754,
-      "mean_confidence": 0.40217711413039336,
+      "mean_confidence": 0.40217711413039586,
       "top_pick_accuracy": 0.3952254641909814
     },
     {
       "bucket": "0.45\u20130.55",
       "count": 771,
-      "mean_confidence": 0.49846727227724213,
+      "mean_confidence": 0.4984672722772444,
       "top_pick_accuracy": 0.47600518806744485
     },
     {
       "bucket": "0.55\u20130.65",
       "count": 685,
-      "mean_confidence": 0.5980829069200325,
+      "mean_confidence": 0.5980829069200345,
       "top_pick_accuracy": 0.564963503649635
     },
     {
       "bucket": "0.65\u20130.80",
       "count": 855,
-      "mean_confidence": 0.725172656286777,
+      "mean_confidence": 0.7251726562867783,
       "top_pick_accuracy": 0.7181286549707603
     },
     {
       "bucket": "0.80\u20131.00",
       "count": 630,
-      "mean_confidence": 0.8771992141115689,
+      "mean_confidence": 0.8771992141115696,
       "top_pick_accuracy": 0.8873015873015873
     }
   ],
@@ -107,33 +107,6 @@
   ],
   "by_tier": [
     {
-      "tier": "qualifier",
-      "log_loss": 0.79909,
-      "brier": 0.46858,
-      "rps": 0.15286,
-      "accuracy": 0.63716,
-      "ece": 0.02434,
-      "n": 1491
-    },
-    {
-      "tier": "world_cup",
-      "log_loss": 0.84865,
-      "brier": 0.50109,
-      "rps": 0.15705,
-      "accuracy": 0.65306,
-      "ece": 0.10448,
-      "n": 98
-    },
-    {
-      "tier": "other",
-      "log_loss": 0.92356,
-      "brier": 0.53868,
-      "rps": 0.18923,
-      "accuracy": 0.58701,
-      "ece": 0.03871,
-      "n": 431
-    },
-    {
       "tier": "continental",
       "log_loss": 0.90579,
       "brier": 0.53376,
@@ -150,6 +123,33 @@
       "accuracy": 0.57205,
       "ece": 0.02947,
       "n": 923
+    },
+    {
+      "tier": "world_cup",
+      "log_loss": 0.84865,
+      "brier": 0.50109,
+      "rps": 0.15705,
+      "accuracy": 0.65306,
+      "ece": 0.10448,
+      "n": 98
+    },
+    {
+      "tier": "qualifier",
+      "log_loss": 0.79909,
+      "brier": 0.46858,
+      "rps": 0.15286,
+      "accuracy": 0.63716,
+      "ece": 0.02434,
+      "n": 1491
+    },
+    {
+      "tier": "other",
+      "log_loss": 0.92356,
+      "brier": 0.53868,
+      "rps": 0.18923,
+      "accuracy": 0.58701,
+      "ece": 0.03871,
+      "n": 431
     }
   ],
   "by_confederation": [
