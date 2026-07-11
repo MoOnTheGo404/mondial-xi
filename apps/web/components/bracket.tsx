@@ -26,7 +26,7 @@ export interface Lock {
 }
 
 // rounds we expand children for (leaves are Round of 16)
-const EXPAND = new Set(["F", "SF", "QF"]);
+const EXPAND = new Set(["F", "SF", "QF", "R16"]);
 
 /** The winner of a node: the real result, or the user's pick for that tie. */
 function pickedWinner(node: BracketNode, locks: Lock[]): { id: string; team: Team | null } | null {
@@ -309,8 +309,10 @@ export function KnockoutBracket({
 
   return (
     <div className="overflow-x-auto pb-2">
-      {/* two-sided bracket: left half and right half converge on the centre final */}
-      <div className="mx-auto flex min-w-[1200px] items-stretch justify-center">
+      {/* two-sided bracket: R32 → … → SF on each side, converging on the centre
+          final. Wider than any screen, so it scrolls horizontally (left-aligned
+          so no box is clipped at the edge). */}
+      <div className="flex w-max items-stretch">
         {sfLeft && <Node node={sfLeft} isLocked={isLocked} onLock={onLock} />}
 
         {/* centre column: the final, flanked by short stubs, with the champion cap */}

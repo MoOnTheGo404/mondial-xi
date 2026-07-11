@@ -42,7 +42,7 @@ interface Outlook {
 const CONF_ORDER = ["UEFA", "CONMEBOL", "CAF", "AFC", "CONCACAF", "OFC"];
 
 export default function Outlook2030Page() {
-  const [nSims, setNSims] = useState(4000);
+  const [nSims, setNSims] = useState(2000);
   const [seed, setSeed] = useState(42);
   const [runKey, setRunKey] = useState(0);
 

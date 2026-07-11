@@ -139,7 +139,7 @@ function ThirdPlaceTable({
 }
 
 export default function SimulatorPage() {
-  const [nSims, setNSims] = useState(10_000);
+  const [nSims, setNSims] = useState(4_000);
   const [seed, setSeed] = useState(42);
   const [fromScratch, setFromScratch] = useState(false);
   const [locks, setLocks] = useState<Lock[]>([]);
@@ -346,7 +346,7 @@ export default function SimulatorPage() {
       {/* connected knockout bracket with lock controls */}
       {detail.data?.bracket_tree && (
         <section>
-          <SectionTitle sub="the last 16 · pick a winner for any unplayed tie, then re-run">
+          <SectionTitle sub="the last 32 · scroll → · pick a winner for any unplayed tie, then re-run">
             Knockout bracket
           </SectionTitle>
           <Card className="p-4">

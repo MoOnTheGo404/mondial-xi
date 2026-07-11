@@ -42,7 +42,7 @@ export default function HomePage() {
       const res = await fetch("/api/v1/simulations/tournament", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ n_sims: 10000, seed: 42 }),
+        body: JSON.stringify({ n_sims: 4000, seed: 42 }),
       });
       if (!res.ok) throw new Error("simulation failed");
       return (await res.json()) as SimulationResult;
