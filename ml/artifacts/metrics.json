@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-12T06:37:02.022396+00:00",
+  "generated_at": "2026-07-12T09:05:38.932573+00:00",
   "model_version": "2026.07.12-1",
   "data_cutoff": "2026-07-11",
   "protocol": {
@@ -107,24 +107,6 @@
   ],
   "by_tier": [
     {
-      "tier": "friendly",
-      "log_loss": 0.90984,
-      "brier": 0.53845,
-      "rps": 0.17578,
-      "accuracy": 0.57205,
-      "ece": 0.02947,
-      "n": 923
-    },
-    {
-      "tier": "other",
-      "log_loss": 0.92356,
-      "brier": 0.53868,
-      "rps": 0.18923,
-      "accuracy": 0.58701,
-      "ece": 0.03871,
-      "n": 431
-    },
-    {
       "tier": "continental",
       "log_loss": 0.90579,
       "brier": 0.53376,
@@ -143,6 +125,15 @@
       "n": 100
     },
     {
+      "tier": "friendly",
+      "log_loss": 0.90984,
+      "brier": 0.53845,
+      "rps": 0.17578,
+      "accuracy": 0.57205,
+      "ece": 0.02947,
+      "n": 923
+    },
+    {
       "tier": "qualifier",
       "log_loss": 0.79909,
       "brier": 0.46858,
@@ -150,6 +141,15 @@
       "accuracy": 0.63716,
       "ece": 0.02434,
       "n": 1491
+    },
+    {
+      "tier": "other",
+      "log_loss": 0.92356,
+      "brier": 0.53868,
+      "rps": 0.18923,
+      "accuracy": 0.58701,
+      "ece": 0.03871,
+      "n": 431
     }
   ],
   "by_confederation": [
