@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-12T21:55:17.439652+00:00",
+  "generated_at": "2026-07-12T22:54:21.211456+00:00",
   "model_version": "2026.07.12-1",
   "data_cutoff": "2026-07-11",
   "protocol": {
@@ -107,22 +107,13 @@
   ],
   "by_tier": [
     {
-      "tier": "world_cup",
-      "log_loss": 0.84371,
-      "brier": 0.49733,
-      "rps": 0.15641,
-      "accuracy": 0.66,
-      "ece": 0.11118,
-      "n": 100
-    },
-    {
-      "tier": "qualifier",
-      "log_loss": 0.79909,
-      "brier": 0.46858,
-      "rps": 0.15286,
-      "accuracy": 0.63716,
-      "ece": 0.02434,
-      "n": 1491
+      "tier": "continental",
+      "log_loss": 0.90579,
+      "brier": 0.53376,
+      "rps": 0.18038,
+      "accuracy": 0.57181,
+      "ece": 0.05158,
+      "n": 752
     },
     {
       "tier": "other",
@@ -134,13 +125,22 @@
       "n": 431
     },
     {
-      "tier": "continental",
-      "log_loss": 0.90579,
-      "brier": 0.53376,
-      "rps": 0.18038,
-      "accuracy": 0.57181,
-      "ece": 0.05158,
-      "n": 752
+      "tier": "qualifier",
+      "log_loss": 0.79909,
+      "brier": 0.46858,
+      "rps": 0.15286,
+      "accuracy": 0.63716,
+      "ece": 0.02434,
+      "n": 1491
+    },
+    {
+      "tier": "world_cup",
+      "log_loss": 0.84371,
+      "brier": 0.49733,
+      "rps": 0.15641,
+      "accuracy": 0.66,
+      "ece": 0.11118,
+      "n": 100
     },
     {
       "tier": "friendly",
