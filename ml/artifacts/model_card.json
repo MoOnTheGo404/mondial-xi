@@ -1,6 +1,6 @@
 {
-  "model_version": "2026.07.11-1",
-  "git_commit": "4c780a4",
+  "model_version": "2026.07.12-1",
+  "git_commit": "b91fcfb",
   "champion": "geometric_ensemble",
   "candidates": [
     "frequency_baseline",
@@ -13,7 +13,7 @@
   ],
   "data": {
     "source": "martj42/international_results (CC0)",
-    "completed_matches": 49502,
+    "completed_matches": 49503,
     "date_range": [
       "1872-11-30",
       "2026-07-11"

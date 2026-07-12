@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-07-11T23:59:09.091587+00:00",
-  "model_version": "2026.07.11-1",
+  "generated_at": "2026-07-12T03:46:40.544497+00:00",
+  "model_version": "2026.07.12-1",
   "data_cutoff": "2026-07-11",
   "protocol": {
     "fit_window": [
@@ -20,12 +20,12 @@
   },
   "champion": "geometric_ensemble",
   "champion_test": {
-    "log_loss": 0.86429,
-    "brier": 0.50832,
-    "rps": 0.16855,
-    "accuracy": 0.60227,
-    "ece": 0.01721,
-    "n": 3696
+    "log_loss": 0.86416,
+    "brier": 0.50823,
+    "rps": 0.16852,
+    "accuracy": 0.60238,
+    "ece": 0.01712,
+    "n": 3697
   },
   "champion_validation": {
     "log_loss": 0.85846,
@@ -56,9 +56,9 @@
     },
     {
       "bucket": "0.65\u20130.80",
-      "count": 855,
-      "mean_confidence": 0.725172656286777,
-      "top_pick_accuracy": 0.7181286549707603
+      "count": 856,
+      "mean_confidence": 0.725117499701296,
+      "top_pick_accuracy": 0.7184579439252337
     },
     {
       "bucket": "0.80\u20131.00",
@@ -97,15 +97,33 @@
     },
     {
       "year": 2026,
-      "log_loss": 0.8796,
-      "brier": 0.51738,
-      "rps": 0.16819,
-      "accuracy": 0.60147,
-      "ece": 0.03198,
-      "n": 409
+      "log_loss": 0.8784,
+      "brier": 0.51651,
+      "rps": 0.16792,
+      "accuracy": 0.60244,
+      "ece": 0.03269,
+      "n": 410
     }
   ],
   "by_tier": [
+    {
+      "tier": "continental",
+      "log_loss": 0.90579,
+      "brier": 0.53376,
+      "rps": 0.18038,
+      "accuracy": 0.57181,
+      "ece": 0.05158,
+      "n": 752
+    },
+    {
+      "tier": "world_cup",
+      "log_loss": 0.84371,
+      "brier": 0.49733,
+      "rps": 0.15641,
+      "accuracy": 0.66,
+      "ece": 0.11118,
+      "n": 100
+    },
     {
       "tier": "other",
       "log_loss": 0.92356,
@@ -114,24 +132,6 @@
       "accuracy": 0.58701,
       "ece": 0.03871,
       "n": 431
-    },
-    {
-      "tier": "world_cup",
-      "log_loss": 0.84831,
-      "brier": 0.50073,
-      "rps": 0.1574,
-      "accuracy": 0.65657,
-      "ece": 0.10905,
-      "n": 99
-    },
-    {
-      "tier": "qualifier",
-      "log_loss": 0.79909,
-      "brier": 0.46858,
-      "rps": 0.15286,
-      "accuracy": 0.63716,
-      "ece": 0.02434,
-      "n": 1491
     },
     {
       "tier": "friendly",
@@ -143,13 +143,13 @@
       "n": 923
     },
     {
-      "tier": "continental",
-      "log_loss": 0.90579,
-      "brier": 0.53376,
-      "rps": 0.18038,
-      "accuracy": 0.57181,
-      "ece": 0.05158,
-      "n": 752
+      "tier": "qualifier",
+      "log_loss": 0.79909,
+      "brier": 0.46858,
+      "rps": 0.15286,
+      "accuracy": 0.63716,
+      "ece": 0.02434,
+      "n": 1491
     }
   ],
   "by_confederation": [
@@ -182,12 +182,12 @@
     },
     {
       "confederation": "CONMEBOL",
-      "log_loss": 0.7863,
-      "brier": 0.45482,
-      "rps": 0.14748,
-      "accuracy": 0.66162,
-      "ece": 0.05578,
-      "n": 198
+      "log_loss": 0.78431,
+      "brier": 0.45335,
+      "rps": 0.14703,
+      "accuracy": 0.66332,
+      "ece": 0.05712,
+      "n": 199
     },
     {
       "confederation": "OFC",
@@ -220,12 +220,12 @@
   "favorites_vs_close": [
     {
       "segment": "clear_favorite",
-      "log_loss": 0.67426,
-      "brier": 0.38054,
-      "rps": 0.12098,
-      "accuracy": 0.75108,
-      "ece": 0.01575,
-      "n": 1848
+      "log_loss": 0.67411,
+      "brier": 0.38042,
+      "rps": 0.12095,
+      "accuracy": 0.75122,
+      "ece": 0.01556,
+      "n": 1849
     },
     {
       "segment": "close_match",
@@ -240,6 +240,6 @@
   "counts": {
     "train": 30133,
     "validation": 3581,
-    "test": 3696
+    "test": 3697
   }
 }
