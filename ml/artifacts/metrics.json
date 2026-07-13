@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-13T03:49:05.835296+00:00",
+  "generated_at": "2026-07-13T06:57:59.605292+00:00",
   "model_version": "2026.07.13-1",
   "data_cutoff": "2026-07-11",
   "protocol": {
@@ -39,31 +39,31 @@
     {
       "bucket": "0.33\u20130.45",
       "count": 755,
-      "mean_confidence": 0.40223078911395765,
+      "mean_confidence": 0.4022307891139552,
       "top_pick_accuracy": 0.39602649006622515
     },
     {
       "bucket": "0.45\u20130.55",
       "count": 771,
-      "mean_confidence": 0.4984672722772444,
+      "mean_confidence": 0.49846727227724213,
       "top_pick_accuracy": 0.47600518806744485
     },
     {
       "bucket": "0.55\u20130.65",
       "count": 685,
-      "mean_confidence": 0.5980829069200345,
+      "mean_confidence": 0.5980829069200325,
       "top_pick_accuracy": 0.564963503649635
     },
     {
       "bucket": "0.65\u20130.80",
       "count": 856,
-      "mean_confidence": 0.7251174997012976,
+      "mean_confidence": 0.725117499701296,
       "top_pick_accuracy": 0.7184579439252337
     },
     {
       "bucket": "0.80\u20131.00",
       "count": 630,
-      "mean_confidence": 0.8771992141115696,
+      "mean_confidence": 0.8771992141115689,
       "top_pick_accuracy": 0.8873015873015873
     }
   ],
@@ -107,6 +107,15 @@
   ],
   "by_tier": [
     {
+      "tier": "friendly",
+      "log_loss": 0.90984,
+      "brier": 0.53845,
+      "rps": 0.17578,
+      "accuracy": 0.57205,
+      "ece": 0.02947,
+      "n": 923
+    },
+    {
       "tier": "world_cup",
       "log_loss": 0.84371,
       "brier": 0.49733,
@@ -114,15 +123,6 @@
       "accuracy": 0.66,
       "ece": 0.11118,
       "n": 100
-    },
-    {
-      "tier": "qualifier",
-      "log_loss": 0.79909,
-      "brier": 0.46858,
-      "rps": 0.15286,
-      "accuracy": 0.63716,
-      "ece": 0.02434,
-      "n": 1491
     },
     {
       "tier": "other",
@@ -143,13 +143,13 @@
       "n": 752
     },
     {
-      "tier": "friendly",
-      "log_loss": 0.90984,
-      "brier": 0.53845,
-      "rps": 0.17578,
-      "accuracy": 0.57205,
-      "ece": 0.02947,
-      "n": 923
+      "tier": "qualifier",
+      "log_loss": 0.79909,
+      "brier": 0.46858,
+      "rps": 0.15286,
+      "accuracy": 0.63716,
+      "ece": 0.02434,
+      "n": 1491
     }
   ],
   "by_confederation": [
