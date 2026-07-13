@@ -77,7 +77,13 @@ def fetch_wikitext(page: str) -> str | None:
 
 
 def parse_matches(wikitext: str) -> list[dict]:
-    """Return completed-match rows (results.csv schema) from a tournament page."""
+    """Return match rows (results.csv schema) from a tournament page.
+
+    Completed ties carry their numeric score; ties whose *pairing is known* but
+    which haven't been played yet are emitted as scheduled fixtures with "NA"
+    scores — the same convention martj42 uses for future matches — so the app's
+    "next fixtures" stay populated when the core dataset lags on adding them.
+    A score is never invented: no numeric score on the page → NA row."""
     rows: list[dict] = []
     heads = list(_HEADER.finditer(wikitext))
     for i, h in enumerate(heads):
@@ -95,9 +101,8 @@ def parse_matches(wikitext: str) -> list[dict]:
         m = re.search(r"\|\s*(\d+)\s*[–\-‑]\s*(\d+)\s*\}\}", val) or re.match(
             r"\s*(\d+)\s*[–\-‑]\s*(\d+)", val
         )
-        if not m:
-            continue  # scheduled / "Match report" link — no result yet
-        hs, as_ = m.group(1), m.group(2)
+        # no numeric score → known pairing, not yet played → scheduled fixture
+        hs, as_ = (m.group(1), m.group(2)) if m else ("NA", "NA")
 
         dm = re.search(r"\|\s*date\s*=\s*\{\{\s*Start date\s*\|\s*(\d+)\s*\|\s*(\d+)\s*\|\s*(\d+)", seg)
         if not dm:
@@ -143,7 +148,11 @@ def run() -> int:
         wt = fetch_wikitext(page)
         if wt:
             found = parse_matches(wt)
-            log.info("wikipedia page parsed", page=page, completed=len(found))
+            n_done = sum(1 for r in found if r["home_score"] != "NA")
+            log.info(
+                "wikipedia page parsed", page=page,
+                completed=n_done, scheduled=len(found) - n_done,
+            )
             matches.extend(found)
 
     results_path = RAW_DIR / "wikipedia_results.csv"
@@ -176,7 +185,8 @@ def run() -> int:
                 "pages": list(PAGES),
                 "retrieved_at": datetime.now(UTC).isoformat(),
                 "sha256": hashlib.sha256(payload).hexdigest(),
-                "completed_matches": len(matches),
+                "completed_matches": sum(1 for m in matches if m["home_score"] != "NA"),
+                "scheduled_fixtures": sum(1 for m in matches if m["home_score"] == "NA"),
                 "shootouts": len(shootouts),
             },
             indent=2,

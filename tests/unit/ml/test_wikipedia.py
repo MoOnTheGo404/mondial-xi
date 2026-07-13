@@ -51,10 +51,14 @@ def test_parses_completed_match():
     assert fm["tournament"] == "FIFA World Cup"
 
 
-def test_skips_scheduled_match():
-    # Spain v Belgium has a "Match report" link, not a score — must be ignored.
+def test_scheduled_match_emitted_with_na_score():
+    # Spain v Belgium has a "Match report" link, not a score: the pairing is
+    # known but unplayed, so it becomes a scheduled fixture (NA scores, like
+    # martj42's own future rows) — never an invented result.
     rows = parse_matches(WIKITEXT)
-    assert ("Spain", "Belgium") not in {(r["home_team"], r["away_team"]) for r in rows}
+    sb = next(r for r in rows if (r["home_team"], r["away_team"]) == ("Spain", "Belgium"))
+    assert sb["home_score"] == "NA" and sb["away_score"] == "NA"
+    assert sb["date"] == "2026-07-10"
 
 
 def test_rejects_placeholder_bracket_slot():
