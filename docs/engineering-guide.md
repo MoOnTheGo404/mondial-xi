@@ -1,4 +1,4 @@
-# CLAUDE.md — Engineering guide for this repository
+# Engineering guide for this repository
 
 **Product:** Mondial XI — an international football forecasting & tournament
 simulation platform. Open-data core (CC0 historical results), provider-based

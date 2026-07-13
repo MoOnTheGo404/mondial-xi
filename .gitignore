@@ -65,3 +65,7 @@ tmp/
 # Runtime state (regenerated at API startup)
 data/*.db
 data/*.db-journal
+
+# local AI-assistant instruction files (kept out of the public repo)
+/?LAUDE.md
+.?laude/
