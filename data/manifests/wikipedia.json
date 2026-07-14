@@ -4,9 +4,9 @@
   "pages": [
     "2026 FIFA World Cup knockout stage"
   ],
-  "retrieved_at": "2026-07-14T20:38:47.117097+00:00",
-  "sha256": "fbce11c9241b5464264002985d2f43f43fef1b5288aab980f2405a61cb8a50af",
-  "completed_matches": 12,
-  "scheduled_fixtures": 2,
+  "retrieved_at": "2026-07-14T22:01:08.432196+00:00",
+  "sha256": "b878a6400bad39e0763e866ba8f66bfaafe232e24ae5238ad3053e58b9d31791",
+  "completed_matches": 13,
+  "scheduled_fixtures": 1,
   "shootouts": 0
 }
