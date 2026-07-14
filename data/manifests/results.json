@@ -3,7 +3,7 @@
   "dataset": "results",
   "description": "Senior men's international football results, 1872\u2013present",
   "url": "https://raw.githubusercontent.com/martj42/international_results/master/results.csv",
-  "retrieved_at": "2026-07-14T06:35:26.719262+00:00",
+  "retrieved_at": "2026-07-14T09:06:38.307795+00:00",
   "license": {
     "name": "CC0 1.0 Universal (public domain)",
     "url": "https://github.com/martj42/international_results/blob/master/LICENSE",
