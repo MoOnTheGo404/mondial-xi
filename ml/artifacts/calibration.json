@@ -4,168 +4,168 @@
     {
       "class": "H",
       "bin_mid": 0.05,
-      "forecast_mean": 0.05380613741688838,
+      "forecast_mean": 0.053806137416889686,
       "observed_freq": 0.04782608695652174,
       "count": 230
     },
     {
       "class": "H",
       "bin_mid": 0.15000000000000002,
-      "forecast_mean": 0.1529998284436192,
+      "forecast_mean": 0.1529998284436216,
       "observed_freq": 0.12462006079027356,
       "count": 329
     },
     {
       "class": "H",
       "bin_mid": 0.25,
-      "forecast_mean": 0.25198792460930175,
+      "forecast_mean": 0.25198792460930447,
       "observed_freq": 0.19889502762430938,
       "count": 362
     },
     {
       "class": "H",
       "bin_mid": 0.35000000000000003,
-      "forecast_mean": 0.34932475818435205,
+      "forecast_mean": 0.3493247581843547,
       "observed_freq": 0.30025445292620867,
       "count": 393
     },
     {
       "class": "H",
       "bin_mid": 0.45,
-      "forecast_mean": 0.45189272369360406,
+      "forecast_mean": 0.4518927236936067,
       "observed_freq": 0.40376569037656906,
       "count": 478
     },
     {
       "class": "H",
       "bin_mid": 0.55,
-      "forecast_mean": 0.5495623082459483,
+      "forecast_mean": 0.5495623082459505,
       "observed_freq": 0.5241935483870968,
       "count": 496
     },
     {
       "class": "H",
       "bin_mid": 0.6500000000000001,
-      "forecast_mean": 0.6497818907013114,
+      "forecast_mean": 0.6497818907013132,
       "observed_freq": 0.6100917431192661,
       "count": 436
     },
     {
       "class": "H",
       "bin_mid": 0.75,
-      "forecast_mean": 0.7513324819767967,
+      "forecast_mean": 0.7513324819767979,
       "observed_freq": 0.7258426966292135,
       "count": 445
     },
     {
       "class": "H",
       "bin_mid": 0.8500000000000001,
-      "forecast_mean": 0.8473742087175146,
+      "forecast_mean": 0.8473742087175153,
       "observed_freq": 0.8515406162464986,
       "count": 357
     },
     {
       "class": "H",
       "bin_mid": 0.95,
-      "forecast_mean": 0.9387480747537259,
+      "forecast_mean": 0.9387480747537263,
       "observed_freq": 0.9190751445086706,
       "count": 173
     },
     {
       "class": "D",
       "bin_mid": 0.05,
-      "forecast_mean": 0.06372051267746642,
+      "forecast_mean": 0.06372051267746548,
       "observed_freq": 0.06040268456375839,
       "count": 298
     },
     {
       "class": "D",
       "bin_mid": 0.15000000000000002,
-      "forecast_mean": 0.15663999527182862,
+      "forecast_mean": 0.15663999527182607,
       "observed_freq": 0.154627539503386,
       "count": 886
     },
     {
       "class": "D",
       "bin_mid": 0.25,
-      "forecast_mean": 0.26309020543393963,
+      "forecast_mean": 0.263090205433935,
       "observed_freq": 0.27416734362307066,
       "count": 2462
     },
     {
       "class": "D",
       "bin_mid": 0.35000000000000003,
-      "forecast_mean": 0.3029001419396983,
+      "forecast_mean": 0.302900141939693,
       "observed_freq": 0.39622641509433965,
       "count": 53
     },
     {
       "class": "A",
       "bin_mid": 0.05,
-      "forecast_mean": 0.048812085838041704,
+      "forecast_mean": 0.048812085838042925,
       "observed_freq": 0.05125628140703518,
       "count": 995
     },
     {
       "class": "A",
       "bin_mid": 0.15000000000000002,
-      "forecast_mean": 0.14891802917757807,
+      "forecast_mean": 0.14891802917758026,
       "observed_freq": 0.16054421768707483,
       "count": 735
     },
     {
       "class": "A",
       "bin_mid": 0.25,
-      "forecast_mean": 0.24765887717734167,
+      "forecast_mean": 0.24765887717734417,
       "observed_freq": 0.2896,
       "count": 625
     },
     {
       "class": "A",
       "bin_mid": 0.35000000000000003,
-      "forecast_mean": 0.3503265678374394,
+      "forecast_mean": 0.3503265678374417,
       "observed_freq": 0.3802083333333333,
       "count": 384
     },
     {
       "class": "A",
       "bin_mid": 0.45,
-      "forecast_mean": 0.4477213537106227,
+      "forecast_mean": 0.44772135371062494,
       "observed_freq": 0.47384615384615386,
       "count": 325
     },
     {
       "class": "A",
       "bin_mid": 0.55,
-      "forecast_mean": 0.5509414718892222,
+      "forecast_mean": 0.550941471889224,
       "observed_freq": 0.5813008130081301,
       "count": 246
     },
     {
       "class": "A",
       "bin_mid": 0.6500000000000001,
-      "forecast_mean": 0.6441633457435619,
+      "forecast_mean": 0.6441633457435634,
       "observed_freq": 0.6829268292682927,
       "count": 164
     },
     {
       "class": "A",
       "bin_mid": 0.75,
-      "forecast_mean": 0.7467203668604732,
+      "forecast_mean": 0.7467203668604744,
       "observed_freq": 0.8,
       "count": 125
     },
     {
       "class": "A",
       "bin_mid": 0.8500000000000001,
-      "forecast_mean": 0.843832131004862,
+      "forecast_mean": 0.8438321310048627,
       "observed_freq": 0.9692307692307692,
       "count": 65
     },
     {
       "class": "A",
       "bin_mid": 0.95,
-      "forecast_mean": 0.9391544837264334,
+      "forecast_mean": 0.9391544837264336,
       "observed_freq": 0.9428571428571428,
       "count": 35
     }
