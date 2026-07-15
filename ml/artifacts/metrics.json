@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-15T16:26:19.560059+00:00",
+  "generated_at": "2026-07-15T17:49:24.650233+00:00",
   "model_version": "2026.07.15-1",
   "data_cutoff": "2026-07-14",
   "protocol": {
@@ -125,15 +125,6 @@
       "n": 923
     },
     {
-      "tier": "continental",
-      "log_loss": 0.90579,
-      "brier": 0.53376,
-      "rps": 0.18038,
-      "accuracy": 0.57181,
-      "ece": 0.05158,
-      "n": 752
-    },
-    {
       "tier": "qualifier",
       "log_loss": 0.79909,
       "brier": 0.46858,
@@ -150,6 +141,15 @@
       "accuracy": 0.65347,
       "ece": 0.11377,
       "n": 101
+    },
+    {
+      "tier": "continental",
+      "log_loss": 0.90579,
+      "brier": 0.53376,
+      "rps": 0.18038,
+      "accuracy": 0.57181,
+      "ece": 0.05158,
+      "n": 752
     }
   ],
   "by_confederation": [

@@ -3,7 +3,7 @@
   "dataset": "former_names",
   "description": "Mapping of historical team names to current identities",
   "url": "https://raw.githubusercontent.com/martj42/international_results/master/former_names.csv",
-  "retrieved_at": "2026-07-15T16:25:49.284073+00:00",
+  "retrieved_at": "2026-07-15T17:48:54.506515+00:00",
   "license": {
     "name": "CC0 1.0 Universal (public domain)",
     "url": "https://github.com/martj42/international_results/blob/master/LICENSE",
