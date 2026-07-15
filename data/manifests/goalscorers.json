@@ -3,14 +3,14 @@
   "dataset": "goalscorers",
   "description": "Goalscorers with minute/own-goal/penalty flags",
   "url": "https://raw.githubusercontent.com/martj42/international_results/master/goalscorers.csv",
-  "retrieved_at": "2026-07-15T06:36:39.002415+00:00",
+  "retrieved_at": "2026-07-15T09:11:05.733841+00:00",
   "license": {
     "name": "CC0 1.0 Universal (public domain)",
     "url": "https://github.com/martj42/international_results/blob/master/LICENSE",
     "redistribution_allowed": true
   },
-  "sha256": "6113f999ce20f88d0808d271b08b36310eeed79b25bc7251c7093aef17cd6763",
-  "row_count": 47898,
+  "sha256": "caacd151abadb5d94af43d9b995c518164c4946d887e76445c97c825d8268f8d",
+  "row_count": 47900,
   "columns": [
     "date",
     "home_team",
@@ -22,7 +22,7 @@
     "penalty"
   ],
   "date_min": "1916-07-02",
-  "date_max": "2026-07-11",
+  "date_max": "2026-07-14",
   "known_limitations": [
     "Community-maintained; occasional corrections upstream",
     "Senior men's full internationals only (per upstream inclusion criteria)",
