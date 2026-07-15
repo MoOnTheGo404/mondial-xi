@@ -18,9 +18,9 @@
     {
       "class": "H",
       "bin_mid": 0.25,
-      "forecast_mean": 0.2518710397769656,
-      "observed_freq": 0.1994459833795014,
-      "count": 361
+      "forecast_mean": 0.25198792460930175,
+      "observed_freq": 0.19889502762430938,
+      "count": 362
     },
     {
       "class": "H",
@@ -88,9 +88,9 @@
     {
       "class": "D",
       "bin_mid": 0.25,
-      "forecast_mean": 0.26307954492118796,
-      "observed_freq": 0.2742787484762292,
-      "count": 2461
+      "forecast_mean": 0.26309020543393963,
+      "observed_freq": 0.27416734362307066,
+      "count": 2462
     },
     {
       "class": "D",
@@ -130,9 +130,9 @@
     {
       "class": "A",
       "bin_mid": 0.45,
-      "forecast_mean": 0.44781774392700885,
-      "observed_freq": 0.4722222222222222,
-      "count": 324
+      "forecast_mean": 0.4477213537106227,
+      "observed_freq": 0.47384615384615386,
+      "count": 325
     },
     {
       "class": "A",
@@ -181,9 +181,9 @@
     {
       "class": "H",
       "bin_mid": 0.15000000000000002,
-      "forecast_mean": 0.152192367970379,
-      "observed_freq": 0.13649851632047477,
-      "count": 337
+      "forecast_mean": 0.15227135945941753,
+      "observed_freq": 0.13609467455621302,
+      "count": 338
     },
     {
       "class": "H",
@@ -251,9 +251,9 @@
     {
       "class": "D",
       "bin_mid": 0.15000000000000002,
-      "forecast_mean": 0.15197112621883438,
-      "observed_freq": 0.20204841713221602,
-      "count": 1074
+      "forecast_mean": 0.15192723685431841,
+      "observed_freq": 0.20186046511627906,
+      "count": 1075
     },
     {
       "class": "D",
@@ -328,9 +328,9 @@
     {
       "class": "A",
       "bin_mid": 0.75,
-      "forecast_mean": 0.7493499797277071,
-      "observed_freq": 0.7401574803149606,
-      "count": 127
+      "forecast_mean": 0.7490919208967908,
+      "observed_freq": 0.7421875,
+      "count": 128
     },
     {
       "class": "A",

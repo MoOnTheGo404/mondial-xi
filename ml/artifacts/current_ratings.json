@@ -1,5 +1,5 @@
 {
-  "as_of": "2026-07-14",
+  "as_of": "2026-07-15",
   "elo_config": {
     "home_advantage": 80.0,
     "k_scale": 0.75
@@ -10,8 +10,8 @@
       "matches": 854
     },
     "england": {
-      "elo": 2106.3,
-      "matches": 1096
+      "elo": 2089.3,
+      "matches": 1097
     },
     "wales": {
       "elo": 1730.0,
@@ -34,8 +34,8 @@
       "matches": 973
     },
     "argentina": {
-      "elo": 2192.9,
-      "matches": 1075
+      "elo": 2209.9,
+      "matches": 1076
     },
     "austria": {
       "elo": 1848.9,
