@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-07-15T23:30:45.202024+00:00",
+  "generated_at": "2026-07-16T02:50:41.510418+00:00",
   "horizon_years": 4,
   "elo_dynamics": {
     "mean_elo": 1537.7,
     "persistence_beta": 1.0065,
     "residual_std": 63.1,
-    "n_pairs": 9295
+    "n_pairs": 9297
   },
   "scoring_survival": {
     "19": 0.5935,

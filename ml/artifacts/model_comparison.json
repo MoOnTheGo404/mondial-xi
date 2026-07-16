@@ -1,128 +1,128 @@
 {
   "frequency_baseline": {
     "validation": {
-      "log_loss": 1.04594,
+      "log_loss": 1.04593,
       "brier": 0.63009,
       "rps": 0.22756,
       "accuracy": 0.48618,
-      "ece": 0.00232,
+      "ece": 0.0023,
       "n": 3581
     },
     "test": {
-      "log_loss": 1.05436,
-      "brier": 0.63619,
-      "rps": 0.22947,
-      "accuracy": 0.47229,
-      "ece": 0.01157,
-      "n": 3699
+      "log_loss": 1.05452,
+      "brier": 0.63631,
+      "rps": 0.2296,
+      "accuracy": 0.47195,
+      "ece": 0.01192,
+      "n": 3708
     }
   },
   "elo_logistic": {
     "validation": {
-      "log_loss": 0.86065,
-      "brier": 0.50495,
-      "rps": 0.16785,
+      "log_loss": 0.86061,
+      "brier": 0.50492,
+      "rps": 0.16783,
       "accuracy": 0.60737,
-      "ece": 0.01507,
+      "ece": 0.01493,
       "n": 3581
     },
     "test": {
-      "log_loss": 0.8666,
-      "brier": 0.50969,
-      "rps": 0.16891,
-      "accuracy": 0.60341,
-      "ece": 0.01942,
-      "n": 3699
+      "log_loss": 0.8665,
+      "brier": 0.5096,
+      "rps": 0.16894,
+      "accuracy": 0.60356,
+      "ece": 0.01911,
+      "n": 3708
     }
   },
   "poisson": {
     "validation": {
-      "log_loss": 0.86143,
-      "brier": 0.5056,
-      "rps": 0.16852,
+      "log_loss": 0.86138,
+      "brier": 0.50557,
+      "rps": 0.16851,
       "accuracy": 0.60709,
-      "ece": 0.01687,
+      "ece": 0.01587,
       "n": 3581
     },
     "test": {
-      "log_loss": 0.86733,
-      "brier": 0.5099,
-      "rps": 0.1693,
-      "accuracy": 0.6053,
-      "ece": 0.01931,
-      "n": 3699
+      "log_loss": 0.8674,
+      "brier": 0.50986,
+      "rps": 0.16937,
+      "accuracy": 0.60491,
+      "ece": 0.01967,
+      "n": 3708
     }
   },
   "dixon_coles": {
     "validation": {
-      "log_loss": 0.86061,
-      "brier": 0.50524,
-      "rps": 0.16846,
+      "log_loss": 0.86056,
+      "brier": 0.50521,
+      "rps": 0.16845,
       "accuracy": 0.60709,
-      "ece": 0.01284,
+      "ece": 0.01171,
       "n": 3581
     },
     "test": {
-      "log_loss": 0.86602,
-      "brier": 0.50923,
-      "rps": 0.16918,
-      "accuracy": 0.6053,
-      "ece": 0.0155,
-      "n": 3699
+      "log_loss": 0.8661,
+      "brier": 0.5092,
+      "rps": 0.16926,
+      "accuracy": 0.60491,
+      "ece": 0.01576,
+      "n": 3708
     }
   },
   "gbm_uncalibrated": {
     "validation": {
-      "log_loss": 0.8712,
-      "brier": 0.5106,
-      "rps": 0.16971,
-      "accuracy": 0.60039,
-      "ece": 0.01888,
+      "log_loss": 0.87147,
+      "brier": 0.5108,
+      "rps": 0.16968,
+      "accuracy": 0.59955,
+      "ece": 0.01825,
       "n": 3581
     },
     "test": {
-      "log_loss": 0.87269,
+      "log_loss": 0.8716,
       "brier": 0.51218,
-      "rps": 0.16903,
-      "accuracy": 0.60557,
-      "ece": 0.02495,
-      "n": 3699
+      "rps": 0.16935,
+      "accuracy": 0.60572,
+      "ece": 0.02891,
+      "n": 3708
     }
   },
   "gbm_calibrated": {
     "validation": {
-      "log_loss": 0.88854,
-      "brier": 0.51248,
-      "rps": 0.17072,
-      "accuracy": 0.60151,
-      "ece": 0.01149,
+      "log_loss": 0.88693,
+      "brier": 0.5134,
+      "rps": 0.17095,
+      "accuracy": 0.60235,
+      "ece": 0.0207,
       "n": 3581
     },
     "test": {
-      "log_loss": 0.86956,
-      "brier": 0.51011,
-      "rps": 0.16858,
-      "accuracy": 0.60854,
-      "ece": 0.0128,
-      "n": 3699
+      "log_loss": 0.86585,
+      "brier": 0.50921,
+      "rps": 0.16853,
+      "accuracy": 0.60976,
+      "ece": 0.01774,
+      "n": 3708
     }
   },
   "geometric_ensemble": {
     "validation": {
-      "log_loss": 0.85846,
-      "brier": 0.50384,
-      "rps": 0.16764,
+      "log_loss": 0.85842,
+      "brier": 0.50382,
+      "rps": 0.16763,
       "accuracy": 0.6057,
-      "ece": 0.01667,
+      "ece": 0.01713,
       "n": 3581
     },
     "test": {
-      "log_loss": 0.86423,
-      "brier": 0.50828,
-      "rps": 0.16856,
-      "accuracy": 0.60232,
-      "ece": 0.01706,
-      "n": 3699
+      "log_loss": 0.86419,
+      "brier": 0.50821,
+      "rps": 0.16862,
+      "accuracy": 0.60221,
+      "ece": 0.01722,
+      "n": 3708
     }
   }
 }

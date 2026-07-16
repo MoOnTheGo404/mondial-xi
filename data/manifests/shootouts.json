@@ -3,14 +3,14 @@
   "dataset": "shootouts",
   "description": "Penalty shootout outcomes for drawn matches",
   "url": "https://raw.githubusercontent.com/martj42/international_results/master/shootouts.csv",
-  "retrieved_at": "2026-07-15T23:30:19.184837+00:00",
+  "retrieved_at": "2026-07-16T02:50:16.439949+00:00",
   "license": {
     "name": "CC0 1.0 Universal (public domain)",
     "url": "https://github.com/martj42/international_results/blob/master/LICENSE",
     "redistribution_allowed": true
   },
-  "sha256": "9576c12d5ec5d8d446334443a0f68c94c663e5a56f92e20948313cb47cc36dd8",
-  "row_count": 682,
+  "sha256": "2acdc95fdad14f5f17200150a1a4a5fa6c2ccf57d31c8b4f61a2c7d9c0493113",
+  "row_count": 683,
   "columns": [
     "date",
     "home_team",

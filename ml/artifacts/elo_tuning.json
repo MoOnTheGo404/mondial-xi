@@ -3,47 +3,47 @@
     {
       "home_advantage": 60.0,
       "k_scale": 0.75,
-      "val_log_loss": 0.86104
+      "val_log_loss": 0.861
     },
     {
       "home_advantage": 60.0,
       "k_scale": 1.0,
-      "val_log_loss": 0.86215
+      "val_log_loss": 0.86212
     },
     {
       "home_advantage": 60.0,
       "k_scale": 1.25,
-      "val_log_loss": 0.86423
+      "val_log_loss": 0.8642
     },
     {
       "home_advantage": 80.0,
       "k_scale": 0.75,
-      "val_log_loss": 0.86065
+      "val_log_loss": 0.86061
     },
     {
       "home_advantage": 80.0,
       "k_scale": 1.0,
-      "val_log_loss": 0.86164
+      "val_log_loss": 0.8616
     },
     {
       "home_advantage": 80.0,
-      "k_scale": 1.25,
-      "val_log_loss": 0.86363
-    },
-    {
-      "home_advantage": 100.0,
-      "k_scale": 0.75,
-      "val_log_loss": 0.86102
-    },
-    {
-      "home_advantage": 100.0,
-      "k_scale": 1.0,
-      "val_log_loss": 0.86177
-    },
-    {
-      "home_advantage": 100.0,
       "k_scale": 1.25,
       "val_log_loss": 0.8636
+    },
+    {
+      "home_advantage": 100.0,
+      "k_scale": 0.75,
+      "val_log_loss": 0.86098
+    },
+    {
+      "home_advantage": 100.0,
+      "k_scale": 1.0,
+      "val_log_loss": 0.86173
+    },
+    {
+      "home_advantage": 100.0,
+      "k_scale": 1.25,
+      "val_log_loss": 0.86357
     }
   ],
   "selected": {
