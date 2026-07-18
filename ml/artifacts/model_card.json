@@ -1,6 +1,6 @@
 {
   "model_version": "2026.07.18-1",
-  "git_commit": "7be35de",
+  "git_commit": "ad4aa4f",
   "champion": "geometric_ensemble",
   "candidates": [
     "frequency_baseline",
