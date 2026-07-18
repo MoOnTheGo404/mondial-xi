@@ -3,7 +3,7 @@
   "dataset": "goalscorers",
   "description": "Goalscorers with minute/own-goal/penalty flags",
   "url": "https://raw.githubusercontent.com/martj42/international_results/master/goalscorers.csv",
-  "retrieved_at": "2026-07-18T17:33:57.711382+00:00",
+  "retrieved_at": "2026-07-18T19:09:58.672657+00:00",
   "license": {
     "name": "CC0 1.0 Universal (public domain)",
     "url": "https://github.com/martj42/international_results/blob/master/LICENSE",
