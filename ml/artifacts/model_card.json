@@ -1,6 +1,6 @@
 {
   "model_version": "2026.07.19-1",
-  "git_commit": "1f21563",
+  "git_commit": "dd4bcda",
   "champion": "geometric_ensemble",
   "candidates": [
     "frequency_baseline",
@@ -13,10 +13,10 @@
   ],
   "data": {
     "source": "martj42/international_results (CC0)",
-    "completed_matches": 49518,
+    "completed_matches": 49519,
     "date_range": [
       "1872-11-30",
-      "2026-07-18"
+      "2026-07-19"
     ]
   },
   "features": "pre-match only; single forward pass; leakage tests in tests/unit/ml",
