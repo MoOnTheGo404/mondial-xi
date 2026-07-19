@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-19T17:01:11.965315+00:00",
+  "generated_at": "2026-07-19T18:28:30.614791+00:00",
   "checks": [
     {
       "check": "bad_date_rows_dropped",
