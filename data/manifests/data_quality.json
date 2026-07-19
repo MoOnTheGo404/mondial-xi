@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-19T07:28:38.141113+00:00",
+  "generated_at": "2026-07-19T09:29:38.332190+00:00",
   "checks": [
     {
       "check": "bad_date_rows_dropped",
@@ -19,14 +19,14 @@
     }
   ],
   "raw_rows": 49520,
-  "completed_matches": 49517,
-  "upcoming_fixtures": 2,
-  "goal_events_raw": 47903,
-  "goal_events_kept": 47903,
+  "completed_matches": 49518,
+  "upcoming_fixtures": 1,
+  "goal_events_raw": 47913,
+  "goal_events_kept": 47913,
   "teams": 337,
   "teams_with_flag": 234,
   "date_min": "1872-11-30",
-  "date_max": "2026-07-15",
+  "date_max": "2026-07-18",
   "missingness": {
     "goalscorer_minute_null_pct": 0.53,
     "matches_with_goal_detail_pct": 34.12
