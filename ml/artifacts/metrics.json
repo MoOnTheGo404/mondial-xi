@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-19T19:45:33.788051+00:00",
+  "generated_at": "2026-07-19T20:54:55.339773+00:00",
   "model_version": "2026.07.19-1",
   "data_cutoff": "2026-07-18",
   "protocol": {
@@ -107,6 +107,24 @@
   ],
   "by_tier": [
     {
+      "tier": "other",
+      "log_loss": 0.92359,
+      "brier": 0.5387,
+      "rps": 0.18924,
+      "accuracy": 0.58701,
+      "ece": 0.03871,
+      "n": 431
+    },
+    {
+      "tier": "continental",
+      "log_loss": 0.90514,
+      "brier": 0.53316,
+      "rps": 0.18051,
+      "accuracy": 0.57162,
+      "ece": 0.05538,
+      "n": 761
+    },
+    {
       "tier": "world_cup",
       "log_loss": 0.85212,
       "brier": 0.50289,
@@ -132,24 +150,6 @@
       "accuracy": 0.57205,
       "ece": 0.02951,
       "n": 923
-    },
-    {
-      "tier": "continental",
-      "log_loss": 0.90514,
-      "brier": 0.53316,
-      "rps": 0.18051,
-      "accuracy": 0.57162,
-      "ece": 0.05538,
-      "n": 761
-    },
-    {
-      "tier": "other",
-      "log_loss": 0.92359,
-      "brier": 0.5387,
-      "rps": 0.18924,
-      "accuracy": 0.58701,
-      "ece": 0.03871,
-      "n": 431
     }
   ],
   "by_confederation": [
