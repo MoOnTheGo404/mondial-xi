@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-22T19:26:48.148609+00:00",
+  "generated_at": "2026-07-22T20:40:55.309553+00:00",
   "model_version": "2026.07.22-1",
   "data_cutoff": "2026-07-19",
   "protocol": {
@@ -39,31 +39,31 @@
     {
       "bucket": "0.33\u20130.45",
       "count": 758,
-      "mean_confidence": 0.40204385503053236,
+      "mean_confidence": 0.4020438550305294,
       "top_pick_accuracy": 0.39577836411609496
     },
     {
       "bucket": "0.45\u20130.55",
       "count": 775,
-      "mean_confidence": 0.4982975471015017,
+      "mean_confidence": 0.4982975471014989,
       "top_pick_accuracy": 0.47483870967741937
     },
     {
       "bucket": "0.55\u20130.65",
       "count": 686,
-      "mean_confidence": 0.5979600924336074,
+      "mean_confidence": 0.5979600924336049,
       "top_pick_accuracy": 0.565597667638484
     },
     {
       "bucket": "0.65\u20130.80",
       "count": 860,
-      "mean_confidence": 0.7250556840461899,
+      "mean_confidence": 0.725055684046188,
       "top_pick_accuracy": 0.7186046511627907
     },
     {
       "bucket": "0.80\u20131.00",
       "count": 631,
-      "mean_confidence": 0.8771709073657421,
+      "mean_confidence": 0.8771709073657413,
       "top_pick_accuracy": 0.8874801901743264
     }
   ],
@@ -107,15 +107,6 @@
   ],
   "by_tier": [
     {
-      "tier": "world_cup",
-      "log_loss": 0.85234,
-      "brier": 0.50296,
-      "rps": 0.16115,
-      "accuracy": 0.65385,
-      "ece": 0.11713,
-      "n": 104
-    },
-    {
       "tier": "continental",
       "log_loss": 0.90514,
       "brier": 0.53316,
@@ -134,15 +125,6 @@
       "n": 1491
     },
     {
-      "tier": "friendly",
-      "log_loss": 0.90983,
-      "brier": 0.53844,
-      "rps": 0.17578,
-      "accuracy": 0.57205,
-      "ece": 0.02951,
-      "n": 923
-    },
-    {
       "tier": "other",
       "log_loss": 0.92359,
       "brier": 0.5387,
@@ -150,6 +132,24 @@
       "accuracy": 0.58701,
       "ece": 0.03871,
       "n": 431
+    },
+    {
+      "tier": "world_cup",
+      "log_loss": 0.85234,
+      "brier": 0.50296,
+      "rps": 0.16115,
+      "accuracy": 0.65385,
+      "ece": 0.11713,
+      "n": 104
+    },
+    {
+      "tier": "friendly",
+      "log_loss": 0.90983,
+      "brier": 0.53844,
+      "rps": 0.17578,
+      "accuracy": 0.57205,
+      "ece": 0.02951,
+      "n": 923
     }
   ],
   "by_confederation": [
