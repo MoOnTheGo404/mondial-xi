@@ -1,20 +1,21 @@
 name: Data refresh
 
-# The open dataset (martj42/international_results) is updated through the day as
-# matches finish. This job re-downloads it, rebuilds the processed data,
-# retrains and re-evaluates the models, refreshes the README metrics, commits
-# any changed artifacts, and (if RENDER_DEPLOY_HOOK is set) redeploys the live
-# site so a freshly-finished result appears within the half-hour. It can only
-# pull what the upstream open dataset has published — it never fabricates a
-# result. Runs every 30 minutes; the commit/redeploy steps are no-ops when the
-# dataset is unchanged, so quiet periods cost almost nothing.
+# The open dataset (martj42/international_results) is updated as matches
+# finish. This job re-downloads it, rebuilds the processed data, retrains and
+# re-evaluates the models, refreshes the README metrics, and commits any
+# changed artifacts. It can only pull what the upstream open dataset has
+# published — it never fabricates a result.
 #
-# Note: GitHub may delay or drop very high-frequency scheduled runs under load;
-# 30 min is the practical floor for a reliable cadence.
+# Cadence: DAILY. Each data change triggers Render's autoDeploy (a full model
+# retrain per service), so cadence is directly build-minutes spend. During the
+# 2026 World Cup a 30-min cadence burned the entire Render deploy budget —
+# don't raise it above daily unless a tournament is live, and if you do, lower
+# it back afterwards. For a one-off refresh use the "Run workflow" button
+# (workflow_dispatch).
 
 on:
   schedule:
-    - cron: "*/30 * * * *" # every 30 minutes
+    - cron: "0 7 * * *" # 07:00 UTC daily, after most fixtures conclude
   workflow_dispatch: {} # allow manual runs
 
 permissions:
@@ -62,11 +63,8 @@ jobs:
             git push
           fi
 
-      # Optional: trigger a Render redeploy so the live site rebuilds with the
-      # fresh dataset. Add a RENDER_DEPLOY_HOOK repo secret (Render → service →
-      # Settings → Deploy Hook) to enable; skipped silently if unset.
-      - name: Trigger Render redeploy
-        if: ${{ env.RENDER_DEPLOY_HOOK != '' }}
-        env:
-          RENDER_DEPLOY_HOOK: ${{ secrets.RENDER_DEPLOY_HOOK }}
-        run: curl -fsS -X POST "$RENDER_DEPLOY_HOOK" && echo "Render redeploy triggered"
+      # No deploy hook: render.yaml sets autoDeploy, so the data commit above
+      # already triggers exactly one rebuild per service. A deploy hook on top
+      # of that DOUBLES the API builds (each one retrains the models) — that
+      # duplication is what exhausted the Render deploy budget during the WC.
+      # If you ever disable autoDeploy, re-add the hook step here instead.
