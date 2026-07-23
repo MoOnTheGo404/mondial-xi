@@ -39,10 +39,10 @@ test("browse fixtures → open match center → prediction present", async ({ pa
   await page.goto("/fixtures");
   await expect(page.getByRole("heading", { name: /fixtures/i })).toBeVisible();
   const link = page.getByRole("link", { name: /match center/i }).first();
-  // Between rounds the dataset can legitimately have zero scheduled fixtures
-  // (all listed games played, next round not yet published) — the page shows
-  // its honest empty state and this journey isn't executable.
-  const empty = page.getByText(/no scheduled fixtures/i);
+  // Between rounds / post-tournament the dataset can legitimately have zero
+  // scheduled fixtures — the page shows its honest empty state ("No fixtures
+  // match these filters") and this journey isn't executable.
+  const empty = page.getByText(/no (scheduled )?fixtures/i);
   await expect(link.or(empty).first()).toBeVisible({ timeout: 15_000 });
   test.skip(await empty.isVisible(), "no scheduled fixtures in dataset snapshot");
   await link.click();
@@ -134,8 +134,15 @@ test("tournament simulator: run, lock an upset, probabilities change", async ({
   // Lock whatever tie is still upcoming (played ties are pinned & unlockable,
   // so we can't hard-code one — the tournament moves on as results land).
   await page.getByRole("heading", { name: /knockout bracket/i }).scrollIntoViewIfNeeded();
+  // wait for the bracket to render (centre Final label), then skip if every
+  // tie is already played — a concluded tournament has nothing lockable.
+  await expect(page.getByText("Final", { exact: true })).toBeVisible({ timeout: 30_000 });
   const lockBtn = page.getByRole("button", { name: /lock .* to win/i }).first();
-  await expect(lockBtn).toBeVisible({ timeout: 30_000 });
+  test.skip(
+    (await page.getByRole("button", { name: /lock .* to win/i }).count()) === 0,
+    "tournament concluded — no unplayed tie to lock",
+  );
+  await expect(lockBtn).toBeVisible();
   const stripLabel = (l: string) => l.replace(/^Lock /, "").replace(/ to win$/, "");
   const winner = stripLabel((await lockBtn.getAttribute("aria-label")) ?? "");
 
