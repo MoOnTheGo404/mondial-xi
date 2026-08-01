@@ -3,13 +3,13 @@
   "dataset": "goalscorers",
   "description": "Goalscorers with minute/own-goal/penalty flags",
   "url": "https://raw.githubusercontent.com/martj42/international_results/master/goalscorers.csv",
-  "retrieved_at": "2026-07-31T09:50:30.331684+00:00",
+  "retrieved_at": "2026-08-01T09:11:28.493113+00:00",
   "license": {
     "name": "CC0 1.0 Universal (public domain)",
     "url": "https://github.com/martj42/international_results/blob/master/LICENSE",
     "redistribution_allowed": true
   },
-  "sha256": "f8084e692adadf1177d0df54ae53f920763780007d17ab218eccd52a81f24018",
+  "sha256": "e8b9b468e9fe30f1f92e82a66312af980b83fdeb5eb411497097a850748b8815",
   "row_count": 47914,
   "columns": [
     "date",

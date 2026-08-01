@@ -19,8 +19,8 @@
   },
   "elo_logistic": {
     "validation": {
-      "log_loss": 0.86061,
-      "brier": 0.50492,
+      "log_loss": 0.8606,
+      "brier": 0.50491,
       "rps": 0.16783,
       "accuracy": 0.60737,
       "ece": 0.01493,
@@ -37,11 +37,11 @@
   },
   "poisson": {
     "validation": {
-      "log_loss": 0.86138,
-      "brier": 0.50557,
-      "rps": 0.16851,
-      "accuracy": 0.60709,
-      "ece": 0.01587,
+      "log_loss": 0.86137,
+      "brier": 0.50556,
+      "rps": 0.1685,
+      "accuracy": 0.60737,
+      "ece": 0.01583,
       "n": 3581
     },
     "test": {
@@ -55,65 +55,65 @@
   },
   "dixon_coles": {
     "validation": {
-      "log_loss": 0.86056,
-      "brier": 0.50521,
-      "rps": 0.16845,
-      "accuracy": 0.60709,
-      "ece": 0.01171,
+      "log_loss": 0.86055,
+      "brier": 0.5052,
+      "rps": 0.16844,
+      "accuracy": 0.60737,
+      "ece": 0.01161,
       "n": 3581
     },
     "test": {
       "log_loss": 0.86627,
-      "brier": 0.50931,
+      "brier": 0.5093,
       "rps": 0.16934,
       "accuracy": 0.60485,
-      "ece": 0.01573,
+      "ece": 0.01551,
       "n": 3710
     }
   },
   "gbm_uncalibrated": {
     "validation": {
-      "log_loss": 0.87147,
-      "brier": 0.5108,
-      "rps": 0.16968,
-      "accuracy": 0.59955,
-      "ece": 0.01825,
+      "log_loss": 0.86975,
+      "brier": 0.5097,
+      "rps": 0.16931,
+      "accuracy": 0.59872,
+      "ece": 0.01823,
       "n": 3581
     },
     "test": {
-      "log_loss": 0.87183,
-      "brier": 0.5124,
-      "rps": 0.1695,
-      "accuracy": 0.60539,
-      "ece": 0.02922,
+      "log_loss": 0.87176,
+      "brier": 0.51171,
+      "rps": 0.16923,
+      "accuracy": 0.60916,
+      "ece": 0.02633,
       "n": 3710
     }
   },
   "gbm_calibrated": {
     "validation": {
-      "log_loss": 0.88693,
-      "brier": 0.5134,
-      "rps": 0.17095,
-      "accuracy": 0.60235,
-      "ece": 0.0207,
+      "log_loss": 0.88753,
+      "brier": 0.51167,
+      "rps": 0.17051,
+      "accuracy": 0.60402,
+      "ece": 0.00621,
       "n": 3581
     },
     "test": {
-      "log_loss": 0.86607,
-      "brier": 0.50941,
-      "rps": 0.16867,
-      "accuracy": 0.60943,
-      "ece": 0.01742,
+      "log_loss": 0.86865,
+      "brier": 0.5088,
+      "rps": 0.16837,
+      "accuracy": 0.60863,
+      "ece": 0.0126,
       "n": 3710
     }
   },
   "geometric_ensemble": {
     "validation": {
-      "log_loss": 0.85842,
-      "brier": 0.50382,
+      "log_loss": 0.85841,
+      "brier": 0.50381,
       "rps": 0.16763,
-      "accuracy": 0.6057,
-      "ece": 0.01713,
+      "accuracy": 0.60542,
+      "ece": 0.01719,
       "n": 3581
     },
     "test": {
