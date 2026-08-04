@@ -6,17 +6,19 @@ name: Data refresh
 # changed artifacts. It can only pull what the upstream open dataset has
 # published — it never fabricates a result.
 #
-# Cadence: DAILY. Each data change triggers Render's autoDeploy (a full model
-# retrain per service), so cadence is directly build-minutes spend. During the
-# 2026 World Cup a 30-min cadence burned the entire Render deploy budget —
-# don't raise it above daily unless a tournament is live, and if you do, lower
-# it back afterwards. For a one-off refresh use the "Run workflow" button
-# (workflow_dispatch).
+# Cadence: MANUAL ONLY. The 2026 World Cup concluded, so there are no fixtures
+# left to pull and a scheduled run would just burn Render build minutes (each
+# data commit triggers autoDeploy, which retrains the models per service).
+# Use the "Run workflow" button (workflow_dispatch) for a one-off refresh.
+#
+# To re-enable a schedule for the next tournament, uncomment the `schedule`
+# block below. Daily is the ceiling: during the 2026 World Cup a 30-min cadence
+# burned the entire Render deploy budget.
 
 on:
-  schedule:
-    - cron: "0 7 * * *" # 07:00 UTC daily, after most fixtures conclude
-  workflow_dispatch: {} # allow manual runs
+  # schedule:
+  #   - cron: "0 7 * * *" # 07:00 UTC daily, after most fixtures conclude
+  workflow_dispatch: {} # manual runs only
 
 permissions:
   contents: write
@@ -59,7 +61,7 @@ jobs:
             echo "No changes — dataset unchanged since last run."
           else
             CUTOFF=$(python -c "import json;print(json.load(open('ml/artifacts/metrics.json'))['data_cutoff'])")
-            git commit -m "chore(data): daily refresh — cutoff ${CUTOFF} [skip ci]"
+            git commit -m "chore(data): refresh — cutoff ${CUTOFF} [skip ci]"
             git push
           fi
 

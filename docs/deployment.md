@@ -23,9 +23,11 @@ Notes:
 - The snapshot SQLite DB is ephemeral on the free plan (regenerated at
   startup). For a persistent track record, attach a paid disk at
   `/app/data` or set `KICKOFF_DATABASE_URL` to managed Postgres.
-- **Daily fresh data:** add a `RENDER_DEPLOY_HOOK` repo secret (Render →
-  service → Settings → Deploy Hook) and the daily-refresh workflow triggers a
-  rebuild each morning; each rebuild re-downloads the latest results.
+- **Fresh data:** `render.yaml` sets `autoDeploy`, so any commit the refresh
+  workflow pushes rebuilds both services automatically (each rebuild
+  re-downloads the latest results). No deploy hook needed. See
+  [Data refresh](#data-refresh) — the workflow is manual-only now that the
+  tournament has concluded.
 
 ## Run the container stack locally
 
@@ -68,26 +70,32 @@ that the API host or env var is missing.
   `KICKOFF_DATABASE_URL=postgresql+psycopg://…` for managed Postgres
   (SQLAlchemy handles both).
 
-## Daily auto-update
+## Data refresh
 
-The open dataset (martj42/international_results) is refreshed daily as matches
-finish, so the platform can stay current with a scheduled job. One command
-does the whole cycle:
+The open dataset (martj42/international_results) is updated as matches finish,
+so the platform can stay current with a scheduled job. One command does the
+whole cycle:
 
 ```bash
 make refresh   # re-download → rebuild → retrain → re-evaluate → re-snapshot
 ```
 
-**Shipped automation:** `.github/workflows/daily-refresh.yml` runs this **every
-30 minutes** (and on manual dispatch): it re-downloads the CC0 core, pulls the
-Wikipedia fresh-results overlay, rebuilds, retrains, re-runs the leakage/metrics
-tests as a sanity check, commits any changed JSON artifacts + README metrics
-back to the repo (`[skip ci]`), and — if `RENDER_DEPLOY_HOOK` is set — redeploys
-the live API so new results appear within the half-hour. If nothing changed
-upstream, it no-ops.
+**Shipped automation:** `.github/workflows/daily-refresh.yml` runs this cycle:
+it re-downloads the CC0 core, pulls the Wikipedia fresh-results overlay,
+rebuilds, retrains, re-runs the leakage/metrics tests as a sanity check, and
+commits any changed JSON artifacts + README metrics back to the repo
+(`[skip ci]`). If nothing changed upstream, it no-ops.
+
+**Cadence: manual dispatch only.** The 2026 World Cup has concluded, so there
+are no new fixtures to pull and a scheduled run would only spend Render build
+minutes (every data commit triggers `autoDeploy`, which retrains the models per
+service). Run it on demand from Actions → Data refresh → **Run workflow**. To
+re-enable a schedule for the next tournament, uncomment the `schedule` block in
+the workflow — daily is the ceiling; a 30-minute cadence exhausted the Render
+deploy budget during the 2026 World Cup.
 
 **For a deployment:**
-- If the platform redeploys on push (Vercel/Railway/Render), the daily commit
+- If the platform redeploys on push (Vercel/Railway/Render), a refresh commit
   triggers a rebuild that runs `make data && make train`, regenerating the
   parquet + `prediction_bundle.joblib` from the fresh data — no artifacts need
   to travel through git.
@@ -99,7 +107,7 @@ upstream, it no-ops.
 **Snapshot scoring:** `scripts/run_snapshots.py` (part of `make refresh`)
 records immutable forecasts for genuinely-upcoming fixtures and attaches
 results/scores to snapshots whose matches have now finished — the track
-record updates itself every day without overwriting past forecasts.
+record extends itself on each refresh without overwriting past forecasts.
 
 ## Environment & secrets
 
